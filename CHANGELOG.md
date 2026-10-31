@@ -4,7 +4,7 @@ Todas as alterações relevantes deste projeto serão registradas neste arquivo.
 
 O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), com versões organizadas cronologicamente.
 
-## [Não lançado] v2.0.0
+## [2.0.0] - 2026-10-30
 
 ### Adicionado
 - Interface web complementar à calculadora desktop utilizando Pyodide v0.27.8 via CDN oficial (sem Vite, sem npm, sem frameworks).

@@ -6,7 +6,7 @@ O desafio foi realizado com o **Google AI Studio** como ferramenta de apoio à g
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Status:** a publicação da versão `v2.0.0` ainda está pendente. A aplicação possui a interface desktop original em Tkinter e uma interface web complementar que executa Python no navegador via Pyodide v0.27.8. As duas suítes de testes foram aprovadas: 25 testes Python (`unittest`) e 11 testes web.
+> **Status:** versão `v2.0.0` publicada. A aplicação possui a interface desktop original em Tkinter e uma interface web complementar que executa Python no navegador via Pyodide v0.27.8. As duas suítes de testes foram aprovadas: 25 testes Python (`unittest`) e 11 testes web.
 
 ---
 

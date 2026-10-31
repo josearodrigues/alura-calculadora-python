@@ -14,7 +14,7 @@ A aplicação desktop original com Tkinter permanece **intacta e plenamente func
 > - `indexURL`: `https://cdn.jsdelivr.net/pyodide/v0.27.8/full/`
 >
 > **Justificativa Técnica:**
-> - A versão `v0.27.8` é a versão mais recente e estável da linha `0.27`, trazendo todas as correções acumuladas.
+> - A versão `v0.27.8` foi a fixada da linha `0.27` para esta implementação, trazendo todas as correções acumuladas.
 > - Baseia-se no CPython 3.12 com suporte maduro a chamadas FFI bidirecionais e ao sistema de arquivos virtual Emscripten (`MEMFS`).
 > - Mantém determinismo na destruição explícita de objetos `PyProxy` e ampla compatibilidade entre navegadores sem depender de recursos experimentais.
 
