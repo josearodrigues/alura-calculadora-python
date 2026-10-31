@@ -55,6 +55,7 @@ calculadora-python/
 │   └── test_validacao.py
 ├── docs/
 │   └── implementation_plan.md
+├── .nojekyll                 # Desativa o processamento Jekyll no GitHub Pages
 ├── index.html                # Interface web
 ├── style.css                 # Estilos da interface web
 ├── app.js                    # Integração da interface web com Python

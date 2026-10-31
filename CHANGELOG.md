@@ -20,6 +20,15 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 - Suíte de 25 testes automatizados `unittest` do Python mantida e aprovada com 100% de sucesso via `python3 -m unittest discover -s tests -v`.
 - Disponibilidade da distribuição Pyodide v0.27.8 verificada na CDN jsDelivr (HTTP 200).
 
+### Corrigido
+- Ajustado o posicionamento do iframe isolado em `testes.html`, mantendo-o fora da área visível sem impedir o recebimento de foco pelos campos. A alteração corrige a falha do TW-10 na validação da ação de limpeza.
+
+- Adicionado `.nojekyll` à raiz do projeto para evitar que o processamento Jekyll do GitHub Pages exclua arquivos Python cujo nome começa com sublinhado, como `__init__.py`.
+
+### Verificado
+- Suíte web reexecutada localmente: 11 testes aprovados.
+- Correção do TW-10 validada no GitHub Pages por testes manuais repetidos. Na primeira tentativa foi observado o comportamento anterior, possivelmente devido ao cache; as tentativas seguintes confirmaram a correção.
+
 ## v1.0.0
 
 ### Adicionado

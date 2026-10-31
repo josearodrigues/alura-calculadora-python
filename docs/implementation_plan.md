@@ -200,7 +200,8 @@ A suíte de testes do navegador é implementada em arquivo independente (`tests_
 - **TW-07:** Divisão por zero (`"10"` $\div$ `"0"` $\to$ erro com ícone `✖` e mensagem esperada).
 - **TW-08:** Validação de campo vazio (Operando A em branco $\to$ ícone `⚠` e mensagem específica).
 - **TW-09:** Validação de entrada inválida (`"abc"` $\to$ ícone `⚠`).
-- **TW-10:** Ação de limpeza.
+- **TW-10:** Ação de limpeza: verifica se os campos são esvaziados, o estado visual retorna à condição neutra e o foco retorna ao campo Operando A.
+  - **Observação de implementação:** o iframe utilizado pelo executor dos testes deve permanecer fora da área visível, mas conservar dimensões não nulas e capacidade de receber foco. O uso de `visibility: hidden` ou dimensões zero impediu a validação confiável do foco no TW-10.
 - **TW-11:** **Liberação de Proxies em Dois Cenários:**
   - *Cenário A (Execução normal):* Verifica que tanto o proxy da função quanto o proxy do resultado chamam `.destroy()` e não permanecem ativos na memória.
   - *Cenário B (Falha provocada em `toJs` via mock):* Utiliza um proxy mock cujo método `toJs()` lança um erro simulado e comprova que o bloco `finally` continua chamando `.destroy()` em ambos os proxies, prevenindo vazamentos de memória.
