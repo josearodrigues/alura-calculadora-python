@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suíte de Testes Automatizados no Navegador - Calculadora Web Pyodide</title>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .tabela-testes {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
+    .tabela-testes th, .tabela-testes td {
+      border: 1px solid var(--borda-suave);
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+    }
+    .tabela-testes th {
+      background-color: var(--neutro-bg);
+      font-weight: 700;
+    }
+    .tag-status {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .tag-sucesso { background-color: var(--sucesso-bg); color: var(--sucesso-texto); }
+    .tag-falha { background-color: var(--erro-bg); color: var(--erro-texto); }
+  </style>
+</head>
+<body>
+  <div class="app-container" style="max-width: 760px;">
+    <header class="app-header">
+      <h1 class="app-titulo">Suíte de Testes Automatizados no Navegador</h1>
+      <p class="app-subtitulo">Validação ponta a ponta dos 11 casos de teste web com Pyodide</p>
+      <p style="margin-top: 0.5rem;"><a href="./index.html">← Voltar para a Calculadora</a></p>
+    </header>
+
+    <main class="calc-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <button id="btn-rodar-testes" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
+            Executar Bateria de Testes (11)
+          </button>
+        </div>
+        <div id="resumo-geral" style="font-weight: 600; font-size: 0.875rem;">
+          Aguardando execução...
+        </div>
+      </div>
+
+      <div id="container-tabela" style="display: none;">
+        <table class="tabela-testes">
+          <thead>
+            <tr>
+              <th style="width: 70px;">ID</th>
+              <th>Descrição do Cenário</th>
+              <th style="width: 100px;">Status</th>
+              <th>Evidências / Detalhes</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-tabela-testes"></tbody>
+        </table>
+      </div>
+
+      <!-- Iframe isolado para hospedar o DOM real da calculadora e executar os testes -->
+      <iframe
+        id="iframe-app"
+        src="./index.html"
+        title="Ambiente isolado da Calculadora para testes"
+        style="width: 0; height: 0; border: none; position: absolute; visibility: hidden;"
+      ></iframe>
+    </main>
+  </div>
+
+  <script>
+    const btnRodar = document.getElementById('btn-rodar-testes');
+    const resumoEl = document.getElementById('resumo-geral');
+    const containerTabela = document.getElementById('container-tabela');
+    const corpoTabela = document.getElementById('corpo-tabela-testes');
+    const iframeApp = document.getElementById('iframe-app');
+
+    btnRodar.addEventListener('click', async () => {
+      btnRodar.disabled = true;
+      resumoEl.textContent = "Aguardando carregamento do iframe e Pyodide...";
+      corpoTabela.innerHTML = "";
+      containerTabela.style.display = "block";
+
+      const iframeWin = iframeApp.contentWindow;
+      
+      // Aguarda até o Pyodide do iframe estar pronto
+      let tentativas = 0;
+      while ((!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) && tentativas < 80) {
+        await new Promise(r => setTimeout(r, 250));
+        tentativas++;
+      }
+
+      if (!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) {
+        resumoEl.textContent = "Erro: Timeout ao carregar Pyodide no iframe.";
+        btnRodar.disabled = false;
+        return;
+      }
+
+      resumoEl.textContent = "Executando 11 testes...";
+      
+      // Conecta o runner ao contexto do iframe
+      iframeWin.documentContexto = iframeWin.document;
+      window.documentContexto = iframeWin.document;
+      
+      // Executa os testes no contexto do iframe
+      const resultados = await iframeWin.executarTodosOsTestesWeb();
+      
+      let passados = 0;
+      corpoTabela.innerHTML = "";
+
+      for (const t of resultados) {
+        if (t.passou) passados++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${t.id}</strong></td>
+          <td>${t.descricao}</td>
+          <td><span class="tag-status ${t.passou ? 'tag-sucesso' : 'tag-falha'}">${t.passou ? 'APROVADO' : 'FALHOU'}</span></td>
+          <td style="font-size: 0.75rem; font-family: monospace;">${t.detalhes || '-'}</td>
+        `;
+        corpoTabela.appendChild(tr);
+      }
+
+      const total = resultados.length;
+      resumoEl.textContent = `Resultado: ${passados}/${total} testes aprovados (${passados === total ? '100% OK ✓' : 'FALHA ✖'})`;
+      btnRodar.disabled = false;
+    });
+
+    // Inicia automaticamente quando a página carrega
+    window.addEventListener('load', () => {
+      setTimeout(() => btnRodar.click(), 1000);
+    });
+  </script>
+</body>
+</html>
