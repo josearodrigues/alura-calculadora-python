@@ -1,318 +1,582 @@
 """
 Módulo de interface gráfica com o usuário (GUI) utilizando Tkinter nativo.
-
-Este módulo é responsável exclusivamente pela camada de apresentação (View/Controller).
-Ele constrói a janela visual, posiciona os elementos (widgets), escuta os eventos
-de interação do usuário (cliques e teclado) e delega a validação e o cálculo
-para os módulos especializados (validacao.py e operacoes.py).
+Implementa a identidade visual Dark Premium, visor duplo, teclado de funções completo,
+histórico lateral interativo, suporte a atalhos de teclado físico e cópia para clipboard.
 """
 
 import tkinter as tk
-from tkinter import ttk
-from typing import Optional
+from tkinter import messagebox, ttk
+from typing import Callable, List, Optional
 
+from calculadora.expressoes import (
+    ExpressaoInvalidaError,
+    avaliar_expressao,
+)
+from calculadora.historico import (
+    EntradaHistorico,
+    HistoricoSessao,
+    RegistroNaoEncontradoError,
+)
 from calculadora.operacoes import (
-    calcular,
-    formatar_resultado,
     DivisaoPorZeroError,
+    ErroAritmetico,
     OperacaoInvalidaError,
+    RadicandoNegativoError,
+    formatar_resultado,
 )
-from calculadora.validacao import (
-    converter_operando,
-    ErroValidacao,
-)
+from calculadora.validacao import ErroValidacao
+
+# Paleta Dark Premium Homologada
+COR_BG_APP = "#0D1B2A"          # Grafite marinho profundo
+COR_BG_CARD = "#1A2744"         # Azul ardósia escuro
+COR_BG_DISPLAY = "#0A1424"      # Fundo do visor
+COR_BORDA_CARD = "#1E3A5F"      # Borda sutil
+COR_TEXTO_PRINCIPAL = "#F1F5F9" # Branco suave
+COR_TEXTO_SECUNDARIO = "#94A3B8"# Cinza claro
+COR_RESULTADO_CIANO = "#22D3EE" # Ciano elétrico (identidade visual)
+COR_BTN_NUM = "#2D3F6A"         # Botões numéricos
+COR_BTN_OP = "#2563EB"          # Botões de operação (+, -, *, /)
+COR_BTN_FUNCAO = "#7C3AED"      # Botões de funções avançadas (%, √, x², root, etc)
+COR_BTN_EXEC = "#22C55E"        # Botão '=' (verde)
+COR_BTN_CLEAR = "#EF4444"       # Botão 'C' e '⌫' (vermelho)
+COR_BTN_MEMORIA = "#1E293B"     # Botões de memória (desabilitados)
+COR_TEXTO_DESABILITADO = "#64748B"
 
 
 class CalculadoraGUI:
     """
-    Classe controladora da interface gráfica da Calculadora.
-
-    Encapsula o ciclo de vida dos componentes visuais do Tkinter e
-    gerencia o fluxo de dados entre a tela e os módulos de lógica.
+    Controladora da interface gráfica Tkinter para a Calculadora 2.1.
     """
 
     def __init__(self, root: Optional[tk.Tk] = None) -> None:
-        """
-        Inicializa a interface gráfica, configura a janela e monta os widgets.
-
-        Parâmetros:
-            root (Optional[tk.Tk]): Instância raiz do Tkinter. Se omitida,
-                                    uma nova instância tk.Tk() será criada.
-        """
         self.root = root if root is not None else tk.Tk()
+        self.historico = HistoricoSessao()
+
+        # Estado da digitação e do cálculo
+        self.var_expressao = tk.StringVar(value="")
+        self.var_resultado = tk.StringVar(value="0")
+        self.var_status = tk.StringVar(value="Pronta para calcular!")
+        self._resultado_calculado: bool = False
+
         self._configurar_janela()
-
-        # Variáveis de controle observáveis do Tkinter
-        self.var_operando_a = tk.StringVar()
-        self.var_operando_b = tk.StringVar()
-        self.var_operacao = tk.StringVar(value="+")
-        self.var_resultado = tk.StringVar(value="")
-        self.var_mensagem_erro = tk.StringVar(value="")
-
         self._construir_widgets()
+        self._configurar_atalhos_teclado()
 
     def _configurar_janela(self) -> None:
-        """Define título, dimensões, cores e comportamento de redimensionamento da janela."""
-        self.root.title("Calculadora - Engenharia de Software")
-        self.root.geometry("420x520")
-        self.root.minsize(380, 480)
-        self.root.configure(bg="#F3F4F6")  # Fundo cinza suave neutro
+        """Configurações de dimensões, título e cor da janela."""
+        self.root.title("Calculadora 2.0")
+        self.root.geometry("740x580")
+        self.root.minsize(700, 540)
+        self.root.configure(bg=COR_BG_APP)
 
     def _construir_widgets(self) -> None:
-        """Cria e organiza todos os elementos visuais na janela usando grid e pack."""
-        # Container principal com margens (padding)
-        container = tk.Frame(self.root, bg="#F3F4F6", padx=20, pady=20)
-        container.pack(fill=tk.BOTH, expand=True)
+        """Monta o layout completo com cabeçalho, visor, teclado e histórico lateral."""
+        # Container principal
+        self.container_principal = tk.Frame(self.root, bg=COR_BG_APP, padx=16, pady=16)
+        self.container_principal.pack(fill=tk.BOTH, expand=True)
 
-        # Cabeçalho / Título da Aplicação
+        # Cabeçalho
+        self._construir_cabecalho()
+
+        # Corpo com duas colunas: Coluna Esquerda (Calculadora) e Coluna Direita (Histórico)
+        corpo_frame = tk.Frame(self.container_principal, bg=COR_BG_APP)
+        corpo_frame.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+
+        # Coluna da Calculadora (Visor + Teclado)
+        calc_frame = tk.Frame(corpo_frame, bg=COR_BG_CARD, padx=14, pady=14, highlightthickness=1, highlightbackground=COR_BORDA_CARD)
+        calc_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 10))
+
+        self._construir_visor(calc_frame)
+        self._construir_teclado(calc_frame)
+
+        # Coluna do Histórico Lateral
+        hist_frame = tk.Frame(corpo_frame, bg=COR_BG_CARD, width=240, padx=12, pady=12, highlightthickness=1, highlightbackground=COR_BORDA_CARD)
+        hist_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=False)
+        hist_frame.pack_propagate(False)
+
+        self._construir_historico(hist_frame)
+
+        # Barra de status inferior
+        self._construir_status_bar()
+
+    def _construir_cabecalho(self) -> None:
+        """Barra superior com título, subtítulo e botões utilitários."""
+        cabecalho = tk.Frame(self.container_principal, bg=COR_BG_APP)
+        cabecalho.pack(fill=tk.X, pady=(0, 6))
+
+        titulo_box = tk.Frame(cabecalho, bg=COR_BG_APP)
+        titulo_box.pack(side=tk.LEFT)
+
         lbl_titulo = tk.Label(
-            container,
-            text="Calculadora Modular",
-            font=("Helvetica", 16, "bold"),
-            bg="#F3F4F6",
-            fg="#111827",
+            titulo_box,
+            text="Calculadora 2.0",
+            font=("Helvetica", 14, "bold"),
+            bg=COR_BG_APP,
+            fg=COR_TEXTO_PRINCIPAL,
         )
-        lbl_titulo.pack(pady=(0, 4))
+        lbl_titulo.pack(anchor="w")
 
         lbl_subtitulo = tk.Label(
-            container,
-            text="Práticas de Engenharia de Software em Python",
-            font=("Helvetica", 9),
-            bg="#F3F4F6",
-            fg="#6B7280",
+            titulo_box,
+            text="Mais funções, mais possibilidades!",
+            font=("Helvetica", 9, "italic"),
+            bg=COR_BG_APP,
+            fg=COR_TEXTO_SECUNDARIO,
         )
-        lbl_subtitulo.pack(pady=(0, 16))
+        lbl_subtitulo.pack(anchor="w")
 
-        # Card do Formulário (painel branco com borda sutil)
-        form_frame = tk.Frame(container, bg="#FFFFFF", padx=16, pady=16, relief=tk.RIDGE, bd=1)
-        form_frame.pack(fill=tk.X, pady=(0, 12))
+    def _construir_visor(self, pai: tk.Frame) -> None:
+        """Visor duplo com expressão secundária e resultado em ciano."""
+        visor_frame = tk.Frame(pai, bg=COR_BG_DISPLAY, padx=12, pady=10, highlightthickness=1, highlightbackground=COR_BORDA_CARD)
+        visor_frame.pack(fill=tk.X, pady=(0, 10))
 
-        # --- Campo 1: Operando A ---
-        lbl_op_a = tk.Label(
-            form_frame,
-            text="Primeiro Número (Operando A):",
-            font=("Helvetica", 10, "bold"),
-            bg="#FFFFFF",
-            fg="#374151",
-            anchor="w",
-        )
-        lbl_op_a.pack(fill=tk.X, pady=(0, 4))
-
-        self.entry_a = tk.Entry(
-            form_frame,
-            textvariable=self.var_operando_a,
-            font=("Helvetica", 12),
-            bd=1,
-            relief=tk.SOLID,
-            highlightthickness=1,
-            highlightcolor="#2563EB",
-        )
-        self.entry_a.pack(fill=tk.X, pady=(0, 12), ipady=4)
-        self.entry_a.focus_set()  # Inicia com o cursor focado no primeiro campo
-
-        # --- Seleção da Operação ---
-        lbl_op = tk.Label(
-            form_frame,
-            text="Operação Desejada:",
-            font=("Helvetica", 10, "bold"),
-            bg="#FFFFFF",
-            fg="#374151",
-            anchor="w",
-        )
-        lbl_op.pack(fill=tk.X, pady=(0, 4))
-
-        frame_operacoes = tk.Frame(form_frame, bg="#FFFFFF")
-        frame_operacoes.pack(fill=tk.X, pady=(0, 12))
-
-        operacoes = [
-            ("+", "Adição (+)"),
-            ("-", "Subtração (-)"),
-            ("*", "Multiplicação (×)"),
-            ("/", "Divisão (÷)"),
-        ]
-
-        # Cria botões de rádio para seleção explícita da operação
-        for simbolo, texto_legenda in operacoes:
-            rb = tk.Radiobutton(
-                frame_operacoes,
-                text=texto_legenda,
-                value=simbolo,
-                variable=self.var_operacao,
-                font=("Helvetica", 10),
-                bg="#FFFFFF",
-                fg="#1F2937",
-                activebackground="#FFFFFF",
-                selectcolor="#FFFFFF",
-                anchor="w",
-            )
-            rb.pack(fill=tk.X, pady=2)
-
-        # --- Campo 2: Operando B ---
-        lbl_op_b = tk.Label(
-            form_frame,
-            text="Segundo Número (Operando B):",
-            font=("Helvetica", 10, "bold"),
-            bg="#FFFFFF",
-            fg="#374151",
-            anchor="w",
-        )
-        lbl_op_b.pack(fill=tk.X, pady=(0, 4))
-
-        self.entry_b = tk.Entry(
-            form_frame,
-            textvariable=self.var_operando_b,
-            font=("Helvetica", 12),
-            bd=1,
-            relief=tk.SOLID,
-            highlightthickness=1,
-            highlightcolor="#2563EB",
-        )
-        self.entry_b.pack(fill=tk.X, pady=(0, 4), ipady=4)
-
-        # Atalho de teclado: pressionar Enter em qualquer campo dispara o cálculo
-        self.entry_a.bind("<Return>", lambda event: self.executar_calculo())
-        self.entry_b.bind("<Return>", lambda event: self.executar_calculo())
-
-        # --- Barra de Ações (Botões) ---
-        frame_botoes = tk.Frame(container, bg="#F3F4F6")
-        frame_botoes.pack(fill=tk.X, pady=8)
-
-        btn_calcular = tk.Button(
-            frame_botoes,
-            text="Calcular",
-            font=("Helvetica", 11, "bold"),
-            bg="#2563EB",  # Azul Royal de alto contraste
-            fg="#FFFFFF",
-            activebackground="#1D4ED8",
-            activeforeground="#FFFFFF",
-            relief=tk.FLAT,
-            cursor="hand2",
-            padx=16,
-            pady=8,
-            command=self.executar_calculo,
-        )
-        btn_calcular.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 6))
-
-        btn_limpar = tk.Button(
-            frame_botoes,
-            text="Limpar",
+        # Linha superior: Expressão em edição
+        lbl_expr = tk.Label(
+            visor_frame,
+            textvariable=self.var_expressao,
             font=("Helvetica", 11),
-            bg="#E5E7EB",  # Cinza neutro
-            fg="#374151",
-            activebackground="#D1D5DB",
-            activeforeground="#111827",
-            relief=tk.FLAT,
-            cursor="hand2",
-            padx=16,
-            pady=8,
-            command=self.limpar_campos,
+            bg=COR_BG_DISPLAY,
+            fg=COR_TEXTO_SECUNDARIO,
+            anchor="e",
         )
-        btn_limpar.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(6, 0))
+        lbl_expr.pack(fill=tk.X)
 
-        # --- Painel de Resultado e Mensagens ---
-        self.frame_resultado = tk.Frame(container, bg="#FFFFFF", padx=16, pady=12, relief=tk.RIDGE, bd=1)
-        self.frame_resultado.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+        # Linha inferior: Resultado em ciano com botão copiar
+        resultado_box = tk.Frame(visor_frame, bg=COR_BG_DISPLAY)
+        resultado_box.pack(fill=tk.X, pady=(4, 0))
 
-        self.lbl_status_titulo = tk.Label(
-            self.frame_resultado,
-            text="Resultado:",
-            font=("Helvetica", 9, "bold"),
-            bg="#FFFFFF",
-            fg="#6B7280",
-            anchor="w",
-        )
-        self.lbl_status_titulo.pack(fill=tk.X)
-
-        self.lbl_resultado_conteudo = tk.Label(
-            self.frame_resultado,
+        lbl_res = tk.Label(
+            resultado_box,
             textvariable=self.var_resultado,
-            font=("Helvetica", 18, "bold"),
-            bg="#FFFFFF",
-            fg="#059669",  # Verde esmeralda para sucesso
-            anchor="w",
-            wraplength=340,
-            justify=tk.LEFT,
+            font=("Helvetica", 20, "bold"),
+            bg=COR_BG_DISPLAY,
+            fg=COR_RESULTADO_CIANO,
+            anchor="e",
         )
-        self.lbl_resultado_conteudo.pack(fill=tk.X, pady=(4, 0))
+        lbl_res.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-        # Rótulo de erro com quebra automática de linha
-        self.lbl_erro = tk.Label(
-            self.frame_resultado,
-            textvariable=self.var_mensagem_erro,
+        btn_copiar = tk.Button(
+            resultado_box,
+            text="📋",
             font=("Helvetica", 10),
-            bg="#FFFFFF",
-            fg="#DC2626",  # Vermelho para mensagens de erro/validação
-            anchor="w",
-            wraplength=340,
-            justify=tk.LEFT,
+            bg=COR_BG_DISPLAY,
+            fg=COR_TEXTO_SECUNDARIO,
+            activebackground=COR_BG_CARD,
+            activeforeground=COR_RESULTADO_CIANO,
+            relief=tk.FLAT,
+            bd=0,
+            cursor="hand2",
+            command=self.copiar_resultado,
         )
-        self.lbl_erro.pack(fill=tk.X, pady=(4, 0))
+        btn_copiar.pack(side=tk.RIGHT, padx=(6, 0))
+
+    def _construir_teclado(self, pai: tk.Frame) -> None:
+        """Monta o grid do teclado (memória, funções, numérico e operadores)."""
+        teclado_frame = tk.Frame(pai, bg=COR_BG_CARD)
+        teclado_frame.pack(fill=tk.BOTH, expand=True)
+
+        for col in range(5):
+            teclado_frame.columnconfigure(col, weight=1, uniform="btn_col")
+        for row in range(7):
+            teclado_frame.rowconfigure(row, weight=1, uniform="btn_row")
+
+        # Linha 0: Memória (Desabilitadas nesta versão)
+        botoes_memoria = [("MC", 0), ("MR", 1), ("M+", 2), ("M-", 3), ("MS", 4)]
+        for texto, col in botoes_memoria:
+            self._criar_botao_memoria(teclado_frame, texto, row=0, col=col)
+
+        # Linha 1: Funções científicas
+        self._criar_botao(teclado_frame, "%", COR_BTN_FUNCAO, lambda: self._adicionar_caractere("%"), 1, 0)
+        self._criar_botao(teclado_frame, "√", COR_BTN_FUNCAO, self._aplicar_raiz_quadrada, 1, 1)
+        self._criar_botao(teclado_frame, "x²", COR_BTN_FUNCAO, self._aplicar_quadrado, 1, 2)
+        self._criar_botao(teclado_frame, "¹/x", COR_BTN_FUNCAO, self._aplicar_inverso, 1, 3)
+        self._criar_botao(teclado_frame, "|x|", COR_BTN_FUNCAO, self._aplicar_absoluto, 1, 4)
+
+        # Linha 2: Agrupamento, funções unárias e limpeza
+        self._criar_botao(teclado_frame, "(", COR_BTN_NUM, lambda: self._adicionar_caractere("("), 2, 0)
+        self._criar_botao(teclado_frame, ")", COR_BTN_NUM, lambda: self._adicionar_caractere(")"), 2, 1)
+        self._criar_botao(teclado_frame, "±", COR_BTN_NUM, self._trocar_sinal_display, 2, 2)
+        self._criar_botao(teclado_frame, "C", COR_BTN_CLEAR, self.limpar_display, 2, 3)
+        self._criar_botao(teclado_frame, "⌫", COR_BTN_CLEAR, self.apagar_ultimo_caractere, 2, 4)
+
+        # Linha 3: 7, 8, 9, ÷, ⁿ√x
+        self._criar_botao(teclado_frame, "7", COR_BTN_NUM, lambda: self._adicionar_caractere("7"), 3, 0)
+        self._criar_botao(teclado_frame, "8", COR_BTN_NUM, lambda: self._adicionar_caractere("8"), 3, 1)
+        self._criar_botao(teclado_frame, "9", COR_BTN_NUM, lambda: self._adicionar_caractere("9"), 3, 2)
+        self._criar_botao(teclado_frame, "÷", COR_BTN_OP, lambda: self._adicionar_operador("÷"), 3, 3)
+        self._criar_botao(teclado_frame, "ⁿ√x", COR_BTN_FUNCAO, self._aplicar_raiz_n, 3, 4)
+
+        # Linha 4: 4, 5, 6, ×, ^
+        self._criar_botao(teclado_frame, "4", COR_BTN_NUM, lambda: self._adicionar_caractere("4"), 4, 0)
+        self._criar_botao(teclado_frame, "5", COR_BTN_NUM, lambda: self._adicionar_caractere("5"), 4, 1)
+        self._criar_botao(teclado_frame, "6", COR_BTN_NUM, lambda: self._adicionar_caractere("6"), 4, 2)
+        self._criar_botao(teclado_frame, "×", COR_BTN_OP, lambda: self._adicionar_operador("×"), 4, 3)
+        self._criar_botao(teclado_frame, "^", COR_BTN_FUNCAO, lambda: self._adicionar_operador("^"), 4, 4)
+
+        # Linha 5: 1, 2, 3, −, ;
+        self._criar_botao(teclado_frame, "1", COR_BTN_NUM, lambda: self._adicionar_caractere("1"), 5, 0)
+        self._criar_botao(teclado_frame, "2", COR_BTN_NUM, lambda: self._adicionar_caractere("2"), 5, 1)
+        self._criar_botao(teclado_frame, "3", COR_BTN_NUM, lambda: self._adicionar_caractere("3"), 5, 2)
+        self._criar_botao(teclado_frame, "−", COR_BTN_OP, lambda: self._adicionar_operador("-"), 5, 3)
+        self._criar_botao(teclado_frame, ";", COR_BTN_NUM, lambda: self._adicionar_caractere(";"), 5, 4)
+
+        # Linha 6: 0, ., = (largo) e +
+        self._criar_botao(teclado_frame, "0", COR_BTN_NUM, lambda: self._adicionar_caractere("0"), 6, 0)
+        self._criar_botao(teclado_frame, ".", COR_BTN_NUM, lambda: self._adicionar_caractere("."), 6, 1)
+        self._criar_botao(teclado_frame, "=", COR_BTN_EXEC, self.executar_calculo, 6, 2, colspan=2)
+        self._criar_botao(teclado_frame, "+", COR_BTN_OP, lambda: self._adicionar_operador("+"), 6, 4)
+
+    def _criar_botao(
+        self,
+        pai: tk.Frame,
+        texto: str,
+        cor_bg: str,
+        comando: Callable[[], None],
+        row: int,
+        col: int,
+        colspan: int = 1,
+    ) -> tk.Button:
+        """Cria e posiciona um botão de ação rápida padronizado."""
+        btn = tk.Button(
+            pai,
+            text=texto,
+            font=("Helvetica", 11, "bold"),
+            bg=cor_bg,
+            fg=COR_TEXTO_PRINCIPAL,
+            activebackground=COR_BORDA_CARD,
+            activeforeground=COR_TEXTO_PRINCIPAL,
+            relief=tk.FLAT,
+            bd=0,
+            cursor="hand2",
+            command=comando,
+        )
+        btn.grid(row=row, column=col, columnspan=colspan, sticky="nsew", padx=3, pady=3)
+        return btn
+
+    def _criar_botao_memoria(self, pai: tk.Frame, texto: str, row: int, col: int) -> tk.Button:
+        """Cria botões de memória desabilitados com indicação 'Em breve'."""
+        btn = tk.Button(
+            pai,
+            text=texto,
+            font=("Helvetica", 9, "bold"),
+            bg=COR_BTN_MEMORIA,
+            fg=COR_TEXTO_DESABILITADO,
+            relief=tk.FLAT,
+            state=tk.DISABLED,
+            bd=0,
+        )
+        btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
+        return btn
+
+    def _construir_historico(self, pai: tk.Frame) -> None:
+        """Monta o painel lateral com lista de histórico e botão de limpeza."""
+        cab_hist = tk.Frame(pai, bg=COR_BG_CARD)
+        cab_hist.pack(fill=tk.X, pady=(0, 6))
+
+        lbl_hist = tk.Label(
+            cab_hist,
+            text="🕐 Histórico",
+            font=("Helvetica", 11, "bold"),
+            bg=COR_BG_CARD,
+            fg=COR_TEXTO_PRINCIPAL,
+        )
+        lbl_hist.pack(side=tk.LEFT)
+
+        btn_limpar_hist = tk.Button(
+            cab_hist,
+            text="🗑",
+            font=("Helvetica", 10),
+            bg=COR_BG_CARD,
+            fg=COR_TEXTO_SECUNDARIO,
+            activebackground=COR_BORDA_CARD,
+            activeforeground=COR_BTN_CLEAR,
+            relief=tk.FLAT,
+            bd=0,
+            cursor="hand2",
+            command=self.limpar_historico,
+        )
+        btn_limpar_hist.pack(side=tk.RIGHT)
+
+        # Área de listagem com scroll
+        scroll_frame = tk.Frame(pai, bg=COR_BG_CARD)
+        scroll_frame.pack(fill=tk.BOTH, expand=True)
+
+        self.canvas_hist = tk.Canvas(scroll_frame, bg=COR_BG_CARD, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(scroll_frame, orient=tk.VERTICAL, command=self.canvas_hist.yview)
+        self.itens_hist_frame = tk.Frame(self.canvas_hist, bg=COR_BG_CARD)
+
+        self.itens_hist_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas_hist.configure(scrollregion=self.canvas_hist.bbox("all")),
+        )
+        self.canvas_hist.create_window((0, 0), window=self.itens_hist_frame, anchor="nw")
+        self.canvas_hist.configure(yscrollcommand=scrollbar.set)
+
+        self.canvas_hist.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    def _construir_status_bar(self) -> None:
+        """Barra de status inferior com mensagem informativa e indicação de atalhos."""
+        status_frame = tk.Frame(self.container_principal, bg=COR_BG_APP)
+        status_frame.pack(fill=tk.X, pady=(8, 0))
+
+        lbl_status = tk.Label(
+            status_frame,
+            textvariable=self.var_status,
+            font=("Helvetica", 9),
+            bg=COR_BG_APP,
+            fg=COR_BTN_EXEC,
+            anchor="w",
+        )
+        lbl_status.pack(side=tk.LEFT)
+
+        lbl_atalhos = tk.Label(
+            status_frame,
+            text="Atalhos: 0-9, +, -, *, /, ;, Enter, Esc, Ctrl+C",
+            font=("Helvetica", 9),
+            bg=COR_BG_APP,
+            fg=COR_TEXTO_SECUNDARIO,
+            anchor="e",
+        )
+        lbl_atalhos.pack(side=tk.RIGHT)
+
+    # -----------------------------------------------------------------------
+    # Ações e Controle de Estado da Calculadora
+    # -----------------------------------------------------------------------
+
+    def _adicionar_caractere(self, char: str) -> None:
+        """Insere um caractere ou inicia nova expressão se um resultado já estiver exibido."""
+        if self._resultado_calculado:
+            # Se for dígito logo após o resultado, inicia nova conta descartando o anterior do visor
+            if char.isdigit() or char == "(":
+                self.var_expressao.set(char)
+                self.var_resultado.set("0")
+                self._resultado_calculado = False
+                return
+            self._resultado_calculado = False
+
+        atual = self.var_expressao.get()
+        self.var_expressao.set(atual + char)
+
+    def _adicionar_operador(self, op: str) -> None:
+        """
+        Adiciona operador aritmético. Se um cálculo acabou de ser concluído,
+        continua o cálculo a partir do último resultado (ANS).
+        """
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(ultimo_res + op)
+            self._resultado_calculado = False
+            return
+
+        atual = self.var_expressao.get()
+        self.var_expressao.set(atual + op)
+
+    def _aplicar_quadrado(self) -> None:
+        """Aplica potência ao quadrado (^2) ao termo atual ou ao resultado."""
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(f"{ultimo_res}^2")
+            self._resultado_calculado = False
+            self.executar_calculo()
+            return
+
+        self._adicionar_operador("^2")
+
+    def _aplicar_raiz_quadrada(self) -> None:
+        """Aplica raiz quadrada diretamente ao resultado ou insere no visor."""
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(f"sqrt({ultimo_res})")
+            self._resultado_calculado = False
+            self.executar_calculo()
+            return
+
+        self._adicionar_caractere("sqrt(")
+
+    def _aplicar_raiz_n(self) -> None:
+        """Insere o template da função root(radicando; indice)."""
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(f"root({ultimo_res}; ")
+            self._resultado_calculado = False
+            return
+
+        self._adicionar_caractere("root(")
+
+    def _aplicar_absoluto(self) -> None:
+        """Aplica a função abs() ao resultado ou insere no visor."""
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(f"abs({ultimo_res})")
+            self._resultado_calculado = False
+            self.executar_calculo()
+            return
+
+        self._adicionar_caractere("abs(")
+
+    def _aplicar_inverso(self) -> None:
+        """Aplica inverso (1/x) ao resultado ou insere no visor."""
+        if self._resultado_calculado:
+            ultimo_res = self.var_resultado.get()
+            self.var_expressao.set(f"inv({ultimo_res})")
+            self._resultado_calculado = False
+            self.executar_calculo()
+            return
+
+        self._adicionar_caractere("inv(")
+
+    def _trocar_sinal_display(self) -> None:
+        """Inverte o sinal do resultado atual ou do buffer em edição."""
+        if self._resultado_calculado:
+            try:
+                val = float(self.var_resultado.get())
+                self.var_resultado.set(formatar_resultado(-val))
+                self.var_expressao.set(formatar_resultado(-val))
+            except ValueError:
+                pass
+            return
+
+        atual = self.var_expressao.get()
+        if atual.startswith("-"):
+            self.var_expressao.set(atual[1:])
+        else:
+            self.var_expressao.set("-" + atual)
+
+    def apagar_ultimo_caractere(self) -> None:
+        """Apaga o último caractere do buffer de expressão (Backspace)."""
+        if self._resultado_calculado:
+            self.limpar_display()
+            return
+        atual = self.var_expressao.get()
+        if atual:
+            self.var_expressao.set(atual[:-1])
+
+    def limpar_display(self) -> None:
+        """Limpa o visor (botão C / Escape). O ANS ativo permanece intacto."""
+        self.var_expressao.set("")
+        self.var_resultado.set("0")
+        self._resultado_calculado = False
+        self.var_status.set("Pronta para calcular!")
 
     def executar_calculo(self) -> None:
-        """
-        Handler de evento disparado ao acionar o botão 'Calcular'.
+        """Avalia a expressão atual via motor seguro e registra no histórico."""
+        expr = self.var_expressao.get()
+        if not expr.strip():
+            return
 
-        Coordena o fluxo de execução:
-        1. Limpa avisos anteriores.
-        2. Coleta strings dos campos.
-        3. Chama a camada de validação (validacao.py).
-        4. Invoca o motor de cálculo (operacoes.py).
-        5. Atualiza a tela com o resultado formatado ou com mensagem de erro controlada.
-        """
-        # Limpa estados de mensagens anteriores para evitar confusão de dados passados
-        self.var_mensagem_erro.set("")
-        self.var_resultado.set("")
-
-        operando_a_bruto = self.var_operando_a.get()
-        operando_b_bruto = self.var_operando_b.get()
-        operacao = self.var_operacao.get()
-
+        ans_atual = self.historico.obter_ans()
         try:
-            # Passo 1: Validação e conversão das entradas brutas
-            valor_a = converter_operando(operando_a_bruto, nome_campo="Operando A")
-            valor_b = converter_operando(operando_b_bruto, nome_campo="Operando B")
+            resultado_bruto = avaliar_expressao(expr, ans=ans_atual)
+            resultado_fmt = formatar_resultado(resultado_bruto)
 
-            # Passo 2: Execução da lógica matemática pura
-            resultado_bruto = calcular(valor_a, valor_b, operacao)
+            self.var_resultado.set(resultado_fmt)
+            self._resultado_calculado = True
+            self.var_status.set("Cálculo realizado com sucesso.")
 
-            # Passo 3: Formatação amigável para apresentação
-            resultado_formatado = formatar_resultado(resultado_bruto)
+            # Registra no histórico em memória
+            entrada = self.historico.registrar(expr, expr, resultado_bruto)
+            self._adicionar_item_historico_visual(entrada)
 
-            # Exibe o resultado e atualiza estilo visual
-            self.lbl_status_titulo.config(text="Resultado do Cálculo:")
-            self.var_resultado.set(resultado_formatado)
+        except (DivisaoPorZeroError, RadicandoNegativoError, ErroAritmetico, OperacaoInvalidaError) as e:
+            self.var_resultado.set("Erro")
+            self.var_status.set(f"Erro: {str(e)}")
+        except (ErroValidacao, ExpressaoInvalidaError) as e:
+            self.var_resultado.set("Inválido")
+            self.var_status.set(f"Aviso: {str(e)}")
+        except Exception as e:
+            self.var_resultado.set("Erro")
+            self.var_status.set(f"Erro inesperado: {str(e)}")
 
-        except ErroValidacao as erro:
-            # Captura erro de validação (campo vazio, letras, etc.)
-            self.lbl_status_titulo.config(text="Aviso de Validação:")
-            self.var_mensagem_erro.set(str(erro))
+    def _adicionar_item_historico_visual(self, entrada: EntradaHistorico) -> None:
+        """Renderiza um item clicável no painel lateral de histórico."""
+        card = tk.Frame(self.itens_hist_frame, bg=COR_BG_DISPLAY, padx=6, pady=4, highlightthickness=1, highlightbackground=COR_BORDA_CARD)
+        card.pack(fill=tk.X, expand=True, pady=3)
 
-        except DivisaoPorZeroError as erro:
-            # Captura erro de domínio (divisão por zero)
-            self.lbl_status_titulo.config(text="Erro Aritmético:")
-            self.var_mensagem_erro.set(str(erro))
+        lbl_expr = tk.Label(
+            card,
+            text=entrada.expressao,
+            font=("Helvetica", 9),
+            bg=COR_BG_DISPLAY,
+            fg=COR_TEXTO_SECUNDARIO,
+            anchor="w",
+        )
+        lbl_expr.pack(fill=tk.X)
 
-        except OperacaoInvalidaError as erro:
-            # Captura inconsistência de operação
-            self.lbl_status_titulo.config(text="Erro de Operação:")
-            self.var_mensagem_erro.set(str(erro))
+        lbl_res = tk.Label(
+            card,
+            text=f"= {entrada.resultado_formatado}",
+            font=("Helvetica", 11, "bold"),
+            bg=COR_BG_DISPLAY,
+            fg=COR_RESULTADO_CIANO,
+            anchor="e",
+        )
+        lbl_res.pack(fill=tk.X)
 
-    def limpar_campos(self) -> None:
-        """
-        Handler de evento para o botão 'Limpar'.
+        # Vincula clique do mouse para recuperar o histórico
+        for widget in (card, lbl_expr, lbl_res):
+            widget.bind("<Button-1>", lambda e, id_ent=entrada.id: self._recuperar_historico_por_id(id_ent))
+            widget.config(cursor="hand2")
 
-        Restaura os campos de entrada, a seleção padrão de operação e os
-        painéis de resultado para o estado inicial neutro, devolvendo o foco
-        ao primeiro campo.
-        """
-        self.var_operando_a.set("")
-        self.var_operando_b.set("")
-        self.var_operacao.set("+")
-        self.var_resultado.set("")
-        self.var_mensagem_erro.set("")
-        self.lbl_status_titulo.config(text="Resultado:")
-        self.entry_a.focus_set()
+    def _recuperar_historico_por_id(self, id_entrada: int) -> None:
+        """Recupera uma entrada do histórico e define o valor como ANS ativo."""
+        try:
+            entrada = self.historico.recuperar_entrada(id_entrada)
+            self.var_expressao.set(entrada.expressao)
+            self.var_resultado.set(entrada.resultado_formatado)
+            self._resultado_calculado = True
+            self.var_status.set(f"Recuperado #{entrada.id}: {entrada.resultado_formatado} pronto para continuar.")
+        except RegistroNaoEncontradoError:
+            pass
+
+    def limpar_historico(self) -> None:
+        """Esvazia o histórico visual e em memória sem apagar o ANS ativo."""
+        self.historico.limpar_historico()
+        for widget in self.itens_hist_frame.winfo_children():
+            widget.destroy()
+        self.var_status.set("Histórico limpo. Último resultado (ANS) preservado.")
+
+    def copiar_resultado(self) -> None:
+        """Copia o resultado em foco para a área de transferência do sistema."""
+        resultado = self.var_resultado.get()
+        if resultado and resultado not in ("0", "Erro", "Inválido"):
+            self.root.clipboard_clear()
+            self.root.clipboard_append(resultado)
+            self.var_status.set(f"Resultado '{resultado}' copiado para a área de transferência!")
+
+    # -----------------------------------------------------------------------
+    # Mapeamento do Teclado Físico
+    # -----------------------------------------------------------------------
+
+    def _configurar_atalhos_teclado(self) -> None:
+        """Liga as teclas físicas às ações da calculadora."""
+        self.root.bind("<Key>", self._ao_pressionar_tecla)
+
+    def _ao_pressionar_tecla(self, evento: tk.Event) -> None:
+        """Interpreta os eventos de tecla física."""
+        char = evento.char
+        tecla = evento.keysym
+
+        # Atalho Ctrl+C para copiar resultado
+        if (evento.state & 0x4) and (tecla in ("c", "C")):
+            self.copiar_resultado()
+            return
+
+        if tecla in ("Return", "KP_Enter"):
+            self.executar_calculo()
+        elif tecla == "BackSpace":
+            self.apagar_ultimo_caractere()
+        elif tecla in ("Escape", "Delete"):
+            self.limpar_display()
+        elif char in "0123456789.()^%;":
+            self._adicionar_caractere(char)
+        elif char == ",":
+            # Vírgula decimal converte para ponto
+            self._adicionar_caractere(".")
+        elif char in "+-*/":
+            op_map = {"*": "×", "/": "÷"}
+            self._adicionar_operador(op_map.get(char, char))
 
     def iniciar(self) -> None:
-        """Inicia o laço de eventos principal (Main Loop) do Tkinter."""
+        """Inicia o laço de eventos principal do Tkinter."""
         self.root.mainloop()
