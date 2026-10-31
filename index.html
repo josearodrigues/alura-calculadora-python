@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Python Web (Pyodide WebAssembly)</title>
+  <meta name="description" content="Calculadora modular com lógica em Python (operacoes.py e validacao.py) executada via WebAssembly (Pyodide), HTML e CSS Vanilla.">
+  <link rel="stylesheet" href="./style.css">
+  <!-- Carregamento do Pyodide v0.27.8 via CDN oficial jsDelivr -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.27.8/full/pyodide.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 class="app-titulo">Calculadora Python Web</h1>
+      <p class="app-subtitulo">Interface complementar executando CPython via WebAssembly (Pyodide)</p>
+      
+      <div class="status-badge-container">
+        <span id="status-indicador" class="status-indicador" aria-hidden="true"></span>
+        <span id="status-texto">Carregando Pyodide v0.27.8...</span>
+      </div>
+    </header>
+
+    <main class="calc-card">
+      <form id="form-calculadora" onsubmit="return false;">
+        <!-- Operando A -->
+        <div class="campo-grupo">
+          <label for="input-op-a" class="campo-rotulo">Primeiro Número (Operando A):</label>
+          <input
+            type="text"
+            id="input-op-a"
+            class="campo-input"
+            placeholder="Ex: 12,5 ou -4"
+            autocomplete="off"
+            required
+            disabled
+          >
+        </div>
+
+        <!-- Grupo de Operações com Fieldset e Legend para WCAG AA -->
+        <fieldset class="campo-operacao-grupo">
+          <legend class="campo-legenda">Operação Desejada</legend>
+          <div class="opcoes-operacao">
+            <label for="op-soma" class="opcao-radio">
+              <input type="radio" id="op-soma" name="operacao" value="+" checked disabled>
+              <span>Adição (+)</span>
+            </label>
+            <label for="op-subtracao" class="opcao-radio">
+              <input type="radio" id="op-subtracao" name="operacao" value="-" disabled>
+              <span>Subtração (-)</span>
+            </label>
+            <label for="op-multiplicacao" class="opcao-radio">
+              <input type="radio" id="op-multiplicacao" name="operacao" value="*" disabled>
+              <span>Multiplicação (×)</span>
+            </label>
+            <label for="op-divisao" class="opcao-radio">
+              <input type="radio" id="op-divisao" name="operacao" value="/" disabled>
+              <span>Divisão (÷)</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Operando B -->
+        <div class="campo-grupo">
+          <label for="input-op-b" class="campo-rotulo">Segundo Número (Operando B):</label>
+          <input
+            type="text"
+            id="input-op-b"
+            class="campo-input"
+            placeholder="Ex: 2,5 ou 0"
+            autocomplete="off"
+            required
+            disabled
+          >
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="acoes-grupo">
+          <button type="button" id="btn-calcular" class="btn btn-primario" disabled>
+            Calcular
+          </button>
+          <button type="button" id="btn-limpar" class="btn btn-secundario" disabled>
+            Limpar
+          </button>
+        </div>
+
+        <!-- Painel de Resultados Acessível com Pares Semânticos -->
+        <div
+          id="painel-resultado"
+          class="resultado-painel"
+          role="status"
+          aria-live="polite"
+        >
+          <div class="resultado-cabecalho">
+            <span id="resultado-icone" class="resultado-icone" aria-hidden="true">ℹ</span>
+            <span id="resultado-rotulo">Aguardando Operação:</span>
+          </div>
+          <div id="resultado-valor" class="resultado-valor"></div>
+          <div id="resultado-mensagem" class="resultado-mensagem">Preencha os campos e selecione uma operação.</div>
+        </div>
+      </form>
+    </main>
+
+    <!-- Telemetria Recolhida na Parte Inferior da Página -->
+    <details class="telemetria-container" id="telemetria-details">
+      <summary class="telemetria-resumo">Telemetria e Logs do Runtime Pyodide</summary>
+      <div class="telemetria-corpo">
+        <textarea
+          id="telemetria-log"
+          class="telemetria-textarea"
+          readonly
+          aria-label="Log de eventos e telemetria do WebAssembly"
+        ></textarea>
+      </div>
+    </details>
+
+
+
+    <footer class="app-footer">
+      <p>Calculadora Python | Engenharia de Software • Reutilização direta de <code>calculadora/</code></p>
+      <p style="margin-top: 0.25rem;">
+        <a href="./testes.html" id="link-testes">Abrir Suíte de Testes do Navegador</a>
+      </p>
+    </footer>
+  </div>
+
+  <script src="./app.js"></script>
+  <script src="./tests_web.js"></script>
+</body>
+</html>
