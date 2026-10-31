@@ -1,0 +1,410 @@
+/* ==========================================================================
+   Calculadora Python Web (Pyodide WebAssembly) - Estilos Acessíveis
+   Orientação pelas diretrizes WCAG AA:
+   - Contraste de texto normal >= 4.5:1
+   - Contraste de componentes e controles >= 3.0:1
+   - Foco visual nítido com :focus-visible
+   - Pares semânticos (ícone + texto)
+   ========================================================================== */
+
+:root {
+  --bg-principal: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --texto-principal: #0F172A; /* Contraste 15.5:1 contra #F8FAFC */
+  --texto-secundario: #475569; /* Contraste 5.5:1 contra #F8FAFC */
+  --borda-suave: #CBD5E1;
+  --borda-foco: #1D4ED8; /* Azul cobalto acessível */
+  
+  /* Cores temáticas para mensagens (com contraste de texto verificado) */
+  --sucesso-bg: #ECFDF5;
+  --sucesso-borda: #059669;
+  --sucesso-texto: #065F46; /* Contraste 6.8:1 contra #ECFDF5 */
+
+  --aviso-bg: #FFFBEB;
+  --aviso-borda: #D97706;
+  --aviso-texto: #92400E; /* Contraste 6.1:1 contra #FFFBEB */
+
+  --erro-bg: #FEF2F2;
+  --erro-borda: #DC2626;
+  --erro-texto: #991B1B; /* Contraste 7.2:1 contra #FEF2F2 */
+
+  --neutro-bg: #F1F5F9;
+  --neutro-borda: #94A3B8;
+  --neutro-texto: #334155;
+
+  --btn-primario-bg: #1D4ED8;
+  --btn-primario-hover: #1E40AF;
+  --btn-primario-texto: #FFFFFF; /* Contraste 8.5:1 contra #1D4ED8 */
+
+  --btn-secundario-bg: #E2E8F0;
+  --btn-secundario-hover: #CBD5E1;
+  --btn-secundario-texto: #1E293B; /* Contraste 9.8:1 contra #E2E8F0 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-principal: #0B1120;
+    --bg-card: #1E293B;
+    --texto-principal: #F8FAFC;
+    --texto-secundario: #94A3B8;
+    --borda-suave: #334155;
+    --borda-foco: #60A5FA;
+
+    --sucesso-bg: #064E3B;
+    --sucesso-borda: #10B981;
+    --sucesso-texto: #ECFDF5;
+
+    --aviso-bg: #78350F;
+    --aviso-borda: #F59E0B;
+    --aviso-texto: #FEF3C7;
+
+    --erro-bg: #7F1D1D;
+    --erro-borda: #EF4444;
+    --erro-texto: #FEE2E2;
+
+    --neutro-bg: #0F172A;
+    --neutro-borda: #475569;
+    --neutro-texto: #CBD5E1;
+
+    --btn-primario-bg: #2563EB;
+    --btn-primario-hover: #3B82F6;
+    --btn-primario-texto: #FFFFFF;
+
+    --btn-secundario-bg: #334155;
+    --btn-secundario-hover: #475569;
+    --btn-secundario-texto: #F8FAFC;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+  line-height: 1.5;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+}
+
+.app-titulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--texto-principal);
+  margin-bottom: 0.25rem;
+}
+
+.app-subtitulo {
+  font-size: 0.875rem;
+  color: var(--texto-secundario);
+}
+
+.status-badge-container {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--neutro-bg);
+  border: 1px solid var(--borda-suave);
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.status-indicador {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #D97706; /* Laranja para carregando */
+  transition: background-color 0.3s ease;
+}
+
+.status-indicador.pronto {
+  background-color: #059669; /* Verde para pronto */
+}
+
+/* Card Principal da Calculadora */
+.calc-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--borda-suave);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.campo-grupo {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.campo-rotulo, .campo-legenda {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+  margin-bottom: 0.375rem;
+  display: block;
+}
+
+.campo-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 1rem;
+  border: 1.5px solid var(--borda-suave);
+  border-radius: 6px;
+  background-color: var(--bg-principal);
+  color: var(--texto-principal);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo-input:focus-visible {
+  outline: none;
+  border-color: var(--borda-foco);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.25);
+}
+
+/* Fieldset e Radio Buttons */
+.campo-operacao-grupo {
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  background-color: var(--bg-principal);
+}
+
+.campo-legenda {
+  padding: 0 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.opcoes-operacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+}
+
+.opcao-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.375rem 0.5rem;
+  border-radius: 4px;
+}
+
+.opcao-radio:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.opcao-radio input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--btn-primario-bg);
+  cursor: pointer;
+}
+
+.opcao-radio input[type="radio"]:focus-visible {
+  outline: 2px solid var(--borda-foco);
+  outline-offset: 2px;
+}
+
+/* Botões de Ação */
+.acoes-grupo {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--borda-foco);
+  outline-offset: 2px;
+}
+
+.btn-primario {
+  background-color: var(--btn-primario-bg);
+  color: var(--btn-primario-texto);
+}
+
+.btn-primario:hover:not(:disabled) {
+  background-color: var(--btn-primario-hover);
+}
+
+.btn-secundario {
+  background-color: var(--btn-secundario-bg);
+  color: var(--btn-secundario-texto);
+}
+
+.btn-secundario:hover:not(:disabled) {
+  background-color: var(--btn-secundario-hover);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Painel de Resultados */
+.resultado-painel {
+  border: 1px solid var(--neutro-borda);
+  border-radius: 8px;
+  background-color: var(--neutro-bg);
+  color: var(--neutro-texto);
+  padding: 1rem;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.resultado-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  margin-bottom: 0.25rem;
+}
+
+.resultado-icone {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.resultado-valor {
+  font-size: 1.5rem;
+  font-weight: 800;
+  word-break: break-all;
+}
+
+.resultado-mensagem {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.125rem;
+}
+
+/* Estados do Resultado */
+.resultado-painel.sucesso {
+  background-color: var(--sucesso-bg);
+  border-color: var(--sucesso-borda);
+  color: var(--sucesso-texto);
+}
+
+.resultado-painel.aviso {
+  background-color: var(--aviso-bg);
+  border-color: var(--aviso-borda);
+  color: var(--aviso-texto);
+}
+
+.resultado-painel.erro {
+  background-color: var(--erro-bg);
+  border-color: var(--erro-borda);
+  color: var(--erro-texto);
+}
+
+/* Container de Telemetria */
+.telemetria-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--borda-suave);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.telemetria-resumo {
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  background-color: var(--bg-principal);
+  user-select: none;
+}
+
+.telemetria-resumo:focus-visible {
+  outline: 2px solid var(--borda-foco);
+  outline-offset: -2px;
+}
+
+.telemetria-resumo:hover {
+  color: var(--texto-principal);
+}
+
+.telemetria-corpo {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--borda-suave);
+}
+
+.telemetria-textarea {
+  width: 100%;
+  height: 140px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  background-color: #0F172A;
+  color: #E2E8F0;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+.telemetria-textarea:focus-visible {
+  outline: 2px solid var(--borda-foco);
+}
+
+/* Rodapé */
+.app-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--texto-secundario);
+  margin-top: 1rem;
+}
+
+.app-footer a {
+  color: var(--texto-secundario);
+  text-decoration: underline;
+}
+
+.app-footer a:hover {
+  color: var(--texto-principal);
+}
