@@ -1,162 +1,207 @@
 # Calculadora Python | Engenharia de Software
 
-Uma calculadora desktop desenvolvida em **Python e Tkinter** como atividade acadêmica do desafio proposto na **Imersão Engenharia de Software: Dev na Era da IA**, da [Alura](https://www.alura.com.br/).
+Uma calculadora com duas interfaces complementares: desktop nativa com **Tkinter** e web client-side com **Pyodide / WebAssembly**, desenvolvida como atividade acadêmica do desafio proposto na **Imersão Engenharia de Software: Dev na Era da IA**, da [Alura](https://www.alura.com.br/).
 
-O desafio foi realizado com o **Google AI Studio** como ferramenta de apoio à geração da aplicação. A solução resultante foi organizada em módulos Python, acompanhada de testes automatizados e documentada para permitir a compreensão de sua estrutura e de suas decisões técnicas.
+O desafio foi realizado com o **Google AI Studio** como ferramenta de apoio à geração e evolução da aplicação. A solução foi organizada em módulos Python, acompanhada de testes automatizados e documentada para facilitar a compreensão de sua estrutura e funcionamento.
 
-Este repositório tem finalidade educacional e demonstra conceitos de organização de código, separação de responsabilidades, validação de entradas e testes. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
+Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Status:** preparação da versão `v1.0.0`. A aplicação já foi executada manualmente pelo responsável pelo projeto em ambiente desktop, que confirmou seu funcionamento. A suíte automatizada também foi executada: 25 testes aprovados.
+> **Status:** a publicação da versão `v2.0.0` ainda está pendente. A aplicação possui a interface desktop original em Tkinter e uma interface web complementar que executa Python no navegador via Pyodide v0.27.8. As duas suítes de testes foram aprovadas: 25 testes Python (`unittest`) e 11 testes web.
+
+---
 
 ## O que você encontra neste projeto
 
-- **Quatro operações:** adição, subtração, multiplicação e divisão.
-- **Entradas localizadas:** aceita ponto ou vírgula como separador decimal.
-- **Validação de dados:** trata campos vazios, entradas inválidas e valores não finitos.
-- **Divisão por zero controlada:** apresenta uma mensagem específica em vez de interromper o fluxo normal da aplicação.
-- **Uso contínuo:** permite realizar cálculos sucessivos e limpar os campos para uma nova operação.
-- **Atalho de teclado:** pressione `Enter` em um dos campos para calcular.
-- **Testes automatizados:** cobertura das operações, validações e fluxos integrados com `unittest`.
+- **Quatro operações aritméticas:** adição, subtração, multiplicação e divisão.
+- **Duas interfaces complementares:**
+  - **Desktop (Tkinter):** janela nativa do Python.
+  - **Web (Pyodide / WebAssembly):** interface HTML5, CSS3 e JavaScript Vanilla que executa os módulos Python existentes diretamente no navegador, sem Node.js, npm ou frameworks.
+- **Reutilização da lógica Python:** as duas interfaces utilizam os mesmos módulos de validação e operações matemáticas.
+- **Entradas localizadas:** aceita ponto ou vírgula como separador decimal (`12,5` ou `12.5`).
+- **Validação de entradas:** rejeita campos vazios, entradas alfanuméricas e valores não finitos (`inf`, `nan`).
+- **Divisão por zero controlada:** apresenta mensagem específica e amigável.
+- **Recursos de acessibilidade:** navegação por teclado, identificação textual dos estados e agrupamento semântico dos controles.
+- **Duas suítes de testes automatizados independentes:** 25 testes Python no terminal e 11 testes web no navegador.
 
-## Interface
+---
 
-A aplicação utiliza Tkinter, biblioteca gráfica da distribuição padrão do Python. A janela reúne os campos dos dois operandos, a seleção da operação, os botões de ação e a área de resultado ou mensagem de erro.
+## Tecnologias Utilizadas
 
-## Tecnologias e decisões técnicas
-
-| Tecnologia / recurso | Uso no projeto |
+| Tecnologia / Recurso | Uso no Projeto |
 |---|---|
-| Python 3 | Linguagem da aplicação |
+| Python | Linguagem principal e lógica das operações |
 | Tkinter | Interface gráfica desktop |
-| `unittest` | Testes automatizados, sem dependências externas |
-| Type hints e docstrings | Documentação e legibilidade do código |
-| Tabela de despacho | Encaminhamento da operação escolhida para a função correspondente |
-| Exceções específicas | Tratamento explícito de erros de validação, operação e divisão por zero |
+| Pyodide v0.27.8 | Execução de Python no navegador via WebAssembly |
+| HTML5 e CSS3 | Estrutura e apresentação da interface web |
+| JavaScript Vanilla | Interação com a interface web |
+| `unittest` | Testes automatizados da aplicação Python |
+| `tests_web.js` | Testes automatizados da interface web |
 
-A lógica matemática e a validação ficam em módulos próprios, sem depender da interface gráfica. Essa separação permite testar as regras principais sem abrir uma janela.
+---
 
-## Estrutura do projeto
+## Estrutura do Projeto
 
 ```text
 calculadora-python/
 ├── calculadora/
 │   ├── __init__.py
-│   ├── interface.py       # Interface gráfica Tkinter
-│   ├── operacoes.py       # Operações matemáticas e formatação
-│   └── validacao.py       # Sanitização, validação e conversão
+│   ├── interface.py          # Interface desktop Tkinter
+│   ├── operacoes.py          # Operações matemáticas e formatação
+│   └── validacao.py          # Validação e conversão de entradas
 ├── tests/
 │   ├── __init__.py
 │   ├── test_integracao.py
 │   ├── test_operacoes.py
 │   └── test_validacao.py
 ├── docs/
-│   └── implementation_plan.md  # Planejamento de uma possível evolução com Pyodide
-├── .gitignore
-├── main.py                # Ponto de entrada
+│   └── implementation_plan.md
+├── index.html                # Interface web
+├── style.css                 # Estilos da interface web
+├── app.js                    # Integração da interface web com Python
+├── tests_web.js              # Testes automatizados web
+├── testes.html               # Executador visual dos testes web
+├── app.py                    # Servidor HTTP local
+├── main.py                   # Ponto de entrada desktop
 ├── CHANGELOG.md
 ├── LICENSE
 └── README.md
 ```
 
-## Como executar
+---
 
-### Pré-requisitos
+## Como Executar
 
-- Python 3.8 ou superior.
-- Tkinter disponível na instalação do Python.
-- Um ambiente desktop com suporte gráfico para abrir a janela.
+### 1. Aplicação Desktop (Tkinter)
 
-Para verificar se o Tkinter está disponível:
+#### Pré-requisitos
+- Python 3 com suporte ao módulo `tkinter`.
+- Ambiente desktop com servidor gráfico ativo.
+
+Para verificar a disponibilidade do Tkinter:
 
 ```bash
 python3 -m tkinter
 ```
 
-No Ubuntu ou Debian, caso o módulo não esteja instalado:
+No Ubuntu/Debian, se necessário:
 
 ```bash
-sudo apt update
-sudo apt install python3-tk
+sudo apt update && sudo apt install python3-tk
 ```
 
-No Windows, normalmente use o interpretador Python instalado pelo instalador oficial. No macOS, a disponibilidade do Tkinter depende da distribuição do Python utilizada; verifique com o comando acima.
-
-### Iniciar a calculadora
-
-Na pasta raiz do projeto, execute:
+#### Executar
 
 ```bash
+# Windows
 python main.py
-```
 
-Em ambientes nos quais o comando `python` aponta para outra versão, use:
-
-```bash
+# Linux / macOS
 python3 main.py
 ```
 
-## Como executar os testes
+---
 
-Os testes não precisam abrir a interface gráfica e não exigem bibliotecas de terceiros.
+### 2. Interface Web (Pyodide / WebAssembly)
 
-Na raiz do projeto, execute:
+A interface web pode ser servida localmente utilizando o servidor HTTP da Biblioteca Padrão do Python, sem necessidade de Node.js ou npm.
+
+```bash
+python3 app.py
+```
+
+Alternativamente:
+
+```bash
+python3 -m http.server 3000 --bind 127.0.0.1
+```
+
+- Calculadora web: `http://localhost:3000`
+- Testes web: `http://localhost:3000/testes.html`
+
+**Observação:** a interface web carrega o Pyodide v0.27.8 pela CDN oficial e, portanto, necessita de conexão com a internet para carregar o runtime.
+
+---
+
+## Como Executar os Testes Automatizados
+
+O projeto possui duas suítes de testes independentes e complementares.
+
+### A. Testes Python (`unittest`) — 25 testes
+
+Testam as operações matemáticas, a validação de entradas e os fluxos de integração, sem necessidade de abrir a interface gráfica.
 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-### Resultado da última execução registrada
-
 <details>
-<summary>Ver resumo dos testes</summary>
+<summary>Ver resumo dos 25 testes Python</summary>
 
-```text
-Ran 25 tests
-OK
-```
+- 13 testes de operações matemáticas e formatação.
+- 7 testes de validação de entradas.
+- 5 testes de integração dos fluxos da aplicação.
 
-Execução de verificação em 30/10/2026, com Python 3.13.5: **25 testes passaram**.
+**Resultado confirmado:** 25 testes aprovados.
 
 </details>
 
-Esse resultado valida a suíte automatizada nesse ambiente. Separadamente, a interface gráfica foi executada em ambiente desktop pelo responsável pelo projeto, que confirmou seu funcionamento.
+### B. Testes Web (`tests_web.js`) — 11 testes
 
-## Organização interna
+Validam o funcionamento da interface web no navegador, incluindo inicialização do Pyodide, carregamento dos módulos Python, operações matemáticas, validações, limpeza dos campos e gerenciamento dos recursos utilizados na integração.
 
-- **`calculadora/operacoes.py`:** implementa as funções de adição, subtração, multiplicação e divisão. Também contém a tabela que associa os símbolos às operações e a formatação do resultado.
-- **`calculadora/validacao.py`:** remove espaços nas extremidades, normaliza a vírgula decimal, converte os operandos e rejeita entradas vazias, inválidas ou não finitas.
-- **`calculadora/interface.py`:** constrói a janela, recebe as entradas e encaminha os dados para os módulos de validação e cálculo.
-- **`main.py`:** ponto de entrada que inicializa a aplicação e apresenta orientações quando o ambiente gráfico ou o Tkinter não estão disponíveis.
+Para executar:
 
-A aplicação não utiliza `eval()` para interpretar entradas ou executar operações. Os cálculos são realizados por funções Python explícitas.
+1. Inicie o servidor local conforme as instruções anteriores.
+2. Acesse `http://localhost:3000/testes.html`.
+3. Acompanhe os resultados apresentados na página.
 
-## Limitações conhecidas
+**Resultado confirmado:** 11 testes aprovados.
 
-- Os cálculos utilizam `float` (ponto flutuante binário). Portanto, não são indicados para aplicações financeiras que exijam precisão decimal estrita.
-- A apresentação do resultado limita a formatação a até oito casas decimais. Isso melhora a legibilidade, mas pode arredondar valores com mais casas relevantes.
-- A interface Tkinter requer um ambiente gráfico; os testes de lógica podem ser executados em ambientes sem monitor ou display.
+---
 
-## Próximas evoluções
+## Organização Interna
 
-As ideias abaixo são possibilidades futuras, não funcionalidades incluídas nesta versão:
+- **`calculadora/operacoes.py`:** implementação das operações matemáticas e formatação dos resultados.
+- **`calculadora/validacao.py`:** validação e conversão dos operandos.
+- **`calculadora/interface.py`:** interface gráfica desktop com Tkinter.
+- **`app.js`:** integração da interface web com os módulos Python executados pelo Pyodide.
+- **`index.html` e `style.css`:** estrutura e apresentação da interface web.
+- **`app.py`:** servidor HTTP local para disponibilizar a interface web.
+- **`tests/` e `tests_web.js`:** suítes de testes automatizados.
 
-- Histórico de cálculos durante a sessão.
-- Atalhos de teclado para selecionar operações.
-- Reutilização do resultado anterior como operando de um novo cálculo.
-- Investigação de uma execução no navegador com Pyodide, mantendo clara a distinção entre o aplicativo desktop atual e uma eventual versão web.
+A lógica das operações e validações permanece nos módulos Python, compartilhados pelas duas interfaces.
 
-O planejamento dessa possível evolução está em [`docs/implementation_plan.md`](docs/implementation_plan.md).
+---
 
-## Contexto acadêmico e ferramentas
+## Limitações Conhecidas
 
-O projeto foi desenvolvido no contexto de um desafio educacional da Imersão Engenharia de Software: Dev na Era da IA, promovida pela Alura. O enunciado propõe a criação de uma calculadora em Python utilizando recursos de inteligência artificial; nesta atividade, o Google AI Studio foi a ferramenta escolhida para apoiar a geração inicial da aplicação.
+- Os cálculos utilizam o tipo `float` de precisão dupla (64 bits). Para aplicações financeiras que exijam arredondamento monetário estrito, o módulo `decimal.Decimal` seria uma alternativa.
+- A formatação dos resultados limita a exibição a até oito casas decimais.
+- A interface Tkinter requer um ambiente desktop com suporte gráfico.
+- A interface web depende do carregamento do Pyodide pela CDN oficial e de conexão com a internet para inicialização do runtime.
 
-O uso dessas ferramentas faz parte do contexto de desenvolvimento e não substitui a análise do código, a compreensão das decisões técnicas ou a execução dos testes. Este README descreve o estado efetivo do projeto: funcionalidades implementadas, verificações realizadas e evoluções que permanecem apenas como possibilidades.
+---
 
-Alura e Google são mencionadas exclusivamente para identificar o contexto educacional e a ferramenta utilizada. Este projeto independente não é afiliado, patrocinado ou oficialmente endossado por essas empresas.
+## Próximas Evoluções
 
-## Contribuições e licença
+- Histórico de cálculos durante a sessão, mantido em memória.
+- Atalhos de teclado numérico para seleção rápida de operadores (`+`, `-`, `*`, `/`).
+- Reutilização do resultado da operação anterior como Operando A do próximo cálculo.
 
-Depois da publicação do repositório, sugestões, relatos de problemas e melhorias poderão ser enviados por meio das *Issues* e *Pull Requests* do GitHub. Ao contribuir, descreva o problema ou a motivação da mudança e, quando aplicável, inclua evidências de teste.
+---
+
+## Contexto Acadêmico e Ferramentas
+
+O projeto foi desenvolvido no contexto de um desafio educacional da **Imersão Engenharia de Software: Dev na Era da IA**, promovida pela Alura. O enunciado propõe a criação de uma calculadora em Python utilizando recursos de inteligência artificial. Nesta atividade, o **Google AI Studio** foi a ferramenta escolhida para apoiar a concepção e a evolução da aplicação.
+
+O uso dessas ferramentas fez parte do processo de desenvolvimento e não substitui a compreensão dos conceitos de Engenharia de Software, a análise das decisões técnicas ou a execução dos testes automatizados.
+
+Alura e Google são mencionadas exclusivamente para identificar o contexto educacional e a ferramenta de apoio utilizada. Este projeto independente não é afiliado, patrocinado ou oficialmente endossado por essas empresas.
+
+---
+
+## Contribuições e Licença
+
+Sugestões e relatos de problemas podem ser enviados por meio das *Issues* e *Pull Requests* do repositório.
 
 Este projeto está disponibilizado sob a licença [MIT](LICENSE). Consulte o arquivo `LICENSE` para conhecer os termos de uso, modificação e distribuição.
