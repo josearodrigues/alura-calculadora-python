@@ -602,7 +602,16 @@ function atualizarVisor() {
 }
 
 function inserirNaExpressao(valor) {
-  if (calculoConcluido && /[0-9.(]/.test(valor)) expressaoAtual = '';
+  if (calculoConcluido) {
+    // Após "=", operadores continuam a partir do resultado exibido (ANS).
+    if (['+', '-', '*', '/', '^'].includes(valor)) {
+      expressaoAtual = String(resultadoAtual);
+    } else if (/[0-9.(]/.test(valor)) {
+      // Um número ou parêntese inicia uma nova expressão.
+      expressaoAtual = '';
+    }
+  }
+
   calculoConcluido = false;
   expressaoAtual += valor;
   resultadoAtual = null;
