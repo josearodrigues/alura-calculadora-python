@@ -172,7 +172,7 @@ def raiz_n(radicando: float, indice: float) -> float:
 
     # 5. Verificação de Integralidade do Índice (compatível com int e float)
     indice_e_inteiro = (isinstance(indice, int) or float(indice).is_integer())
-    
+
     # 6. Radicando Negativo
     if radicando < 0.0:
         if indice_e_inteiro and (int(indice) % 2 != 0):
