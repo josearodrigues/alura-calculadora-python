@@ -131,7 +131,7 @@ Em 01/11/2026, após sincronizar a branch com `git pull`, o usuário confirmou:
 - O cabeçalho e o layout da página de testes foram aprovados visualmente.
 - A tabela e sua última coluna estão visíveis na apresentação testada.
 
-A confirmação do usuário não estabelece um total numérico de aprovações por cenário nesta execução; por isso, este registro não declara uma contagem de 31/31 aprovações. A validação funcional da interface Web foi confirmada em conjunto com o resultado informado pelo usuário.
+Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 0 falhas e 0 não executados (100% OK)**. O usuário também confirmou o funcionamento da suíte, a exibição das evidências e a apresentação visual da página.
 
 ## 9. Histórico de atualização da Fase 4
 
@@ -143,3 +143,15 @@ A confirmação do usuário não estabelece um total numérico de aprovações p
 - Ajustado o cabeçalho da página de testes.
 - Usuário confirmou funcionamento da suíte, apresentação das evidências e aprovação visual do layout.
 - A Fase 4 fica registrada como implementada e validada pelo usuário no escopo executado. A validação integrada e a regressão final permanecem na Fase 5.
+
+
+## 10. Fase 5 — validação integrada e documentação (01/11/2026)
+
+### Resultados confirmados
+- Suíte Python: 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
+- Suíte Web: 31/31 aprovados, 0 falhas e 0 não executados, conforme resultado exibido em 01/11/2026.
+- Comparação dos testes da baseline `v2.0.0`: os 25 métodos legados foram preservados e nenhuma asserção original foi identificada como removida. A análise distinguiu mudanças de chamada auxiliar e comentários de alterações efetivas nas verificações.
+- README e CHANGELOG foram atualizados para descrever a evolução da calculadora e os resultados das suítes.
+
+### Pendência
+A execução integrada local via `python3 app.py` ainda não foi confirmada. Portanto, a Fase 5 permanece em andamento e a versão `v2.1.0` não foi publicada. O plano original permanece inalterado.
