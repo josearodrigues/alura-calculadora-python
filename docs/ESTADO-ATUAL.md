@@ -346,3 +346,40 @@ No executor `v2.1.0/tests_web.js`, a execução continua sequencial e os 31 cen�
 ### Próxima ação
 
 Sincronizar a branch local, abrir `v2.1.0/testes.html` e verificar primeiro a execução com tabela nova; depois, usar a reexecução mantendo resultados para observar a atualização gradual das linhas. Confirmar também o resultado final de 31 cenários.
+
+
+## 15. Resultado da melhoria visual da suíte Web — 01/11/2026
+
+### Solução final aplicada
+
+As seções 13 e 14 registram a investigação e a implementação experimental que antecederam a solução final. Seus estados de pendência foram superados pelo commit abaixo e devem ser lidos como histórico, não como situação atual.
+
+Na página `v2.1.0/testes.html`, foi simplificado o fluxo de execução:
+- Um único botão: **“Executar Bateria de Testes (31)”**.
+- A tabela anterior é limpa no início da execução.
+- O status informa a espera pelo iframe/Pyodide e, em seguida, a execução dos 31 testes.
+- O relatório completo é renderizado ao término.
+- O botão é reabilitado ao final, inclusive em caso de erro.
+
+### Escopo preservado
+
+- Arquivo alterado: `v2.1.0/testes.html`.
+- `v2.1.0/tests_web.js` não foi alterado.
+- Os 31 cenários, suas asserções e a lógica de execução dos testes foram preservados.
+- Não foi introduzido atraso artificial entre os testes.
+- A mudança trata da apresentação e do acompanhamento da execução, não da cobertura ou do resultado dos testes.
+
+### Commit e aprovação
+
+- Commit remoto: `49a521556a6e400b4c4df85507e3c1de81573ad5`.
+- Mensagem: `refactor: simplifica visualização da suíte web`.
+- Branch: `desafio-2-revisao-final`.
+- O usuário testou a página após a alteração e aprovou explicitamente a experiência visual, informando que o fluxo funcionou bem.
+
+### Limite da validação
+
+A aprovação do usuário confirma a experiência visual e o funcionamento observado na página. Não registrar um novo resultado numérico de 31/31 após este commit: a confirmação numérica anterior permanece vinculada à execução informada antes desta última alteração. A suíte deverá ser observada novamente na validação final da página pública, sem presumir o resultado.
+
+### Estado
+
+A melhoria de acompanhamento visual está **implementada e aprovada pelo usuário**. As pendências de experiência visual descritas nas seções 13 e 14 estão superadas. Permanecem válidas as etapas gerais de finalização já listadas na seção 8: sincronização local, validação das rotas no GitHub Pages e revisão do diff antes de qualquer decisão sobre merge/publicação.
