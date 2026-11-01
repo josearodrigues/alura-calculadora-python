@@ -133,8 +133,8 @@
       const completos = total > 0 && aprovados + falhas + naoExecutados === total;
       const cemPorCento = completos && aprovados === total && falhas === 0 && naoExecutados === 0;
       resumoEl.textContent = completos
-        ? \`Resultado: \${aprovados}/\${total} aprovados; \${falhas} falhas; \${naoExecutados} não executados (\${cemPorCento ? '100% OK ✓' : 'REVISÃO NECESSÁRIA ✖'})\`
-        : \`Relatório incompleto: \${aprovados} aprovados; \${falhas} falhas; \${naoExecutados} não executados de ${total}.\`;
+        ? `Resultado: ${aprovados}/${total} aprovados; ${falhas} falhas; ${naoExecutados} não executados (${cemPorCento ? '100% OK ✓' : 'REVISÃO NECESSÁRIA ✖'})`
+        : `Relatório incompleto: ${aprovados} aprovados; ${falhas} falhas; ${naoExecutados} não executados de ${total}.`;
     }
 
     btnRodar.addEventListener('click', async () => {
@@ -165,7 +165,7 @@
         renderizarResultados(Array.isArray(resultados) ? resultados : []);
       } catch (erro) {
         console.error('Falha inesperada no executor da suíte web:', erro);
-        resumoEl.textContent = \`Falha no executor: \${erro.message || String(erro)}. Resultado não considerado aprovado.\`;
+        resumoEl.textContent = `Falha no executor: ${erro.message || String(erro)}. Resultado não considerado aprovado.`;
       } finally {
         btnRodar.disabled = false;
       }

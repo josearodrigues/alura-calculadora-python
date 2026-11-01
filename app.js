@@ -519,7 +519,7 @@ function configurarNovaInterface() {
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
-  configurarEventos();
+  // Os listeners da interface atual são configurados abaixo.
   configurarNovaInterface();
   inicializarPyodideEModulos();
 });
