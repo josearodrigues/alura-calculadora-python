@@ -1,59 +1,200 @@
 /**
- * Suíte de testes do navegador para a Calculadora 2.0.
- * Casos voltados à interface atual e à integração com Pyodide.
+ * Suíte de Testes do Navegador para a Calculadora Web Pyodide
+ * Valida a integração completa JavaScript <-> Pyodide <-> DOM
+ * Garante idempotência e isolamento a cada execução.
  */
-const relatorioTestes=[];
-function registrarResultadoTeste(id,descricao,status,detalhes=""){
- relatorioTestes.push({id,descricao,status,passou:status==="APROVADO",detalhes});
- console.log(`[TESTE WEB ${status}] ${id}: ${descricao}${detalhes?` (${detalhes})`:""}`);
+
+const relatorioTestes = [];
+
+function registrarResultadoTeste(id, descricao, passou, detalhes = "") {
+  relatorioTestes.push({ id, descricao, passou, detalhes });
+  console.log(`[TESTE WEB ${passou ? 'PASSOU ✓' : 'FALHOU ✖'}] ${id}: ${descricao} ${detalhes ? `(${detalhes})` : ''}`);
 }
-function exigir(ok,msg){if(!ok)throw new Error(msg);}
-function el(doc,sel){const e=doc.querySelector(sel);exigir(!!e,`Elemento ausente: ${sel}`);return e;}
-function tecla(doc,acao){const b=el(doc,`#teclado-calculadora [data-action="${acao}"]`);exigir(!b.disabled,`Tecla desabilitada: ${acao}`);b.click();}
-function preparar({app}){app.limparVisor();const r=app.limparHistorico();exigir(r.sucesso,"Falha ao limpar histórico.");app.renderizarHistorico();}
-async function executarCaso(c,ctx){try{if(c.preparar!==false)preparar(ctx);const detalhes=await c.executar(ctx);registrarResultadoTeste(c.id,c.descricao,"APROVADO",detalhes||"");}catch(e){registrarResultadoTeste(c.id,c.descricao,"FALHOU",e?.message||String(e));}}
-function marcarNaoExecutados(cs,inicio,motivo){for(let i=inicio;i<cs.length;i++)registrarResultadoTeste(cs[i].id,cs[i].descricao,"NÃO EXECUTADO",motivo);}
-const casosTeste=[
-["Inicialização do Pyodide e status visual Pronto",({app,doc,pyodideInst})=>{exigir(app.pyodidePronto()&&pyodideInst,"Pyodide indisponível.");exigir(el(doc,"#status-texto").textContent.includes("Pronto"),"Status não está Pronto.");exigir(el(doc,"#status-indicador").classList.contains("pronto"),"Indicador não está pronto.");return "Runtime disponível; status e indicador visual confirmados como Pronto.";},false],
-["Montagem dos cinco módulos Python no MEMFS",({pyodideInst})=>{const modulos=["__init__.py","operacoes.py","validacao.py","expressoes.py","historico.py"].map(n=>{const bytes=new Blob([pyodideInst.FS.readFile(`/calculadora/${n}`,{encoding:"utf8"})]).size;exigir(bytes>0,`Módulo vazio: ${n}`);return `${n}: ${bytes} bytes`;});return modulos.join("; ");}],
-["Controles atuais habilitados após inicialização",({doc})=>{exigir([...el(doc,"#teclado-calculadora").querySelectorAll("button")].every(b=>!b.disabled),"Há teclas desabilitadas.");for(const s of ["#btn-tema","#btn-informacoes","#btn-historico"])exigir(!el(doc,s).disabled,`${s} desabilitado.`);}],
-["Adição de números inteiros",({app})=>exigir(app.avaliarExpressao("12+8").resultado==="20","12+8 deveria ser 20.")],
-["Subtração com resultado negativo",({app})=>exigir(app.avaliarExpressao("10-25").resultado==="-15","10-25 deveria ser -15.")],
-["Multiplicação por zero",({app})=>exigir(app.avaliarExpressao("50*0").resultado==="0","50*0 deveria ser 0.")],
-["Divisão com resultado fracionário",({app})=>exigir(app.avaliarExpressao("7/2").resultado==="3.5","7/2 deveria ser 3.5.")],
-["Entrada decimal com vírgula",({app})=>exigir(app.avaliarExpressao("12,5+2,5").resultado==="15","Decimais com vírgula deveriam somar 15.")],
-["Precedência entre multiplicação e adição",({app})=>exigir(app.avaliarExpressao("2+3*4").resultado==="14","Precedência incorreta.")],
-["Agrupamento com parênteses",({app})=>exigir(app.avaliarExpressao("(2+3)*4").resultado==="20","Agrupamento incorreto.")],
-["Potenciação",({app})=>exigir(app.avaliarExpressao("2^3").resultado==="8","2^3 deveria ser 8.")],
-["Associatividade à direita da potenciação",({app})=>exigir(app.avaliarExpressao("2^3^2").resultado==="512","Potenciação deveria associar à direita.")],
-["Precedência do sinal unário",({app})=>exigir(app.avaliarExpressao("-2^2").resultado==="-4","-2^2 deveria ser -4.")],
-["Percentual contextual em adição",({app})=>exigir(app.avaliarExpressao("200+10%").resultado==="220","200+10% deveria ser 220.")],
-["Percentual isolado",({app})=>exigir(app.avaliarExpressao("50%").resultado==="0.5","50% deveria ser 0.5.")],
-["Raiz quadrada",({app})=>exigir(app.avaliarExpressao("sqrt(81)").resultado==="9","sqrt(81) deveria ser 9.")],
-["Raiz de índice n e separador de argumentos",({app})=>exigir(app.avaliarExpressao("root(27;3)").resultado==="3","root(27;3) deveria ser 3.")],
-["Função valor absoluto",({app})=>exigir(app.avaliarExpressao("abs(-8)").resultado==="8","abs(-8) deveria ser 8.")],
-["Resolução do identificador ANS",({app})=>{app.avaliarExpressao("10");exigir(app.avaliarExpressao("ANS+5").resultado==="15","ANS não recuperou o resultado anterior.");}],
-["Rejeição de identificador desconhecido",({app})=>{const r=app.avaliarExpressao("2+abc");exigir(!r.sucesso&&r.tipo_erro==="ExpressaoInvalidaError","Identificador desconhecido não foi rejeitado.");}],
-["Tratamento de divisão por zero",({app})=>{const r=app.avaliarExpressao("10/0");exigir(!r.sucesso&&r.tipo_erro==="DivisaoPorZeroError","Divisão por zero não gerou erro de domínio.");}],
-["Registro de cálculo no histórico Python",({app})=>{const r=app.avaliarExpressao("3+4"),h=app.obterHistorico();exigir(r.sucesso&&h.length===1&&h[0].resultado_formatado==="7","Registro do histórico incorreto.");}],
-["Recuperação de registro e atualização do ANS",({app})=>{app.avaliarExpressao("3+4");app.avaliarExpressao("8+2");const h=app.obterHistorico(),r=app.recuperarHistorico(h[0].id);exigir(r.sucesso&&r.entrada.resultado_formatado==="7"&&r.ans===7,"Recuperação/ANS incorretos.");}],
-["Limpeza do histórico preservando o ANS",({app})=>{app.avaliarExpressao("42");app.limparHistorico();exigir(app.obterHistorico().length===0&&app.obterAns()===42,"Limpeza não preservou ANS.");}],
-["Execução de cálculo pelas teclas da interface",({doc})=>{for(const a of ["7","+","2","equals"])tecla(doc,a);exigir(el(doc,"#visor-expressao").textContent==="7+2"&&el(doc,"#visor-resultado").textContent==="9","Teclado não calculou 7+2.");}],
-["Limpeza do visor e estado neutro",({doc})=>{for(const a of ["4","*","3","equals","clear"])tecla(doc,a);exigir(el(doc,"#visor-expressao").textContent==="0"&&el(doc,"#visor-resultado").textContent==="0"&&el(doc,"#btn-copiar").disabled,"Limpeza do visor incompleta.");return "Expressão e resultado zerados; botão de cópia desabilitado."; }],
-["Apagar último caractere pelo teclado da calculadora",({doc})=>{for(const a of ["1","2","3","backspace"])tecla(doc,a);exigir(el(doc,"#visor-expressao").textContent==="12","Backspace não removeu o último caractere.");}],
-["Atalhos físicos de teclado e Enter",({doc})=>{const w=doc.defaultView;for(const key of ["6","+","4","Enter"])doc.body.dispatchEvent(new w.KeyboardEvent("keydown",{key,bubbles:true,cancelable:true}));exigir(el(doc,"#visor-expressao").textContent==="6+4"&&el(doc,"#visor-resultado").textContent==="10","Atalhos físicos não executaram 6+4.");}],
-["Alternância de tema e persistência",({doc})=>{const b=el(doc,"#btn-tema"),old=doc.documentElement.dataset.theme;b.click();const next=old==="dark"?"light":"dark";exigir(doc.documentElement.dataset.theme===next&&doc.defaultView.localStorage.getItem("theme_calculadora")===next,"Tema não alternou ou não persistiu.");b.click();}],
-["Memória: armazenar e recuperar resultado",({doc})=>{for(const a of ["8","equals","memory-store","clear","memory-recall","equals"])tecla(doc,a);exigir(el(doc,"#visor-resultado").textContent==="8","Memória não recuperou 8.");}],
-["Renderização e recuperação pela lista de histórico",({app,doc})=>{app.avaliarExpressao("9*9");app.renderizarHistorico();el(doc,"#lista-historico button.item-historico").click();exigir(el(doc,"#visor-resultado").textContent==="81","Histórico não recuperou 81.");}]
-].map(([descricao,executar,prepararCaso=true],i)=>({id:`TW-${String(i+1).padStart(2,"0")}`,descricao,executar,preparar:prepararCaso}));
-async function executarTodosOsTestesWeb(){
- relatorioTestes.length=0;console.log(`=== SUÍTE WEB: ${casosTeste.length} CENÁRIOS ===`);
- const doc=window.documentContexto||document,app=window.calculadoraApp;let tentativas=0;
- while((!app||!app.pyodidePronto())&&tentativas<80){await new Promise(r=>setTimeout(r,250));tentativas++;}
- const pyodideInst=app&&app.pyodidePronto()?app.obterPyodide():null,ctx={doc,app,pyodideInst};
- if(!app||!pyodideInst){registrarResultadoTeste("TW-01",casosTeste[0].descricao,"FALHOU","Pyodide indisponível.");marcarNaoExecutados(casosTeste,1,"Falha na inicialização.");return relatorioTestes;}
- for(const c of casosTeste)await executarCaso(c,ctx);
- try{preparar(ctx);}catch(e){console.error("Falha na limpeza final:",e);}
- return relatorioTestes;
+
+/**
+ * Função utilitária para aguardar condição com timeout.
+ */
+function aguardar(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
-window.executarTodosOsTestesWeb=executarTodosOsTestesWeb;
+
+/**
+ * Executa todos os 11 testes automatizados no navegador com restauração de ambiente garantida.
+ */
+async function executarTodosOsTestesWeb() {
+  relatorioTestes.length = 0;
+  console.log("=== INICIANDO SUÍTE DE TESTES DO NAVEGADOR (11 TESTES) ===");
+
+  // Contexto de documento dinâmico (funciona tanto na janela principal quanto via iframe)
+  const doc = window.documentContexto || document;
+  const app = window.calculadoraApp;
+
+  try {
+    // 0. Aguarda até o Pyodide e os módulos estarem 100% inicializados
+    let tentativas = 0;
+    while ((!app || !app.pyodidePronto()) && tentativas < 80) {
+      await aguardar(250);
+      tentativas++;
+    }
+
+    // Hook de Setup: limpa qualquer resíduo antes de iniciar
+    if (app && typeof app.limparCampos === 'function') {
+      app.limparCampos();
+    }
+
+    const pyodideInst = app ? app.obterPyodide() : null;
+    const statusTextoEl = doc.getElementById('status-texto');
+    const statusIndicadorEl = doc.getElementById('status-indicador');
+    const tw01Passou = app && app.pyodidePronto() &&
+                       pyodideInst !== null &&
+                       statusTextoEl && statusTextoEl.textContent.includes('Pronto') &&
+                       statusIndicadorEl && statusIndicadorEl.classList.contains('pronto');
+    registrarResultadoTeste('TW-01', 'Inicialização do Pyodide v0.27.8 e status "Pronto"', tw01Passou);
+
+    if (!tw01Passou) {
+      throw new Error("Pyodide ainda não concluiu a inicialização.");
+    }
+
+    // TW-02: Existência dos 3 arquivos no MEMFS com tamanho > 0
+    let tw02Passou = false;
+    let tw02Detalhes = "";
+    try {
+      const arquivos = ['__init__.py', 'operacoes.py', 'validacao.py'];
+      const stats = arquivos.map(nome => {
+        const conteudo = pyodideInst.FS.readFile(`/calculadora/${nome}`, { encoding: 'utf8' });
+        const bytes = new Blob([conteudo]).size;
+        return { nome, bytes };
+      });
+      tw02Passou = stats.every(s => s.bytes > 0);
+      tw02Detalhes = stats.map(s => `${s.nome}: ${s.bytes}b`).join(', ');
+    } catch (e) {
+      tw02Detalhes = e.message;
+    }
+    registrarResultadoTeste('TW-02', 'Presença e integridade de __init__.py, operacoes.py e validacao.py no MEMFS', tw02Passou, tw02Detalhes);
+
+    // TW-03: Adição com vírgula ('12,5' + '2,5' = '15')
+    const resTW03 = await app.executarCicloCalculo("12,5", "2,5", "+");
+    const elValor = doc.getElementById('resultado-valor');
+    const elIcone = doc.getElementById('resultado-icone');
+    const tw03Passou = resTW03.sucesso === true && resTW03.resultado === "15" && 
+                       elValor.textContent === "15" && elIcone.textContent === "✓";
+    registrarResultadoTeste('TW-03', 'Adição com vírgula decimal (12,5 + 2,5 -> "15" com ícone ✓)', tw03Passou);
+
+    // TW-04: Subtração com resultado negativo ('10' - '25' = '-15')
+    const resTW04 = await app.executarCicloCalculo("10", "25", "-");
+    const tw04Passou = resTW04.sucesso === true && resTW04.resultado === "-15" && elValor.textContent === "-15";
+    registrarResultadoTeste('TW-04', 'Subtração com resultado negativo (10 - 25 -> "-15")', tw04Passou);
+
+    // TW-05: Multiplicação com zero ('50' * '0' = '0')
+    const resTW05 = await app.executarCicloCalculo("50", "0", "*");
+    const tw05Passou = resTW05.sucesso === true && resTW05.resultado === "0" && elValor.textContent === "0";
+    registrarResultadoTeste('TW-05', 'Multiplicação por zero (50 * 0 -> "0", zero aceito normalmente)', tw05Passou);
+
+    // TW-06: Divisão com resultado decimal ('7' / '2' = '3.5')
+    const resTW06 = await app.executarCicloCalculo("7", "2", "/");
+    const tw06Passou = resTW06.sucesso === true && resTW06.resultado === "3.5" && elValor.textContent === "3.5";
+    registrarResultadoTeste('TW-06', 'Divisão fracionária decimal (7 / 2 -> "3.5")', tw06Passou);
+
+    // TW-07: Divisão por zero ('10' / '0' -> erro com ícone ✖)
+    const resTW07 = await app.executarCicloCalculo("10", "0", "/");
+    const elMensagem = doc.getElementById('resultado-mensagem');
+    const tw07Passou = resTW07.sucesso === false && resTW07.tipo_erro === "DivisaoPorZeroError" &&
+                       elIcone.textContent === "✖" && elMensagem.textContent.includes("divisão por zero");
+    registrarResultadoTeste('TW-07', 'Guardrail de Divisão por Zero (captura controlada de DivisaoPorZeroError)', tw07Passou);
+
+    // TW-08: Validação de campo vazio (Operando A em branco -> ícone ⚠)
+    const resTW08 = await app.executarCicloCalculo("", "10", "+");
+    const tw08Passou = resTW08.sucesso === false && resTW08.tipo_erro === "ErroValidacao" &&
+                       elIcone.textContent === "⚠" && elMensagem.textContent.includes("Operando A");
+    registrarResultadoTeste('TW-08', 'Validação de campo vazio (bloqueio antes da matemática com ErroValidacao)', tw08Passou);
+
+    // TW-09: Validação de entrada inválida com letras ('abc' -> ícone ⚠)
+    const resTW09 = await app.executarCicloCalculo("abc", "10", "+");
+    const tw09Passou = resTW09.sucesso === false && resTW09.tipo_erro === "ErroValidacao" &&
+                       elIcone.textContent === "⚠" && elMensagem.textContent.includes("não é um número válido");
+    registrarResultadoTeste('TW-09', 'Validação de entrada alfanumérica inválida ("abc")', tw09Passou);
+
+    // TW-10: Ação de limpeza restaura campos e foco
+    const inputA = doc.getElementById('input-op-a');
+    const inputB = doc.getElementById('input-op-b');
+    inputA.value = "123";
+    inputB.value = "456";
+    app.limparCampos();
+    const tw10Passou = inputA.value === "" && inputB.value === "" && elIcone.textContent === "ℹ" && doc.activeElement === inputA;
+    registrarResultadoTeste('TW-10', 'Ação de limpeza esvazia inputs e restaura estado neutro e foco', tw10Passou);
+
+    // TW-11: Liberação de Proxies em dois cenários (Fluxo normal e Falha forçada em toJs)
+    let tw11CenarioAPassou = false;
+    let tw11CenarioBPassou = false;
+
+    // Cenário A: Execução normal destrói ambos os proxies (função ponte e objeto resultado)
+    let funcProxyDestruidoA = false;
+    let resProxyDestruidoA = false;
+
+    const provedorEspiaoNormal = () => {
+      const realFunc = pyodideInst.globals.get('bridge_calcular');
+      const spyFunc = function(a, b, op) {
+        const realRes = realFunc(a, b, op);
+        return {
+          toJs: (opts) => realRes.toJs(opts),
+          destroy: () => {
+            resProxyDestruidoA = true;
+            if (typeof realRes.destroy === 'function') realRes.destroy();
+          }
+        };
+      };
+      spyFunc.destroy = () => {
+        funcProxyDestruidoA = true;
+        if (typeof realFunc.destroy === 'function') realFunc.destroy();
+      };
+      return spyFunc;
+    };
+
+    const resA = await app.executarCicloCalculo("5", "5", "+", provedorEspiaoNormal);
+    tw11CenarioAPassou = funcProxyDestruidoA === true && resProxyDestruidoA === true && resA.sucesso === true;
+
+    // Cenário B: Falha forçada em toJs() comprova que o bloco finally destrói ambos os proxies
+    let mockPonteDestruidoB = false;
+    let mockResDestruidoB = false;
+
+    const provedorMockFalha = () => {
+      const mockFunc = function(a, b, op) {
+        return {
+          toJs: () => {
+            throw new Error("Erro simulado durante toJs() para teste do bloco finally");
+          },
+          destroy: () => {
+            mockResDestruidoB = true;
+          }
+        };
+      };
+      mockFunc.destroy = () => {
+        mockPonteDestruidoB = true;
+      };
+      return mockFunc;
+    };
+
+    const resB = await app.executarCicloCalculo("1", "1", "+", provedorMockFalha);
+    tw11CenarioBPassou = mockPonteDestruidoB === true && mockResDestruidoB === true && resB.sucesso === false;
+
+    const tw11Passou = tw11CenarioAPassou && tw11CenarioBPassou;
+    registrarResultadoTeste(
+      'TW-11',
+      'Gerenciamento de memória: liberação de proxies no fluxo normal e em falha de toJs()',
+      tw11Passou,
+      `Cenário A (Normal): ${tw11CenarioAPassou ? 'OK' : 'FALHA'}, Cenário B (Mock toJs falhou): ${tw11CenarioBPassou ? 'OK' : 'FALHA'}`
+    );
+
+  } catch (erroGeral) {
+    console.error("Erro fatal durante a execução dos testes web:", erroGeral);
+  } finally {
+    // Teardown Global: Garante que o ambiente volte 100% ao estado limpo e original
+    if (app && typeof app.limparCampos === 'function') {
+      app.limparCampos();
+    }
+  }
+
+  return relatorioTestes;
+}
+
+window.executarTodosOsTestesWeb = executarTodosOsTestesWeb;

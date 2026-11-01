@@ -3,24 +3,19 @@ Testes unitários para o módulo calculadora.validacao.
 
 Cobre a sanitização, a normalização de separadores decimais (vírgula e ponto),
 a rejeição de entradas vazias, malformadas e caracteres especiais, além de
-garantir o limite de segurança de até 30 dígitos por literal e magnitude do expoente.
+garantir que o número zero não seja confundido com entrada vazia.
 """
 
 import unittest
 from calculadora.validacao import (
-    ErroValidacao,
     converter_operando,
     sanitizar_texto,
-    validar_literal_numerico,
+    ErroValidacao,
 )
 
 
 class TestValidacaoEntradas(unittest.TestCase):
     """Suíte de testes para a camada de validação e conversão de entradas."""
-
-    # -----------------------------------------------------------------------
-    # Testes Originais da Baseline (Preservados Integralmente)
-    # -----------------------------------------------------------------------
 
     def test_sanitizar_texto(self):
         """Verifica a remoção de espaços em branco antes e depois da string."""
@@ -86,52 +81,6 @@ class TestValidacaoEntradas(unittest.TestCase):
 
         with self.assertRaises(ErroValidacao):
             converter_operando("-infinity")
-
-    # -----------------------------------------------------------------------
-    # Novos Testes — Fase 1: Limite de Literais e Notação Científica
-    # -----------------------------------------------------------------------
-
-    def test_validar_literal_ate_30_digitos(self):
-        """Verifica que literais com até 30 dígitos numéricos são aceitos."""
-        literal_30_digitos = "9" * 30
-        resultado = validar_literal_numerico(literal_30_digitos)
-        self.assertIsInstance(resultado, float)
-
-        # 20 inteiros e 10 decimais = 30 dígitos
-        literal_misto = ("1" * 20) + "," + ("2" * 10)
-        resultado_misto = validar_literal_numerico(literal_misto)
-        self.assertIsInstance(resultado_misto, float)
-
-    def test_rejeicao_literal_mais_de_30_digitos(self):
-        """Verifica que literais com mais de 30 dígitos numéricos disparam ErroValidacao."""
-        literal_31_digitos = "9" * 31
-        with self.assertRaises(ErroValidacao) as ctx:
-            validar_literal_numerico(literal_31_digitos)
-        self.assertIn("excede o limite máximo permitido de 30 dígitos", str(ctx.exception))
-
-        # 20 inteiros e 11 decimais = 31 dígitos
-        literal_misto_31 = ("1" * 20) + "." + ("2" * 11)
-        with self.assertRaises(ErroValidacao):
-            validar_literal_numerico(literal_misto_31)
-
-    def test_notacao_cientifica_valida_e_limites(self):
-        """Verifica notação científica e teto de magnitude de expoente (|exp| <= 308)."""
-        self.assertEqual(validar_literal_numerico("1e3"), 1000.0)
-        self.assertEqual(validar_literal_numerico("2.5E2"), 250.0)
-        self.assertEqual(validar_literal_numerico("1e+10"), 1e10)
-        self.assertEqual(validar_literal_numerico("1e-5"), 1e-5)
-
-        # Expoente no teto máximo
-        res_308 = validar_literal_numerico("1e308")
-        self.assertEqual(res_308, 1e308)
-
-        # Expoente abusivo que gera overflow ou excede limite
-        with self.assertRaises(ErroValidacao):
-            validar_literal_numerico("1e309")
-
-        # Expoente com string gigante
-        with self.assertRaises(ErroValidacao):
-            validar_literal_numerico("1e100000")
 
 
 if __name__ == "__main__":

@@ -3,116 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#071a3b">
-  <meta name="description" content="Calculadora 2.0 com expressões matemáticas, histórico e motor Python executado via Pyodide.">
-  <title>Calculadora 2.0</title>
+  <title>Calculadora Python Web (Pyodide WebAssembly)</title>
+  <meta name="description" content="Calculadora modular com lógica em Python (operacoes.py e validacao.py) executada via WebAssembly (Pyodide), HTML e CSS Vanilla.">
   <link rel="stylesheet" href="./style.css">
+  <!-- Carregamento do Pyodide v0.27.8 via CDN oficial jsDelivr -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.27.8/full/pyodide.js"></script>
 </head>
 <body>
-  <main class="app-container">
+  <div class="app-container">
     <header class="app-header">
-      <a class="marca-calculadora" href="./index.html" aria-label="Calculadora 2.0 - início">
-        <span class="marca-icone" aria-hidden="true">▦</span>
-        <span class="marca-texto">
-          <strong>Calculadora 2.0</strong>
-          <span>Calcule · Explore · Evolua</span>
-        </span>
-      </a>
-
-      <div class="acoes-cabecalho" aria-label="Opções da calculadora">
-        <button type="button" id="btn-tema" class="icone-acao" aria-label="Alternar tema" title="Alternar tema" disabled>☀</button>
-        <button type="button" id="btn-informacoes" class="icone-acao" aria-label="Informações" title="Informações">i</button>
-        <button type="button" id="btn-historico" class="icone-acao" aria-label="Ir para o histórico" title="Histórico">◴</button>
+      <h1 class="app-titulo">Calculadora Python Web</h1>
+      <p class="app-subtitulo">Interface complementar executando CPython via WebAssembly (Pyodide)</p>
+      
+      <div class="status-badge-container">
+        <span id="status-indicador" class="status-indicador" aria-hidden="true"></span>
+        <span id="status-texto">Carregando Pyodide v0.27.8...</span>
       </div>
     </header>
 
-    <div class="status-badge-container" role="status" aria-live="polite">
-      <span id="status-indicador" class="status-indicador" aria-hidden="true"></span>
-      <span id="status-texto">Carregando Pyodide v0.27.8...</span>
-    </div>
-
-    <section class="calculadora-layout" aria-label="Calculadora">
-      <div class="painel-calculadora">
-        <section class="visor" aria-label="Visor da calculadora" aria-live="polite">
-          <div id="visor-expressao" class="visor-expressao" aria-label="Expressão digitada">0</div>
-          <div class="visor-resultado-linha">
-            <output id="visor-resultado" class="visor-resultado" aria-label="Resultado">0</output>
-            <button type="button" id="btn-copiar" class="btn-copiar" aria-label="Copiar resultado" title="Copiar resultado" disabled>▣</button>
-          </div>
-          <span id="feedback-copiar" class="feedback-copiar" role="status" aria-live="polite"></span>
-        </section>
-
-        <section class="teclado" id="teclado-calculadora" aria-label="Teclado da calculadora">
-          <button type="button" class="tecla tecla-memoria" data-action="memory-clear" disabled>MC</button>
-          <button type="button" class="tecla tecla-memoria" data-action="memory-recall" disabled>MR</button>
-          <button type="button" class="tecla tecla-memoria" data-action="memory-add" disabled>M+</button>
-          <button type="button" class="tecla tecla-memoria" data-action="memory-subtract" disabled>M-</button>
-          <button type="button" class="tecla tecla-memoria" data-action="memory-store" disabled>MS</button>
-
-          <button type="button" class="tecla tecla-funcao" data-action="percent" disabled>%</button>
-          <button type="button" class="tecla tecla-funcao" data-action="sqrt" disabled>√</button>
-          <button type="button" class="tecla tecla-funcao" data-action="square" disabled>x²</button>
-          <button type="button" class="tecla tecla-funcao" data-action="reciprocal" disabled>1/x</button>
-          <button type="button" class="tecla tecla-funcao" data-action="absolute" disabled>|x|</button>
-
-          <button type="button" class="tecla" data-action="(" disabled>(</button>
-          <button type="button" class="tecla" data-action=")" disabled>)</button>
-          <button type="button" class="tecla" data-action="sign" disabled>±</button>
-          <button type="button" class="tecla tecla-limpar" data-action="clear" disabled>C</button>
-          <button type="button" class="tecla" data-action="backspace" aria-label="Apagar último caractere" disabled>⌫</button>
-
-          <button type="button" class="tecla tecla-numero" data-action="7" disabled>7</button>
-          <button type="button" class="tecla tecla-numero" data-action="8" disabled>8</button>
-          <button type="button" class="tecla tecla-numero" data-action="9" disabled>9</button>
-          <button type="button" class="tecla tecla-operador" data-action="/" disabled>÷</button>
-          <button type="button" class="tecla tecla-funcao" data-action="nth-root" disabled>ⁿ√x</button>
-
-          <button type="button" class="tecla tecla-numero" data-action="4" disabled>4</button>
-          <button type="button" class="tecla tecla-numero" data-action="5" disabled>5</button>
-          <button type="button" class="tecla tecla-numero" data-action="6" disabled>6</button>
-          <button type="button" class="tecla tecla-operador" data-action="*" disabled>×</button>
-          <button type="button" class="tecla tecla-funcao" data-action="^" disabled>^</button>
-
-          <button type="button" class="tecla tecla-numero" data-action="1" disabled>1</button>
-          <button type="button" class="tecla tecla-numero" data-action="2" disabled>2</button>
-          <button type="button" class="tecla tecla-numero" data-action="3" disabled>3</button>
-          <button type="button" class="tecla tecla-operador" data-action="-" disabled>−</button>
-          <button type="button" class="tecla tecla-numero" data-action=";" disabled>;</button>
-
-          <button type="button" class="tecla tecla-numero" data-action="0" disabled>0</button>
-          <button type="button" class="tecla tecla-numero" data-action="." disabled>.</button>
-          <button type="button" class="tecla tecla-igual" data-action="equals" disabled>=</button>
-          <button type="button" class="tecla tecla-operador" data-action="+" disabled>+</button>
-        </section>
-      </div>
-
-      <aside class="painel-historico" aria-labelledby="titulo-historico">
-        <div class="historico-cabecalho">
-          <h2 id="titulo-historico"><span aria-hidden="true">◴</span> Histórico</h2>
-          <button type="button" id="btn-limpar-historico" class="icone-acao" aria-label="Limpar histórico" title="Limpar histórico" disabled>▤</button>
+    <main class="calc-card">
+      <form id="form-calculadora" onsubmit="return false;">
+        <!-- Operando A -->
+        <div class="campo-grupo">
+          <label for="input-op-a" class="campo-rotulo">Primeiro Número (Operando A):</label>
+          <input
+            type="text"
+            id="input-op-a"
+            class="campo-input"
+            placeholder="Ex: 12,5 ou -4"
+            autocomplete="off"
+            required
+            disabled
+          >
         </div>
-        <ol id="lista-historico" class="lista-historico" aria-label="Cálculos anteriores">
-          <li class="historico-vazio">Nenhum cálculo realizado.</li>
-        </ol>
-        <button type="button" id="btn-historico-limpar-rodape" class="btn-limpar-historico" disabled>▤ Limpar Histórico</button>
-      </aside>
-    </section>
 
-    <footer class="app-footer">
-      <span>🚀 Calcule · Explore · Evolua</span>
-      <span class="atalhos-teclado">⌨ Use o teclado: 0–9, +, −, ×, ÷, Enter</span>
-      <a href="./testes.html" id="link-testes">Suíte de testes</a>
-    </footer>
+        <!-- Grupo de Operações com Fieldset e Legend para WCAG AA -->
+        <fieldset class="campo-operacao-grupo">
+          <legend class="campo-legenda">Operação Desejada</legend>
+          <div class="opcoes-operacao">
+            <label for="op-soma" class="opcao-radio">
+              <input type="radio" id="op-soma" name="operacao" value="+" checked disabled>
+              <span>Adição (+)</span>
+            </label>
+            <label for="op-subtracao" class="opcao-radio">
+              <input type="radio" id="op-subtracao" name="operacao" value="-" disabled>
+              <span>Subtração (-)</span>
+            </label>
+            <label for="op-multiplicacao" class="opcao-radio">
+              <input type="radio" id="op-multiplicacao" name="operacao" value="*" disabled>
+              <span>Multiplicação (×)</span>
+            </label>
+            <label for="op-divisao" class="opcao-radio">
+              <input type="radio" id="op-divisao" name="operacao" value="/" disabled>
+              <span>Divisão (÷)</span>
+            </label>
+          </div>
+        </fieldset>
 
+        <!-- Operando B -->
+        <div class="campo-grupo">
+          <label for="input-op-b" class="campo-rotulo">Segundo Número (Operando B):</label>
+          <input
+            type="text"
+            id="input-op-b"
+            class="campo-input"
+            placeholder="Ex: 2,5 ou 0"
+            autocomplete="off"
+            required
+            disabled
+          >
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="acoes-grupo">
+          <button type="button" id="btn-calcular" class="btn btn-primario" disabled>
+            Calcular
+          </button>
+          <button type="button" id="btn-limpar" class="btn btn-secundario" disabled>
+            Limpar
+          </button>
+        </div>
+
+        <!-- Painel de Resultados Acessível com Pares Semânticos -->
+        <div
+          id="painel-resultado"
+          class="resultado-painel"
+          role="status"
+          aria-live="polite"
+        >
+          <div class="resultado-cabecalho">
+            <span id="resultado-icone" class="resultado-icone" aria-hidden="true">ℹ</span>
+            <span id="resultado-rotulo">Aguardando Operação:</span>
+          </div>
+          <div id="resultado-valor" class="resultado-valor"></div>
+          <div id="resultado-mensagem" class="resultado-mensagem">Preencha os campos e selecione uma operação.</div>
+        </div>
+      </form>
+    </main>
+
+    <!-- Telemetria Recolhida na Parte Inferior da Página -->
     <details class="telemetria-container" id="telemetria-details">
-      <summary class="telemetria-resumo">Telemetria e logs do Pyodide</summary>
+      <summary class="telemetria-resumo">Telemetria e Logs do Runtime Pyodide</summary>
       <div class="telemetria-corpo">
-        <textarea id="telemetria-log" class="telemetria-textarea" readonly aria-label="Log de eventos e telemetria do WebAssembly"></textarea>
+        <textarea
+          id="telemetria-log"
+          class="telemetria-textarea"
+          readonly
+          aria-label="Log de eventos e telemetria do WebAssembly"
+        ></textarea>
       </div>
     </details>
-  </main>
 
+
+
+    <footer class="app-footer">
+      <p>Calculadora Python | Engenharia de Software • Reutilização direta de <code>calculadora/</code></p>
+      <p style="margin-top: 0.25rem;">
+        <a href="./testes.html" id="link-testes">Abrir Suíte de Testes do Navegador</a>
+      </p>
+    </footer>
+  </div>
 
   <script src="./app.js"></script>
   <script src="./tests_web.js"></script>
