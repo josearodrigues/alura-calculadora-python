@@ -34,7 +34,7 @@ class EntradaHistorico:
 class HistoricoSessao:
     """
     Gerenciador da sessão de histórico de cálculos e do estado de ANS em memória.
-    
+
     Regras fundamentais:
     1. Mantém uma lista ordenada de entradas com IDs sequenciais.
     2. O estado do ANS é atualizado a cada cálculo registrado.
