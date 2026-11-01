@@ -6,13 +6,17 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
- > **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução ainda não publicada. Nesta branch, a suíte Python possui 92 testes (resultado anteriormente informado: 92/92 aprovados) e a suíte Web contém 31 cenários. O usuário confirmou o funcionamento da suíte Web e a apresentação da página de testes em 01/11/2026; a validação integrada final permanece pendente na Fase 5.
+ > **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução `v2.1.0` ainda não publicada. Na validação informada pelo usuário, a suíte Python teve 92/92 aprovações em 31/10/2026 e a suíte Web teve 31/31 aprovações em 01/11/2026. A execução local integrada via `app.py` ainda precisa ser confirmada antes do encerramento da Fase 5.
 
 ---
 
 ## O que você encontra neste projeto
 
-- **Quatro operações aritméticas:** adição, subtração, multiplicação e divisão.
+- **Expressões matemáticas:** operações aritméticas, potenciação (`^`), raízes, valor absoluto, inverso e troca de sinal.
+- **Percentual contextual:** por exemplo, `100 + 10%` resulta em `110`.
+- **Raiz de índice n:** função `root(rad; ind)`, com ponto e vírgula como separador de argumentos.
+- **Histórico e ANS:** recuperação de cálculos anteriores e continuidade de expressões com o último resultado.
+- **Memória na interface desktop:** MC, MR, M+, M- e MS.
 - **Duas interfaces complementares:**
   - **Desktop (Tkinter):** janela nativa do Python.
   - **Web (Pyodide / WebAssembly):** interface HTML5, CSS3 e JavaScript Vanilla que executa os módulos Python existentes diretamente no navegador, sem Node.js, npm ou frameworks.
@@ -123,6 +127,33 @@ python3 -m http.server 3000 --bind 127.0.0.1
 
 ---
 
+## Sintaxe de Expressões
+
+A calculadora avalia expressões completas, com parênteses e precedência matemática.
+
+| Recurso | Sintaxe | Exemplo |
+|---|---|---|
+| Operações básicas | `+`, `-`, `*`, `/` | `10 + 5 * 2` |
+| Potenciação | `^` | `2^3` |
+| Raiz quadrada | `sqrt(valor)` ou `√valor` | `sqrt(144)` |
+| Raiz de índice n | `root(rad; ind)` | `root(12,5; 3)` |
+| Valor absoluto | `abs(valor)` | `abs(-8)` |
+| Inverso | `inv(valor)` | `inv(4)` |
+| Percentual | `valor%` | `10%` |
+| Percentual contextual | `base + taxa%` ou `base - taxa%` | `100 + 10%` resulta em `110` |
+| Resultado anterior | `ANS` | `ANS + 5` |
+
+O ponto e vírgula (`;`) separa argumentos de funções com mais de um parâmetro. A vírgula continua disponível como separador decimal: `root(12,5; 3)`.
+
+## Atalhos de Teclado
+
+Os atalhos variam ligeiramente entre as interfaces:
+
+- **Desktop (Tkinter):** dígitos, ponto ou vírgula decimal, operadores `+`, `-`, `*`, `/`, `^`, parênteses, `;` e `%`; `Enter` calcula, `Backspace` apaga, `Esc` ou `Delete` limpa e `Ctrl+C` copia o resultado.
+- **Web:** dígitos, ponto decimal, operadores `+`, `-`, `*`, `/` e parênteses; `Enter` ou `=` calcula, `Backspace` apaga e `Esc` limpa. Os demais recursos podem ser inseridos pelos botões da interface.
+
+---
+
 ## Como Executar os Testes Automatizados
 
 O projeto possui duas suítes de testes independentes e complementares.
@@ -156,7 +187,7 @@ Para executar:
 2. Acesse `http://localhost:3000/testes.html`.
 3. Acompanhe os resultados apresentados na página.
 
-**Baseline `v2.0.0`:** 11 testes web. **Branch de desenvolvimento:** 31 cenários; o usuário confirmou funcionamento após as alterações em 01/11/2026, sem informar a contagem numérica de aprovações nessa execução.
+**Baseline `v2.0.0`:** 11 testes web. **Branch de desenvolvimento:** 31/31 aprovados, 0 falhas e 0 não executados, conforme resultado exibido na página e informado pelo usuário em 01/11/2026.
 
 ---
 
@@ -183,11 +214,9 @@ A lógica das operações e validações permanece nos módulos Python, comparti
 
 ---
 
-## Próximas Evoluções
+## Estado da Evolução
 
-- Histórico de cálculos durante a sessão, mantido em memória.
-- Atalhos de teclado numérico para seleção rápida de operadores (`+`, `-`, `*`, `/`).
-- Reutilização do resultado da operação anterior como Operando A do próximo cálculo.
+O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A próxima etapa é concluir as validações integradas e a documentação da Fase 5 antes de publicar a versão `v2.1.0`.
 
 ---
 
