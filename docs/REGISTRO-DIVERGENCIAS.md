@@ -145,7 +145,9 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 - A Fase 4 fica registrada como implementada e validada pelo usuário no escopo executado. A validação integrada e a regressão final permanecem na Fase 5.
 
 
-## 10. Fase 5 — validação integrada e documentação (01/11/2026)
+## 10. Registro intermediário da Fase 5 — 01/11/2026
+
+> Registro histórico anterior à confirmação final do usuário. A situação vigente está registrada na seção 8.
 
 ### Resultados confirmados
 - Suíte Python: 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
@@ -154,7 +156,7 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 - README e CHANGELOG foram atualizados para descrever a evolução da calculadora e os resultados das suítes.
 
 ### Pendência
-A execução integrada local via `python3 app.py` ainda não foi confirmada. Portanto, a Fase 5 permanece em andamento e a versão `v2.1.0` não foi publicada. O plano original permanece inalterado.
+Naquele momento, a execução integrada local via `python3 app.py` ainda não havia sido confirmada. A confirmação posterior encerrou essa pendência, conforme seção 8. A versão `v2.1.0` permanece não publicada.
 
 
 ## 8. Validação integrada local — Fase 5 (01/11/2026)
