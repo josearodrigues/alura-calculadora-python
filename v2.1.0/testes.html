@@ -116,47 +116,46 @@
     const corpoTabela = document.getElementById('corpo-tabela-testes');
     const iframeApp = document.getElementById('iframe-app');
 
+    function atualizarLinhaTeste(teste) {
+      const status = teste.status || (teste.passou ? 'APROVADO' : 'FALHOU');
+      let linha = [...corpoTabela.rows].find(item => item.cells[0]?.textContent === teste.id);
+
+      if (!linha) {
+        linha = document.createElement('tr');
+        for (let indice = 0; indice < 4; indice++) {
+          linha.appendChild(document.createElement('td'));
+        }
+        corpoTabela.appendChild(linha);
+      }
+
+      const [celulaId, celulaDescricao, celulaStatus, celulaDetalhes] = linha.cells;
+      celulaId.replaceChildren();
+      const forte = document.createElement('strong');
+      forte.textContent = teste.id;
+      celulaId.appendChild(forte);
+      celulaDescricao.textContent = teste.descricao;
+
+      celulaStatus.replaceChildren();
+      const tag = document.createElement('span');
+      tag.className = 'tag-status ' + (status === 'APROVADO' ? 'tag-sucesso' : 'tag-falha');
+      tag.textContent = status;
+      celulaStatus.appendChild(tag);
+
+      celulaDetalhes.textContent = teste.detalhes || '-';
+      celulaDetalhes.style.fontSize = '0.75rem';
+      celulaDetalhes.style.fontFamily = 'monospace';
+    }
+
     function renderizarResultados(resultados) {
       let aprovados = 0;
       let falhas = 0;
       let naoExecutados = 0;
-      corpoTabela.replaceChildren();
 
       for (const teste of resultados) {
+        atualizarLinhaTeste(teste);
         if (teste.status === 'APROVADO' || teste.passou === true) aprovados++;
         else if (teste.status === 'NÃO EXECUTADO') naoExecutados++;
         else falhas++;
-
-        const linha = document.createElement('tr');
-        const celulas = [
-          teste.id,
-          teste.descricao,
-          teste.status || (teste.passou ? 'APROVADO' : 'FALHOU'),
-          teste.detalhes || '-'
-        ];
-
-        celulas.forEach((valor, indice) => {
-          const celula = document.createElement('td');
-          if (indice === 0) {
-            const forte = document.createElement('strong');
-            forte.textContent = valor;
-            celula.appendChild(forte);
-          } else if (indice === 2) {
-            const tag = document.createElement('span');
-            tag.className = 'tag-status ' +
-              (valor === 'APROVADO' ? 'tag-sucesso' : 'tag-falha');
-            tag.textContent = valor;
-            celula.appendChild(tag);
-          } else {
-            celula.textContent = valor;
-          }
-          if (indice === 3) {
-            celula.style.fontSize = '0.75rem';
-            celula.style.fontFamily = 'monospace';
-          }
-          linha.appendChild(celula);
-        });
-        corpoTabela.appendChild(linha);
       }
 
       const total = resultados.length;
@@ -170,7 +169,6 @@
     btnRodar.addEventListener('click', async () => {
       btnRodar.disabled = true;
       resumoEl.textContent = 'Aguardando carregamento do iframe e Pyodide...';
-      corpoTabela.replaceChildren();
       containerTabela.style.display = 'block';
 
       try {
@@ -191,8 +189,13 @@
         }
 
         iframeWin.documentContexto = iframeWin.document;
-        const resultados = await iframeWin.executarTodosOsTestesWeb();
-        renderizarResultados(Array.isArray(resultados) ? resultados : []);
+        const resultados = [];
+        const relatorio = await iframeWin.executarTodosOsTestesWeb(teste => {
+          resultados.push(teste);
+          atualizarLinhaTeste(teste);
+          resumoEl.textContent = `Executando testes... ${resultados.length}/31 resultados atualizados.`;
+        });
+        renderizarResultados(Array.isArray(relatorio) ? relatorio : resultados);
       } catch (erro) {
         console.error('Falha inesperada no executor da suíte web:', erro);
         resumoEl.textContent = `Falha no executor: ${erro.message || String(erro)}. Resultado não considerado aprovado.`;
