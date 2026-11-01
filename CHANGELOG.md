@@ -34,7 +34,7 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 - Interface desktop: validação manual confirmada pelo usuário; 21/21 testes direcionados da interface e 92/92 da suíte Python informados como aprovados.
 - Interface Web: usuário confirmou funcionamento, exibição de evidências nos cenários que as fornecem e apresentação visual da página de testes em 01/11/2026.
 - Auditoria estática da baseline `v2.0.0`: os 25 métodos de teste legados continuam presentes e suas asserções originais foram preservadas. Cinco testes de integração passaram a chamar um método auxiliar renomeado; nenhum teste ou asserção original foi identificado como removido.
-- A execução local integrada via `app.py` ainda não foi confirmada nesta revisão. A conclusão da Fase 5 e a publicação da `v2.1.0` permanecem condicionadas a essa validação e à conferência final.
+- Execução integrada local via `python3 app.py`: confirmada pelo usuário em 01/11/2026. O usuário informou que os testes manuais solicitados (operação básica, expressão com potência ou raiz, histórico e `ANS`) funcionaram. A Fase 5 está concluída no escopo documentado; a `v2.1.0` permanece não publicada.
 
 ## [2.0.0] - 2026-10-30
 
