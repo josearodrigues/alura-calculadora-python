@@ -169,3 +169,32 @@ O usuário confirmou a execução local da aplicação Web iniciada por `python3
 - Continuidade de cálculo com `ANS`.
 
 Este registro documenta a confirmação do usuário; não afirma que o assistente executou os testes no ambiente local. Em conjunto com os resultados informados das suítes Python (92/92) e Web (31/31) e a comparação da baseline, a validação integrada prevista na Fase 5 está concluída no escopo documentado. A versão `v2.1.0` continua não publicada.
+
+
+## 11. Coexistência das versões — 01/11/2026
+
+### Decisão de organização
+
+A branch de trabalho mantém duas árvores de aplicação independentes:
+
+- **v2.0.0:** arquivos da aplicação preservados na raiz, correspondentes à baseline publicada.
+- **v2.1.0:** aplicação evoluída organizada em `v2.1.0/`, incluindo módulos Python, interfaces e suítes de testes próprias.
+
+A documentação e os recursos comuns permanecem na raiz: `docs/`, `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` e `.nojekyll`. Não foram duplicados dentro de `v2.1.0/`.
+
+### Critérios de separação
+
+- As referências relativas de cada interface Web devem resolver arquivos dentro do diretório da própria versão.
+- Os testes Python devem ser executados a partir do diretório da versão correspondente, evitando importar o pacote da outra versão.
+- A raiz deve continuar servindo a v2.0.0; a rota `/v2.1.0/` deve servir a evolução.
+- A presença dos arquivos na branch não equivale à publicação nem à criação de uma release.
+
+### Verificações documentais realizadas no GitHub
+
+Em 01/11/2026, a branch `desafio-2-revisao-final` foi consultada diretamente. Foram localizados os arquivos de aplicação em `v2.1.0/` e os arquivos da aplicação da baseline na raiz. Os documentos compartilhados foram revisados para refletir essa organização.
+
+A compatibilidade dos caminhos relativos foi inspecionada nos arquivos HTML e JavaScript. Isso é uma verificação estática; não substitui a validação efetiva da publicação no GitHub Pages. A configuração de publicação e a rota pública da v2.1.0 permanecem sujeitas a validação antes do merge na `main`.
+
+### Limites
+
+Esta decisão organiza as duas versões na branch de trabalho sem alterar os requisitos históricos do plano original. O arquivo `docs/calculadora-2.0-plano.md` permanece preservado.
