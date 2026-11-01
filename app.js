@@ -81,11 +81,14 @@ async function inicializarPyodideEModulos() {
       pyodide.FS.mkdirTree('/calculadora');
     }
 
-    // Carrega os 3 arquivos do pacote via caminhos relativos
+    // Carrega os cinco módulos do pacote. __init__.py importa expressoes.py
+    // e historico.py, portanto todos precisam existir antes da importação.
     const arquivosParaCarregar = [
       { nome: '__init__.py', caminho: './calculadora/__init__.py' },
       { nome: 'operacoes.py', caminho: './calculadora/operacoes.py' },
       { nome: 'validacao.py', caminho: './calculadora/validacao.py' },
+      { nome: 'expressoes.py', caminho: './calculadora/expressoes.py' },
+      { nome: 'historico.py', caminho: './calculadora/historico.py' },
     ];
 
     for (const arq of arquivosParaCarregar) {
@@ -108,7 +111,8 @@ if '/' not in sys.path:
     sys.path.insert(0, '/')
 
 import calculadora
-from calculadora import operacoes, validacao
+from calculadora import operacoes, validacao, expressoes, historico
+from calculadora import avaliar_expressao, HistoricoSessao
 `);
     logTelemetria('PYTHON:IMPORT', "Pacote 'calculadora' importado e verificado com sucesso.");
 
@@ -135,8 +139,99 @@ function registrarPontePython() {
 import time
 import traceback
 from typing import Optional, Dict, Any, List
-from calculadora.operacoes import calcular, formatar_resultado, DivisaoPorZeroError, OperacaoInvalidaError
-from calculadora.validacao import converter_operando, ErroValidacao
+from calculadora.operacoes import (
+    calcular, formatar_resultado, DivisaoPorZeroError,
+    ErroAritmetico, OperacaoInvalidaError
+)
+from calculadora.validacao import converter_operando, ErroValidacao, sanitizar_texto
+from calculadora.expressoes import avaliar_expressao, ExpressaoInvalidaError
+from calculadora.historico import HistoricoSessao, RegistroNaoEncontradoError
+
+# Uma única sessão Python mantém histórico e ANS durante a vida da página.
+historico_sessao = HistoricoSessao()
+
+def _entrada_para_dict(entrada):
+    return {
+        "id": entrada.id,
+        "expressao": entrada.expressao,
+        "expressao_formatada": entrada.expressao_formatada,
+        "resultado": entrada.resultado,
+        "resultado_formatado": entrada.resultado_formatado,
+        "timestamp": entrada.timestamp,
+    }
+
+def bridge_avaliar_expressao(expressao_bruta: str, expressao_formatada: Optional[str] = None) -> dict:
+    """Avalia uma expressão, registra o cálculo e atualiza o ANS da sessão."""
+    t_inicio = time.perf_counter()
+    try:
+        expressao_limpa = sanitizar_texto(expressao_bruta)
+        resultado = avaliar_expressao(expressao_limpa, ans=historico_sessao.obter_ans())
+        entrada = historico_sessao.registrar(
+            expressao_limpa,
+            sanitizar_texto(expressao_formatada) or expressao_limpa,
+            resultado,
+        )
+        return {
+            "sucesso": True,
+            "entrada": _entrada_para_dict(entrada),
+            "resultado": entrada.resultado_formatado,
+            "ans": historico_sessao.obter_ans(),
+            "tipo_erro": None,
+            "mensagem": None,
+            "tempo_interno_ms": round((time.perf_counter() - t_inicio) * 1000, 3),
+        }
+    except (ErroValidacao, ExpressaoInvalidaError, ErroAritmetico, OperacaoInvalidaError) as e:
+        return {
+            "sucesso": False,
+            "entrada": None,
+            "resultado": None,
+            "ans": historico_sessao.obter_ans(),
+            "tipo_erro": type(e).__name__,
+            "mensagem": str(e),
+            "tempo_interno_ms": round((time.perf_counter() - t_inicio) * 1000, 3),
+        }
+    except Exception as e:
+        return {
+            "sucesso": False,
+            "entrada": None,
+            "resultado": None,
+            "ans": historico_sessao.obter_ans(),
+            "tipo_erro": f"ErroInesperado ({type(e).__name__})",
+            "mensagem": "Ocorreu um erro interno inesperado no processamento.",
+            "tempo_interno_ms": round((time.perf_counter() - t_inicio) * 1000, 3),
+        }
+
+def bridge_obter_historico() -> list:
+    """Retorna os registros da sessão em ordem cronológica."""
+    return [_entrada_para_dict(item) for item in historico_sessao.obter_todos()]
+
+def bridge_recuperar_historico(id_entrada: int) -> dict:
+    """Recupera uma entrada e atualiza o ANS no próprio motor Python."""
+    try:
+        entrada = historico_sessao.recuperar_entrada(int(id_entrada))
+        return {
+            "sucesso": True,
+            "entrada": _entrada_para_dict(entrada),
+            "ans": historico_sessao.obter_ans(),
+            "tipo_erro": None,
+            "mensagem": None,
+        }
+    except (ValueError, TypeError, RegistroNaoEncontradoError) as e:
+        return {
+            "sucesso": False,
+            "entrada": None,
+            "ans": historico_sessao.obter_ans(),
+            "tipo_erro": type(e).__name__,
+            "mensagem": str(e),
+        }
+
+def bridge_limpar_historico() -> dict:
+    """Limpa os registros visíveis sem apagar o ANS, conforme regra do motor."""
+    historico_sessao.limpar_historico()
+    return {"sucesso": True, "ans": historico_sessao.obter_ans(), "total": 0}
+
+def bridge_obter_ans():
+    return historico_sessao.obter_ans()
 
 def bridge_calcular(a_str: str, b_str: str, op_str: str) -> dict:
     t_inicio = time.perf_counter()
@@ -231,8 +326,62 @@ def bridge_calcular(a_str: str, b_str: str, op_str: str) -> dict:
 }
 
 /**
- * Fase 4: Executa a ponte Python com liberação estrita de proxies
- * e sincronização de Promise via requestAnimationFrame.
+ * Executa uma ponte Python nomeada e converte seu retorno para JavaScript.
+ * Os proxies da função e do resultado são sempre liberados, inclusive em falhas.
+ */
+function executarPontePython(nomePonte, ...argumentos) {
+  let ponteFuncProxy = null;
+  let resultadoProxy = null;
+
+  try {
+    if (!pyodide || !inicializacaoConcluida) {
+      throw new Error("Pyodide ainda não concluiu a inicialização.");
+    }
+
+    ponteFuncProxy = pyodide.globals.get(nomePonte);
+    if (!ponteFuncProxy) {
+      throw new Error(`Ponte Python '${nomePonte}' não encontrada.`);
+    }
+
+    resultadoProxy = ponteFuncProxy(...argumentos);
+    if (resultadoProxy && typeof resultadoProxy.toJs === 'function') {
+      return resultadoProxy.toJs({ dict_converter: Object.fromEntries });
+    }
+    return resultadoProxy;
+  } finally {
+    if (resultadoProxy && typeof resultadoProxy.destroy === 'function') {
+      try { resultadoProxy.destroy(); } catch (e) { /* silencia limpeza */ }
+    }
+    if (ponteFuncProxy && typeof ponteFuncProxy.destroy === 'function') {
+      try { ponteFuncProxy.destroy(); } catch (e) { /* silencia limpeza */ }
+    }
+  }
+}
+
+function avaliarExpressao(expressao, expressaoFormatada = null) {
+  return executarPontePython('bridge_avaliar_expressao', expressao, expressaoFormatada);
+}
+
+function obterHistorico() {
+  return executarPontePython('bridge_obter_historico');
+}
+
+function recuperarHistorico(id) {
+  return executarPontePython('bridge_recuperar_historico', id);
+}
+
+function limparHistorico() {
+  return executarPontePython('bridge_limpar_historico');
+}
+
+function obterAns() {
+  return executarPontePython('bridge_obter_ans');
+}
+
+/**
+ * Fase 4: Executa a ponte Python legada de dois operandos, preservada
+ * temporariamente para manter a baseline funcional durante a migração da UI.
+ * O ciclo também libera os dois proxies em bloco finally.
  */
 function executarCicloCalculo(operandoA, operandoB, operacao, provedorPonteOpcional = null) {
   return new Promise((resolve) => {
@@ -448,6 +597,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Expõe métodos essenciais no escopo global para a suíte de testes web
 window.calculadoraApp = {
   executarCicloCalculo,
+  executarPontePython,
+  avaliarExpressao,
+  obterHistorico,
+  recuperarHistorico,
+  limparHistorico,
+  obterAns,
   limparCampos,
   pyodidePronto: () => inicializacaoConcluida && pyodide !== null,
   obterPyodide: () => pyodide,
