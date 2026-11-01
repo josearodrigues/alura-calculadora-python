@@ -29,6 +29,11 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 - Executor Web: captura os detalhes retornados pelos cenários aprovados, quando disponíveis.
 - README atualizado com sintaxe de expressões, exemplos de percentual e raiz de índice n, atalhos por interface e resultados de testes.
 
+### Experiência da suíte Web
+- Simplificada a página `v2.1.0/testes.html` para usar um único botão de execução, limpar a tabela no início e apresentar o relatório ao final.
+- Mantidos inalterados os 31 cenários e a lógica de testes em `v2.1.0/tests_web.js`.
+- Alteração aprovada pelo usuário após teste visual. A aprovação não representa uma nova confirmação numérica de 31/31 após este commit.
+
 ### Corrigido
 - Inicialização da interface Web após remoção de chamada obsoleta.
 - Sintaxe do executor de testes.
