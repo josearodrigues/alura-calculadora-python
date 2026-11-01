@@ -46,30 +46,43 @@ Este repositório tem finalidade educacional e demonstra conceitos de Engenharia
 ## Estrutura do Projeto
 
 ```text
-calculadora-python/
+alura-calculadora-python/
 ├── calculadora/
 │   ├── __init__.py
-│   ├── interface.py          # Interface desktop Tkinter
-│   ├── operacoes.py          # Operações matemáticas e formatação
-│   └── validacao.py          # Validação e conversão de entradas
+│   ├── expressoes.py          # Avaliação segura de expressões
+│   ├── historico.py           # Histórico e recuperação via ANS
+│   ├── interface.py           # Interface desktop Tkinter
+│   ├── operacoes.py           # Operações matemáticas e formatação
+│   └── validacao.py           # Validação e conversão de entradas
 ├── tests/
 │   ├── __init__.py
+│   ├── test_expressoes.py
+│   ├── test_historico.py
 │   ├── test_integracao.py
+│   ├── test_interface_desktop.py
 │   ├── test_operacoes.py
 │   └── test_validacao.py
 ├── docs/
-│   ├── calculadora-2.0-plano.md\n│   ├── ESTADO-ATUAL.md\n│   └── REGISTRO-DIVERGENCIAS.md
+│   ├── design/
+│   │   └── referencias/
+│   │       └── calculadora-2.0-mockup.png
+│   ├── calculadora-2.0-adendo.md
+│   ├── calculadora-2.0-plano.md
+│   ├── ESTADO-ATUAL.md
+│   ├── implementation_plan.md
+│   └── REGISTRO-DIVERGENCIAS.md
+├── .gitignore
 ├── .nojekyll                 # Desativa o processamento Jekyll no GitHub Pages
-├── index.html                # Interface web
-├── style.css                 # Estilos da interface web
 ├── app.js                    # Integração da interface web com Python
-├── tests_web.js              # Testes automatizados web
-├── testes.html               # Executador visual dos testes web
 ├── app.py                    # Servidor HTTP local
-├── main.py                   # Ponto de entrada desktop
 ├── CHANGELOG.md
+├── index.html                # Interface web
 ├── LICENSE
-└── README.md
+├── main.py                   # Ponto de entrada desktop
+├── README.md
+├── style.css                 # Estilos da interface web
+├── testes.html               # Executor visual dos testes web
+└── tests_web.js              # Testes automatizados web
 ```
 
 ---
