@@ -3,9 +3,15 @@
  * Casos voltados à interface atual e à integração com Pyodide.
  */
 const relatorioTestes=[];
+let notificarResultadoTeste=null;
 function registrarResultadoTeste(id,descricao,status,detalhes=""){
- relatorioTestes.push({id,descricao,status,passou:status==="APROVADO",detalhes});
+ const resultado={id,descricao,status,passou:status==="APROVADO",detalhes};
+ relatorioTestes.push(resultado);
  console.log(`[TESTE WEB ${status}] ${id}: ${descricao}${detalhes?` (${detalhes})`:""}`);
+ if(notificarResultadoTeste){
+  try{notificarResultadoTeste(resultado);}
+  catch(e){console.warn("Falha ao atualizar a tabela de testes:",e);}
+ }
 }
 function exigir(ok,msg){if(!ok)throw new Error(msg);}
 function el(doc,sel){const e=doc.querySelector(sel);exigir(!!e,`Elemento ausente: ${sel}`);return e;}
@@ -46,14 +52,16 @@ const casosTeste=[
 ["Memória: armazenar e recuperar resultado",({doc})=>{for(const a of ["8","equals","memory-store","clear","memory-recall","equals"])tecla(doc,a);exigir(el(doc,"#visor-resultado").textContent==="8","Memória não recuperou 8.");}],
 ["Renderização e recuperação pela lista de histórico",({app,doc})=>{app.avaliarExpressao("9*9");app.renderizarHistorico();el(doc,"#lista-historico button.item-historico").click();exigir(el(doc,"#visor-resultado").textContent==="81","Histórico não recuperou 81.");}]
 ].map(([descricao,executar,prepararCaso=true],i)=>({id:`TW-${String(i+1).padStart(2,"0")}`,descricao,executar,preparar:prepararCaso}));
-async function executarTodosOsTestesWeb(){
+async function executarTodosOsTestesWeb(onResultado=null){
+ notificarResultadoTeste=typeof onResultado==="function"?onResultado:null;
  relatorioTestes.length=0;console.log(`=== SUÍTE WEB: ${casosTeste.length} CENÁRIOS ===`);
  const doc=window.documentContexto||document,app=window.calculadoraApp;let tentativas=0;
  while((!app||!app.pyodidePronto())&&tentativas<80){await new Promise(r=>setTimeout(r,250));tentativas++;}
  const pyodideInst=app&&app.pyodidePronto()?app.obterPyodide():null,ctx={doc,app,pyodideInst};
- if(!app||!pyodideInst){registrarResultadoTeste("TW-01",casosTeste[0].descricao,"FALHOU","Pyodide indisponível.");marcarNaoExecutados(casosTeste,1,"Falha na inicialização.");return relatorioTestes;}
+ if(!app||!pyodideInst){registrarResultadoTeste("TW-01",casosTeste[0].descricao,"FALHOU","Pyodide indisponível.");marcarNaoExecutados(casosTeste,1,"Falha na inicialização.");notificarResultadoTeste=null;return relatorioTestes;}
  for(const c of casosTeste)await executarCaso(c,ctx);
  try{preparar(ctx);}catch(e){console.error("Falha na limpeza final:",e);}
+ notificarResultadoTeste=null;
  return relatorioTestes;
 }
 window.executarTodosOsTestesWeb=executarTodosOsTestesWeb;
