@@ -1,6 +1,6 @@
 # Calculadora Python | Engenharia de Software
 
-Uma calculadora com duas interfaces complementares: desktop nativa com **Tkinter** e web client-side com **Pyodide / WebAssembly**, desenvolvida como atividade prática no contexto da **Imersão Engenharia de Software: Dev na Era da IA**, iniciativa da [**Alura Imersões**](https://www.alura.com.br/), realizada em parceria com o [**Google for Startups**](https://startup.google.com/intl/pt-BR/).
+Este repositório mantém duas versões independentes da calculadora: a baseline publicada `v2.0.0`, preservada na raiz, e a evolução `v2.1.0`, organizada em `v2.1.0/`. Cada versão possui seus próprios arquivos de aplicação, interfaces e testes. A documentação compartilhada permanece na raiz. O projeto foi desenvolvido como atividade prática no contexto da **Imersão Engenharia de Software: Dev na Era da IA**, iniciativa da [**Alura Imersões**](https://www.alura.com.br/), realizada em parceria com o [**Google for Startups**](https://startup.google.com/intl/pt-BR/).
 
 O desenvolvimento contou com o apoio de ferramentas de inteligência artificial em diferentes etapas da jornada: **Google AI Studio**, utilizado no Desafio 1, e **Google Antigravity**, utilizado no Desafio 2. Essas ferramentas apoiaram a concepção, implementação e evolução da aplicação, sem substituir a análise das decisões técnicas, a compreensão do código ou a validação dos resultados.
 
@@ -47,96 +47,73 @@ Este repositório tem finalidade educacional e demonstra conceitos de Engenharia
 
 ```text
 alura-calculadora-python/
-├── calculadora/
-│   ├── __init__.py
-│   ├── expressoes.py          # Avaliação segura de expressões
-│   ├── historico.py           # Histórico e recuperação via ANS
-│   ├── interface.py           # Interface desktop Tkinter
-│   ├── operacoes.py           # Operações matemáticas e formatação
-│   └── validacao.py           # Validação e conversão de entradas
-├── tests/
-│   ├── __init__.py
-│   ├── test_expressoes.py
-│   ├── test_historico.py
-│   ├── test_integracao.py
-│   ├── test_interface_desktop.py
-│   ├── test_operacoes.py
-│   └── test_validacao.py
-├── docs/
-│   ├── design/
-│   │   └── referencias/
-│   │       └── calculadora-2.0-mockup.png
-│   ├── calculadora-2.0-adendo.md
-│   ├── calculadora-2.0-plano.md
-│   ├── ESTADO-ATUAL.md
-│   ├── implementation_plan.md
-│   └── REGISTRO-DIVERGENCIAS.md
+├── calculadora/                 # Aplicação Python da v2.0.0
+├── tests/                       # Testes Python da v2.0.0
+├── v2.1.0/                      # Aplicação independente da v2.1.0
+│   ├── calculadora/
+│   ├── tests/
+│   ├── app.js
+│   ├── app.py
+│   ├── index.html
+│   ├── main.py
+│   ├── style.css
+│   ├── testes.html
+│   └── tests_web.js
+├── docs/                        # Documentação compartilhada
 ├── .gitignore
-├── .nojekyll                 # Desativa o processamento Jekyll no GitHub Pages
-├── app.js                    # Integração da interface web com Python
-├── app.py                    # Servidor HTTP local
+├── .nojekyll
+├── app.js                       # Interface Web da v2.0.0
+├── app.py                       # Servidor HTTP local
 ├── CHANGELOG.md
-├── index.html                # Interface web
+├── index.html                   # Entrada Web da v2.0.0
 ├── LICENSE
-├── main.py                   # Ponto de entrada desktop
+├── main.py                      # Entrada desktop da v2.0.0
 ├── README.md
-├── style.css                 # Estilos da interface web
-├── testes.html               # Executor visual dos testes web
-└── tests_web.js              # Testes automatizados web
+├── style.css
+├── testes.html
+└── tests_web.js
 ```
+
+A raiz serve a versão `v2.0.0`. A pasta `v2.1.0/` contém a evolução sem substituir os arquivos da baseline. `docs/`, `README.md`, `CHANGELOG.md` e `LICENSE` são compartilhados e não foram duplicados dentro da pasta da versão.
 
 ---
 
 ## Como Executar
 
-### 1. Aplicação Desktop (Tkinter)
+A versão executada depende do diretório de trabalho.
 
-#### Pré-requisitos
-- Python 3 com suporte ao módulo `tkinter`.
-- Ambiente desktop com servidor gráfico ativo.
+### v2.0.0 — aplicação preservada na raiz
 
-Para verificar a disponibilidade do Tkinter:
+**Desktop (Tkinter):**
 
 ```bash
-python3 -m tkinter
-```
-
-No Ubuntu/Debian, se necessário:
-
-```bash
-sudo apt update && sudo apt install python3-tk
-```
-
-#### Executar
-
-```bash
-# Windows
-python main.py
-
-# Linux / macOS
 python3 main.py
 ```
 
----
-
-### 2. Interface Web (Pyodide / WebAssembly)
-
-A interface web pode ser servida localmente utilizando o servidor HTTP da Biblioteca Padrão do Python, sem necessidade de Node.js ou npm.
+**Web (Pyodide):**
 
 ```bash
 python3 app.py
 ```
 
-Alternativamente:
+Acesse `http://localhost:3000/` para a calculadora e `http://localhost:3000/testes.html` para os testes Web da v2.0.0.
+
+### v2.1.0 — aplicação em `v2.1.0/`
+
+**Desktop (Tkinter):**
 
 ```bash
-python3 -m http.server 3000 --bind 127.0.0.1
+cd v2.1.0
+python3 main.py
 ```
 
-- Calculadora web: `http://localhost:3000`
-- Testes web: `http://localhost:3000/testes.html`
+**Web (Pyodide):**
 
-**Observação:** a interface web carrega o Pyodide v0.27.8 pela CDN oficial e, portanto, necessita de conexão com a internet para carregar o runtime.
+Com o terminal na raiz do repositório, inicie `python3 app.py` e acesse `http://localhost:3000/v2.1.0/` para a calculadora e `http://localhost:3000/v2.1.0/testes.html` para os testes Web da v2.1.0.
+
+O servidor HTTP serve o diretório em que foi iniciado. Também é possível iniciar `python3 app.py` de dentro de `v2.1.0/` para servir essa versão na raiz de um servidor separado.
+
+**Observação:** as interfaces Web carregam o Pyodide v0.27.8 pela CDN oficial e precisam de conexão com a internet para carregar o runtime.
 
 ---
 
@@ -169,52 +146,47 @@ Os atalhos variam ligeiramente entre as interfaces:
 
 ## Como Executar os Testes Automatizados
 
-O projeto possui duas suítes de testes independentes e complementares.
+As versões possuem suítes independentes. Execute cada uma a partir do diretório correspondente para evitar importar os módulos da versão errada.
 
-### A. Testes Python (`unittest`) — 92 testes na branch de desenvolvimento
-
-Testam as operações matemáticas, a validação de entradas e os fluxos de integração, sem necessidade de abrir a interface gráfica.
+### v2.0.0 — testes Python da raiz
 
 ```bash
 python3 -m unittest discover -s tests -v
 ```
 
-<details>
-<summary>Ver resumo dos testes Python da baseline publicada</summary>
+A baseline publicada possui 25 testes Python e 11 cenários Web, conforme os registros da versão `v2.0.0`.
 
-- 13 testes de operações matemáticas e formatação.
-- 7 testes de validação de entradas.
-- 5 testes de integração dos fluxos da aplicação.
+### v2.1.0 — testes Python
 
-**Baseline `v2.0.0`:** 25 testes aprovados na validação da publicação. **Branch de desenvolvimento:** 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
+```bash
+cd v2.1.0
+python3 -m unittest discover -s tests -v
+```
 
-</details>
+Resultado informado pelo usuário em 31/10/2026: **92/92 testes aprovados**.
 
-### B. Testes Web (`tests_web.js`) — 31 cenários na branch de desenvolvimento
+### Testes Web
 
-Validam o funcionamento da interface web no navegador, incluindo inicialização do Pyodide, carregamento dos módulos Python, operações matemáticas, validações, limpeza dos campos e gerenciamento dos recursos utilizados na integração.
+Com o servidor iniciado na raiz:
 
-Para executar:
+- v2.0.0: `http://localhost:3000/testes.html`
+- v2.1.0: `http://localhost:3000/v2.1.0/testes.html`
 
-1. Inicie o servidor local conforme as instruções anteriores.
-2. Acesse `http://localhost:3000/testes.html`.
-3. Acompanhe os resultados apresentados na página.
+Resultado informado pelo usuário em 01/11/2026 para a v2.1.0: **31/31 cenários aprovados, 0 falhas e 0 não executados**.
 
-**Baseline `v2.0.0`:** 11 testes web. **Branch de desenvolvimento:** 31/31 aprovados, 0 falhas e 0 não executados, conforme resultado exibido na página e informado pelo usuário em 01/11/2026.
+Os resultados acima são registros das execuções informadas pelo usuário; esta atualização documental não representa uma nova execução dos testes.
 
 ---
 
 ## Organização Interna
 
-- **`calculadora/operacoes.py`:** implementação das operações matemáticas e formatação dos resultados.
-- **`calculadora/validacao.py`:** validação e conversão dos operandos.
-- **`calculadora/interface.py`:** interface gráfica desktop com Tkinter.
-- **`app.js`:** integração da interface web com os módulos Python executados pelo Pyodide.
-- **`index.html` e `style.css`:** estrutura e apresentação da interface web.
-- **`app.py`:** servidor HTTP local para disponibilizar a interface web.
-- **`tests/` e `tests_web.js`:** suítes de testes automatizados.
+- **Raiz:** aplicação histórica `v2.0.0`, com arquivos Python, interface Web e testes próprios.
+- **`v2.1.0/`:** aplicação evoluída, com módulos Python, interface Web e testes próprios.
+- **`docs/`:** plano original, registro de divergências e estado atual compartilhados.
+- **`README.md`, `CHANGELOG.md` e `LICENSE`:** documentação e licença comuns ao repositório.
+- **`.nojekyll`:** permanece na raiz para a publicação estática no GitHub Pages.
 
-A lógica das operações e validações permanece nos módulos Python, compartilhados pelas duas interfaces.
+As referências de recursos das interfaces Web são relativas ao diretório de cada versão. Assim, a aplicação em `v2.1.0/` carrega os arquivos correspondentes dentro desse subdiretório.
 
 ---
 
@@ -227,9 +199,12 @@ A lógica das operações e validações permanece nos módulos Python, comparti
 
 ---
 
-## Estado da Evolução
+## Estado das Versões
 
-O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A validação integrada local via `app.py` foi confirmada pelo usuário em 01/11/2026. A Fase 5 está concluída no escopo documentado; a evolução `v2.1.0` ainda não foi publicada.
+- **v2.0.0:** baseline publicada, preservada na raiz do repositório.
+- **v2.1.0:** evolução validada no escopo documentado, organizada em `v2.1.0/`; ainda não publicada como release.
+- A coexistência dos diretórios na branch de trabalho não altera, por si só, a branch `main` nem a publicação existente.
+- Os resultados de validação da v2.1.0 estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
 
 ---
 
