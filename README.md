@@ -1,8 +1,8 @@
 # Calculadora Python | Engenharia de Software
 
-Uma calculadora com duas interfaces complementares: desktop nativa com **Tkinter** e web client-side com **Pyodide / WebAssembly**, desenvolvida como atividade acadêmica do desafio proposto na **Imersão Engenharia de Software: Dev na Era da IA**, da [Alura](https://www.alura.com.br/).
+Uma calculadora com duas interfaces complementares: desktop nativa com **Tkinter** e web client-side com **Pyodide / WebAssembly**, desenvolvida como atividade prática no contexto da **Imersão Engenharia de Software: Dev na Era da IA**, iniciativa da [**Alura Imersões**](https://www.alura.com.br/), realizada em parceria com o [**Google for Startups**](https://startup.google.com/intl/pt-BR/).
 
-O desafio foi realizado com o **Google AI Studio** como ferramenta de apoio à geração e evolução da aplicação. A solução foi organizada em módulos Python, acompanhada de testes automatizados e documentada para facilitar a compreensão de sua estrutura e funcionamento.
+O desenvolvimento contou com o apoio de ferramentas de inteligência artificial em diferentes etapas da jornada: **Google AI Studio**, utilizado no Desafio 1, e **Google Antigravity**, utilizado no Desafio 2. Essas ferramentas apoiaram a concepção, implementação e evolução da aplicação, sem substituir a análise das decisões técnicas, a compreensão do código ou a validação dos resultados.
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 

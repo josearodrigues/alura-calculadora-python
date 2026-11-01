@@ -203,3 +203,47 @@ A função `raiz_n(radicando, indice)` implementa a seguinte regra formal no dom
 - **Nenhum arquivo do projeto foi alterado até o presente momento.**
 
 O adendo técnico está agora completamente salvo em disco e disponível para consulta. **Aguardando sua autorização expressa para iniciar a implementação da Fase 1.**
+
+---
+
+## 9. Atualização posterior — Evolução para a versão 2.1.0
+
+Esta seção registra a evolução realizada após o estado documentado na seção 8, preservando o histórico das decisões anteriores.
+
+### 9.1. Funcionalidades matemáticas e operacionais implementadas
+
+- Ampliação do motor matemático com:
+  - Potenciação (`potencia` / `^`).
+  - Raiz quadrada (`raiz_quadrada` / `sqrt`).
+  - Raiz de índice qualquer (`raiz_n` / `root`).
+  - Valor absoluto (`valor_absoluto` / `abs`).
+  - Inverso (`inverso` / `inv`).
+  - Troca de sinal por operadores unários.
+
+- Evolução do avaliador de expressões:
+  - Suporte a expressões combinadas e parênteses.
+  - Percentual contextual (`%`).
+  - Continuidade do resultado anterior (`ANS`).
+  - Parser próprio para avaliação controlada das expressões.
+
+- Implementação do histórico de operações.
+
+- Implementação das operações de memória na interface Tkinter:
+  - MC — limpar memória.
+  - MR — recuperar memória.
+  - M+ — somar resultado à memória.
+  - M- — subtrair resultado da memória.
+  - MS — armazenar resultado na memória.
+
+### 9.2. Validação automatizada
+
+- Suíte completa executada com `python3 -m unittest discover -s tests -v`.
+- Resultado: 87 testes aprovados.
+- Testes específicos da interface desktop: 16 testes aprovados.
+- Verificação de integridade do diff com `git diff --check`, sem erros.
+
+### 9.3. Estado da versão
+
+- A versão `v2.0.0` permanece preservada como baseline histórica.
+- A versão `v2.1.0` está planejada para consolidar as novas funcionalidades.
+- A publicação da nova versão depende da conclusão da revisão final e da aprovação do projeto.
