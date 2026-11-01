@@ -3,67 +3,83 @@
 **Projeto:** Calculadora Python — Desafio 2  
 **Repositório:** `josearodrigues/alura-calculadora-python`  
 **Branch de referência:** `desafio-2-revisao-final`  
-**Documento criado em:** 31/10/2026  
-**Última conferência remota:** 31/10/2026  
-**Finalidade:** manter rastreabilidade entre os critérios publicados, a implementação realizada e as decisões tomadas durante a conclusão das fases.
+**Criado em:** 31/10/2026  
+**Última atualização:** 31/10/2026
 
-> Este documento é complementar ao plano original. Não altera seus critérios nem reescreve seu histórico. A execução das próximas atividades seguirá os critérios da fase correspondente publicados no GitHub. Divergências serão registradas e avaliadas, sem serem tratadas automaticamente como erros ou como autorização para ampliar o escopo.
+> Documento complementar ao plano original. Os critérios publicados permanecem preservados como referência histórica e de rastreabilidade. As adaptações aceitas são registradas separadamente, sem reescrever os requisitos originais.
 
-## 1. Referência de execução
+## 1. Referência da Fase 3
 
-A referência para a conclusão da Fase 3 é a seção **“Fase 3 — Interface Desktop Tkinter (Calculadora 2.0 Dark)”** de [docs/calculadora-2.0-plano.md](calculadora-2.0-plano.md), na branch `desafio-2-revisao-final`.
+A referência é a seção **“Fase 3 — Interface Desktop Tkinter (Calculadora 2.0 Dark)”** de [docs/calculadora-2.0-plano.md](calculadora-2.0-plano.md), na branch `desafio-2-revisao-final`.
 
-A fase especifica: janela Tkinter Dark, visor duplo, teclado completo, botão de raiz enésima com template `root(` e separador `;`, recuperação do histórico, continuidade com ANS, limpeza do histórico preservando ANS, botões de memória desabilitados com indicação “Em breve” e atalhos físicos.
+Os critérios incluem: janela de 720×560 px, tema Dark, visor duplo, teclado completo, template de raiz enésima `root(` com separador `;`, recuperação de histórico com atualização do ANS, continuidade após recuperação, limpeza do histórico preservando ANS, botões de memória desabilitados com indicação “Em breve” e atalhos físicos.
 
-**Regra de continuidade:** concluir e validar os critérios dessa fase antes de avançar. Nas fases seguintes, consultar os critérios publicados da respectiva fase e atualizar este registro.
+## 2. Adaptações aceitas para a implementação desktop
 
-## 2. Divergências identificadas na versão remota consultada
+Em 31/10/2026, o usuário aceitou manter as seguintes escolhas já implementadas:
 
-Base da análise: código e documentos disponíveis na branch `desafio-2-revisao-final`, commit `53de65a764e1f68f7126a2a4d12723a6bb3efea5`.
-
-| ID | Critério / referência | Evidência encontrada | Situação |
+| ID | Critério publicado | Implementação mantida | Decisão |
 |---|---|---|---|
-| D-01 | Janela de 720×560 px | `calculadora/interface.py` configura `740x580` e tamanho mínimo `700x540`. | Divergência confirmada no remoto |
-| D-02 | Botões de memória desabilitados com indicação visual “Em breve” | Os cinco botões são criados com `state=tk.DISABLED`. A expressão “Em breve” aparece na docstring do método, mas não no texto ou em outro elemento visual apresentado ao usuário. | Atendimento parcial no remoto |
-| D-03 | Identificação da versão | A janela e o cabeçalho exibem “Calculadora 2.0”; a docstring da classe identifica “Calculadora 2.1”. | Inconsistência de identificação no remoto |
-| D-04 | Testes da interface | O arquivo remoto `tests/test_interface_desktop.py` contém quatro métodos de teste. O `setUp()` converte qualquer exceção de inicialização em teste ignorado. | Cobertura e tratamento a revisar |
-| D-05 | Plano e documentação | O README remoto consultado ainda descreve a estrutura e a contagem de testes de uma versão anterior à evolução da interface. | Documentação desatualizada no remoto |
+| A-01 | Janela de 720×560 px | Janela configurada em 740×580 px, com mínimo de 700×540 px. | Aceita. Não alterar a dimensão desktop nesta revisão. |
+| A-02 | Botões MC/MR/M+/M-/MS desabilitados, com indicação “Em breve”. | Botões de memória funcionais, com operações de armazenar, recuperar, somar, subtrair e limpar. | Aceita como evolução antecipada. Manter funcionalidade. |
 
-## 3. Evoluções relatadas além do escopo da Fase 3
+**Importante:** essas adaptações dizem respeito exclusivamente à interface desktop Tkinter. Não definem dimensões nem requisitos da futura interface web, que será implementada e validada separadamente na Fase 4.
 
-Os itens abaixo foram relatados durante as sessões de trabalho, mas precisam ser confrontados com a cópia local e com os commits antes de serem considerados parte do estado confirmado do repositório:
+O plano original não será alterado para fazer os requisitos parecerem iguais à implementação. A diferença entre requisito publicado e decisão aceita permanece explícita.
 
-| ID | Evolução relatada | Relação com o plano | Confirmação necessária |
+## 3. Estado observado no código remoto
+
+Base da conferência: arquivos da branch `desafio-2-revisao-final` consultados em 31/10/2026.
+
+| ID | Comportamento | Evidência observada | Situação |
 |---|---|---|---|
-| E-01 | Implementação das operações de memória MC, MR, M+, M- e MS. | O plano deixa os botões desabilitados na Fase 3 e prevê a ativação da memória em uma evolução posterior, indicada como v2.2.0. | Conferir código local, testes e decisão de escopo/versionamento. |
-| E-02 | Ampliação dos testes da interface para 16 casos. | O arquivo remoto consultado contém quatro métodos de teste. | Conferir suíte local, resultado e correspondência entre testes e funcionalidades. |
-| E-03 | Suíte geral com 87 testes aprovados. | Resultado informado em sessão anterior. | Não repetir sem necessidade; confirmar histórico/relatório e se o código testado corresponde ao estado atual. |
-| E-04 | Validação manual da interface e das operações de memória. | Validação informada pelo usuário. | Preservar como validação manual relatada; detalhar eventuais lacunas sem exigir repetição desnecessária. |
+| C-01 | Dimensões da janela | `calculadora/interface.py`: `geometry("740x580")` e `minsize(700, 540)`. | Adaptação A-01 aceita |
+| C-02 | Tema e visor | Tema `#0D1B2A`, expressão em cinza claro e resultado em ciano `#22D3EE`. | Implementado |
+| C-03 | Teclado e raiz enésima | Teclado completo; `_aplicar_raiz_n()` insere `root(` ou `root(valor; ` após resultado. | Implementado; teste direcionado pendente |
+| C-04 | Recuperação do histórico | `_recuperar_historico_por_id()` chama `historico.recuperar_entrada()`, restaura expressão/resultado e ativa o estado de resultado calculado. O modelo atualiza ANS para o valor recuperado. | Implementado; teste direcionado pendente |
+| C-05 | Continuidade após recuperação | `_adicionar_operador()` utiliza o resultado exibido quando `_resultado_calculado` está ativo. | Implementado; teste direcionado pendente |
+| C-06 | Limpeza do histórico | `limpar_historico()` remove registros visuais e do modelo; `HistoricoSessao.limpar_historico()` preserva ANS. | Implementado; teste direcionado pendente |
+| C-07 | Memória | Os cinco botões são funcionais e possuem métodos correspondentes. | Adaptação A-02 aceita |
+| C-08 | Atalhos físicos | Tratamento de dígitos, operadores, parênteses, Enter, Backspace, Escape/Delete e Ctrl+C em `_ao_pressionar_tecla()`. | Implementado; cobertura direcionada pendente |
+| C-09 | Testes de interface | `tests/test_interface_desktop.py` contém 16 métodos de teste na versão consultada. | Cobertura existente; ampliar nos comportamentos listados acima |
 
-## 4. Divergência de planejamento e versionamento
+## 4. Evoluções além do escopo originalmente previsto
 
-O plano original estabelece:
-- Fase 3: interface desktop, com memória desabilitada;
-- Fase 4: interface web;
-- Fase 5: validação integrada, regressão e documentação;
-- versão final planejada para o conjunto das fases: `v2.1.0`;
-- ativação da memória como evolução posterior, indicada como `v2.2.0`.
+| ID | Evolução | Relação com o plano | Situação |
+|---|---|---|---|
+| E-01 | Operações de memória MC, MR, M+, M- e MS. | O plano previa os botões desabilitados na Fase 3 e a memória em evolução posterior. | Implementadas e mantidas por decisão do usuário. |
+| E-02 | Ampliação dos testes da interface para 16 métodos. | Amplia a cobertura da Fase 3. | Código remoto conferido; resultado de execução atual ainda não revalidado nesta auditoria. |
+| E-03 | Suíte geral com 87 testes aprovados. | Resultado informado em sessão anterior. | Registro histórico; não reexecutado nesta conferência. |
+| E-04 | Validação manual da interface desktop pelo usuário. | Validação funcional da GUI. | Considerada realizada conforme confirmação anterior do usuário; não repetir sem justificativa. |
 
-A implementação de memória relatada durante a Fase 3 ultrapassa esse escopo. Isso deve ser tratado como **desvio de escopo já ocorrido**, não como alteração retroativa do plano. A decisão sobre manter, reclassificar ou adiar essa funcionalidade e seus efeitos sobre a versão será registrada quando confrontarmos o estado local e os critérios aplicáveis. Nenhuma tag ou release é presumida por este documento.
+## 5. Pendências da auditoria da Fase 3
 
-## 5. Pendências de confirmação
+- [ ] Acrescentar testes direcionados para template `root(` e sua variante após resultado.
+- [ ] Acrescentar teste de recuperação de um registro do histórico, incluindo atualização do ANS.
+- [ ] Acrescentar teste da continuidade do cálculo após recuperar um registro.
+- [ ] Acrescentar teste de limpeza do histórico preservando ANS.
+- [ ] Acrescentar teste direcionado aos atalhos físicos essenciais.
+- [ ] Executar os testes novos e a suíte de regressão pertinente no ambiente local.
+- [ ] Atualizar o documento `docs/ESTADO-ATUAL.md` no repositório, após conferir o estado local e remoto.
+- [ ] Fechar a revisão documental e confirmar os critérios restantes da Fase 3 antes de iniciar a Fase 4.
 
-- [ ] Confrontar este registro com o estado local da branch de trabalho.
-- [ ] Identificar alterações locais, staged, commits e estado remoto separadamente.
-- [ ] Verificar os critérios da Fase 3 no código local, incluindo dimensões, indicação “Em breve” e atalhos.
-- [ ] Confirmar implementação e testes de memória sem confundir funcionalidade implementada com escopo aprovado.
-- [ ] Fechar a revisão funcional, visual e documental da Fase 3.
-- [ ] Atualizar este registro com evidências e decisões antes de iniciar a fase seguinte.
+As adaptações A-01 e A-02 não são pendências de correção: foram aceitas e devem permanecer como decisões registradas.
 
-## 6. Histórico de atualizações
+## 6. Versionamento e sequência
+
+O plano original organiza a Fase 3 como interface desktop, a Fase 4 como interface web e a Fase 5 como validação integrada, regressão e documentação. A memória foi implementada antecipadamente; sua manutenção não altera a separação entre desktop e web.
+
+Nenhuma tag, release ou versão nova é presumida por este registro. A identificação da versão deve ser conferida em conjunto com o estado Git e a documentação antes de qualquer publicação.
+
+## 7. Histórico de atualizações
 
 ### 31/10/2026 — Registro inicial
-- Consultada a seção da Fase 3 do plano na branch `desafio-2-revisao-final`.
-- Registradas divergências observadas no código e na documentação remotos.
-- Registradas separadamente as evoluções locais relatadas em sessões anteriores, ainda sujeitas a confronto com o repositório.
-- Definido que os critérios publicados da fase serão a referência de execução, mesmo que o plano geral tenha ficado desatualizado.
+- Foram documentadas divergências observadas na consulta inicial dos arquivos remotos.
+- Foram separadas as evoluções relatadas que ainda precisavam de confronto com o código.
+
+### 31/10/2026 — Auditoria e decisões do usuário
+- Conferidos novamente `calculadora/interface.py`, `calculadora/historico.py` e `tests/test_interface_desktop.py`.
+- Confirmados no código remoto: janela 740×580, memória funcional, recuperação do histórico com atualização do ANS e 16 métodos de teste da interface.
+- O usuário aceitou manter a dimensão desktop 740×580 e a memória funcional.
+- Preservados os critérios originais no plano e registradas as duas adaptações como decisões aceitas.
+- Identificadas lacunas de testes direcionados; sua inclusão e execução permanecem pendentes.
