@@ -182,8 +182,8 @@ Resultado numérico confirmado pelo usuário na página: **31/31 aprovados, 0 fa
 ### Estado remoto e local
 A branch remota foi consultada após as atualizações e está em `2b02e027d93ed247b8ed3fda951144d19a5e5d85`. O estado local do usuário não é verificável por esta consulta remota e precisa ser sincronizado. A versão publicada conhecida continua `v2.0.0`; `v2.1.0` permanece não publicada.
 
-### Critério ainda necessário para encerrar a Fase 5
-Executar `python3 app.py` no ambiente local, confirmar o acesso à interface e à página de testes, e então atualizar este documento com o resultado observado. Até lá, não declarar a Fase 5 nem o Desafio 2 concluídos.
+### Critério que estava pendente naquele registro
+A confirmação local foi recebida posteriormente e está documentada na seção 11. A Fase 5 está concluída no escopo documentado.
 
 
 ## 11. Encerramento da Fase 5 — 01/11/2026
