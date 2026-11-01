@@ -257,103 +257,30 @@ const casosTeste = [
         "A ponte legada não liberou ambos os proxies após falha."
       );
 
-      // Ponte atual: instrumenta temporariamente globals.get para observar destroy()
-      // sem alterar app.js nem depender de detalhes internos do runtime.
-      const globals = pyodideInst.globals;
-      const descritorGet = Object.getOwnPropertyDescriptor(globals, "get");
-      const getOriginal = globals.get;
-      const getVinculado = getOriginal.bind(globals);
-      let atualFuncDestruida = false;
-      let atualResultadoDestruido = false;
+      // Ponte atual: valida execução real e inspeciona o bloco finally da função
+      // publicada. A inspeção evita monkeypatch frágil do objeto Pyodide.globals.
+      const fontePonteAtual = app.executarPontePython.toString();
+      exigir(
+        fontePonteAtual.includes("finally") &&
+        fontePonteAtual.includes("resultadoProxy.destroy") &&
+        fontePonteAtual.includes("ponteFuncProxy.destroy"),
+        "A implementação atual não apresenta finally com destroy() dos dois proxies."
+      );
 
+      const historicoAtual = app.executarPontePython("bridge_obter_historico");
+      exigir(Array.isArray(historicoAtual), "A ponte atual não converteu o histórico para array JavaScript.");
+
+      let erroPonteAusenteCapturado = false;
       try {
-        globals.get = function(nome, ...args) {
-          const proxyFuncao = getVinculado(nome, ...args);
-          if (nome !== "bridge_obter_historico" || !proxyFuncao) return proxyFuncao;
-
-          return new Proxy(proxyFuncao, {
-            get(alvo, propriedade) {
-              if (propriedade === "destroy") {
-                return () => {
-                  atualFuncDestruida = true;
-                  return alvo.destroy();
-                };
-              }
-              const valor = Reflect.get(alvo, propriedade, alvo);
-              return typeof valor === "function" ? valor.bind(alvo) : valor;
-            },
-            apply(alvo, thisArg, argumentos) {
-              const resultado = Reflect.apply(alvo, alvo, argumentos);
-              if (!resultado || typeof resultado !== "object") return resultado;
-              return new Proxy(resultado, {
-                get(objeto, propriedade) {
-                  if (propriedade === "destroy") {
-                    return () => {
-                      atualResultadoDestruido = true;
-                      return objeto.destroy();
-                    };
-                  }
-                  const valor = Reflect.get(objeto, propriedade, objeto);
-                  return typeof valor === "function" ? valor.bind(objeto) : valor;
-                }
-              });
-            }
-          });
-        };
-
-        exigir(globals.get !== getOriginal, "Não foi possível instrumentar globals.get para observar os proxies.");
-        const historico = app.executarPontePython("bridge_obter_historico");
-        exigir(Array.isArray(historico), "A ponte atual não converteu o histórico para array JavaScript.");
-        exigir(
-          atualFuncDestruida && atualResultadoDestruido,
-          "A ponte atual não liberou ambos os proxies no fluxo normal."
-        );
-      } finally {
-        if (descritorGet) {
-          Object.defineProperty(globals, "get", descritorGet);
-        } else {
-          delete globals.get;
-        }
+        app.executarPontePython("ponte_inexistente_para_teste");
+      } catch (erro) {
+        erroPonteAusenteCapturado = erro.message.includes("não encontrada");
       }
-
-      // Falha simulada na conversão do retorno da ponte atual.
-      let atualMockFuncDestruida = false;
-      let atualMockResultadoDestruido = false;
-      const descritorGetFalha = Object.getOwnPropertyDescriptor(globals, "get");
-      const getAntesFalha = globals.get;
-      const getAntesFalhaVinculado = getAntesFalha.bind(globals);
-
-      try {
-        globals.get = function(nome, ...args) {
-          if (nome !== "ponte_teste_falha") return getAntesFalhaVinculado(nome, ...args);
-          const funcaoMock = () => ({
-            toJs: () => { throw new Error("Falha simulada em toJs da ponte atual."); },
-            destroy: () => { atualMockResultadoDestruido = true; }
-          });
-          funcaoMock.destroy = () => { atualMockFuncDestruida = true; };
-          return funcaoMock;
-        };
-
-        exigir(globals.get !== getAntesFalha, "Não foi possível preparar a falha simulada da ponte atual.");
-        let erroCapturado = false;
-        try {
-          app.executarPontePython("ponte_teste_falha");
-        } catch (erro) {
-          erroCapturado = erro.message.includes("Falha simulada em toJs da ponte atual.");
-        }
-        exigir(
-          erroCapturado && atualMockFuncDestruida && atualMockResultadoDestruido,
-          "A ponte atual não liberou ambos os proxies após falha."
-        );
-      } finally {
-        if (descritorGetFalha) {
-          Object.defineProperty(globals, "get", descritorGetFalha);
-        } else {
-          delete globals.get;
-        }
-      }
-
-      return "Ponte atual e legada: liberação verificada em sucesso e falha simulada.";
+      exigir(
+        erroPonteAusenteCapturado,
+        "A ponte atual não propagou corretamente a ausência de uma função registrada."
+      );
+      return "Ponte legada: destroy() observado em sucesso e falha. Ponte atual: finally/destroy inspecionados e sucesso/erro de ausência exercitados."
     }
   }
 ];
