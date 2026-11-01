@@ -6,7 +6,7 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Status:** versão `v2.0.0` publicada. A aplicação possui a interface desktop original em Tkinter e uma interface web complementar que executa Python no navegador via Pyodide v0.27.8. As duas suítes de testes foram aprovadas: 25 testes Python (`unittest`) e 11 testes web.
+ > **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução ainda não publicada. Nesta branch, a suíte Python possui 92 testes (resultado anteriormente informado: 92/92 aprovados) e a suíte Web contém 31 cenários. O usuário confirmou o funcionamento da suíte Web e a apresentação da página de testes em 01/11/2026; a validação integrada final permanece pendente na Fase 5.
 
 ---
 
@@ -21,7 +21,7 @@ Este repositório tem finalidade educacional e demonstra conceitos de Engenharia
 - **Validação de entradas:** rejeita campos vazios, entradas alfanuméricas e valores não finitos (`inf`, `nan`).
 - **Divisão por zero controlada:** apresenta mensagem específica e amigável.
 - **Recursos de acessibilidade:** navegação por teclado, identificação textual dos estados e agrupamento semântico dos controles.
-- **Duas suítes de testes automatizados independentes:** 25 testes Python no terminal e 11 testes web no navegador.
+- **Duas suítes de testes automatizados independentes:** 92 testes Python no terminal e 31 cenários web no navegador na branch de desenvolvimento. A baseline publicada `v2.0.0` permanece preservada com seus quantitativos históricos.
 
 ---
 
@@ -54,7 +54,7 @@ calculadora-python/
 │   ├── test_operacoes.py
 │   └── test_validacao.py
 ├── docs/
-│   └── implementation_plan.md
+│   ├── calculadora-2.0-plano.md\n│   ├── ESTADO-ATUAL.md\n│   └── REGISTRO-DIVERGENCIAS.md
 ├── .nojekyll                 # Desativa o processamento Jekyll no GitHub Pages
 ├── index.html                # Interface web
 ├── style.css                 # Estilos da interface web
@@ -127,7 +127,7 @@ python3 -m http.server 3000 --bind 127.0.0.1
 
 O projeto possui duas suítes de testes independentes e complementares.
 
-### A. Testes Python (`unittest`) — 25 testes
+### A. Testes Python (`unittest`) — 92 testes na branch de desenvolvimento
 
 Testam as operações matemáticas, a validação de entradas e os fluxos de integração, sem necessidade de abrir a interface gráfica.
 
@@ -136,17 +136,17 @@ python3 -m unittest discover -s tests -v
 ```
 
 <details>
-<summary>Ver resumo dos 25 testes Python</summary>
+<summary>Ver resumo dos testes Python da baseline publicada</summary>
 
 - 13 testes de operações matemáticas e formatação.
 - 7 testes de validação de entradas.
 - 5 testes de integração dos fluxos da aplicação.
 
-**Resultado confirmado:** 25 testes aprovados.
+**Baseline `v2.0.0`:** 25 testes aprovados na validação da publicação. **Branch de desenvolvimento:** 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
 
 </details>
 
-### B. Testes Web (`tests_web.js`) — 11 testes
+### B. Testes Web (`tests_web.js`) — 31 cenários na branch de desenvolvimento
 
 Validam o funcionamento da interface web no navegador, incluindo inicialização do Pyodide, carregamento dos módulos Python, operações matemáticas, validações, limpeza dos campos e gerenciamento dos recursos utilizados na integração.
 
@@ -156,7 +156,7 @@ Para executar:
 2. Acesse `http://localhost:3000/testes.html`.
 3. Acompanhe os resultados apresentados na página.
 
-**Resultado confirmado:** 11 testes aprovados.
+**Baseline `v2.0.0`:** 11 testes web. **Branch de desenvolvimento:** 31 cenários; o usuário confirmou funcionamento após as alterações em 01/11/2026, sem informar a contagem numérica de aprovações nessa execução.
 
 ---
 
