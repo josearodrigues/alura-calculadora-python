@@ -20,7 +20,23 @@ const dom = {
   resultadoValor: document.getElementById('resultado-valor'),
   resultadoMensagem: document.getElementById('resultado-mensagem'),
   telemetriaLog: document.getElementById('telemetria-log'),
+  visorExpressao: document.getElementById('visor-expressao'),
+  visorResultado: document.getElementById('visor-resultado'),
+  teclado: document.getElementById('teclado-calculadora'),
+  listaHistorico: document.getElementById('lista-historico'),
+  btnTema: document.getElementById('btn-tema'),
+  btnCopiar: document.getElementById('btn-copiar'),
+  feedbackCopiar: document.getElementById('feedback-copiar'),
+  btnLimparHistorico: document.getElementById('btn-limpar-historico'),
+  btnHistoricoRodape: document.getElementById('btn-historico-limpar-rodape'),
+  btnHistorico: document.getElementById('btn-historico'),
+  btnInformacoes: document.getElementById('btn-informacoes'),
 };
+
+let expressaoAtual = '';
+let resultadoAtual = null;
+let memoriaCalculadora = 0;
+let calculoConcluido = false;
 
 /**
  * Registra um evento na caixa de telemetria da página (sem tracebacks).
@@ -122,7 +138,9 @@ from calculadora import avaliar_expressao, HistoricoSessao
     atualizarStatus('Pronto (Pyodide v0.27.8)', true);
     inicializacaoConcluida = true;
     definirControlesHabilitados(true);
-    if (dom.inputOpA) dom.inputOpA.focus();
+    if (dom.inputOpA && !dom.inputOpA.disabled) dom.inputOpA.focus();
+    renderizarHistorico();
+    atualizarVisor();
 
   } catch (erro) {
     console.error('[Diagnóstico Inicialização]', erro);
@@ -541,7 +559,8 @@ function limparCampos() {
   }
 
   logTelemetria('ACAO:LIMPAR', 'Campos de entrada e resultado restaurados.');
-  if (dom.inputOpA) dom.inputOpA.focus();
+  if (dom.inputOpA && !dom.inputOpA.disabled) dom.inputOpA.focus();
+  if (dom.visorExpressao) limparVisor();
 }
 
 /**
@@ -561,6 +580,202 @@ async function dispararCalculo() {
   const op = obterOperacaoSelecionada();
 
   await executarCicloCalculo(valA, valB, op);
+}
+
+// Fase 4: estado e interações da nova interface.
+function atualizarVisor() {
+  if (dom.visorExpressao) dom.visorExpressao.textContent = expressaoAtual || '0';
+  if (dom.visorResultado) dom.visorResultado.textContent = resultadoAtual === null ? '0' : String(resultadoAtual);
+  if (dom.btnCopiar) dom.btnCopiar.disabled = !inicializacaoConcluida || resultadoAtual === null;
+}
+
+function inserirNaExpressao(valor) {
+  if (calculoConcluido && /[0-9.(]/.test(valor)) expressaoAtual = '';
+  calculoConcluido = false;
+  expressaoAtual += valor;
+  resultadoAtual = null;
+  atualizarVisor();
+}
+
+function limparVisor() {
+  expressaoAtual = '';
+  resultadoAtual = null;
+  calculoConcluido = false;
+  atualizarVisor();
+  if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = '';
+}
+
+function formatarExpressaoVisivel(expressao) {
+  return String(expressao).replace(/\\*/g, '×').replace(/\\//g, '÷');
+}
+
+function renderizarHistorico() {
+  if (!dom.listaHistorico) return;
+  const registros = obterHistorico();
+  dom.listaHistorico.replaceChildren();
+  if (!registros.length) {
+    const vazio = document.createElement('li');
+    vazio.className = 'historico-vazio';
+    vazio.textContent = 'Nenhum cálculo realizado.';
+    dom.listaHistorico.appendChild(vazio);
+  } else {
+    [...registros].reverse().forEach(registro => {
+      const item = document.createElement('li');
+      const botao = document.createElement('button');
+      botao.type = 'button';
+      botao.className = 'item-historico';
+      botao.dataset.id = String(registro.id);
+      const expressao = document.createElement('span');
+      expressao.className = 'historico-expressao';
+      expressao.textContent = formatarExpressaoVisivel(registro.expressao);
+      const resultado = document.createElement('span');
+      resultado.className = 'historico-resultado';
+      resultado.textContent = registro.resultado_formatado;
+      botao.append(expressao, resultado);
+      botao.addEventListener('click', () => {
+        const resposta = recuperarHistorico(registro.id);
+        if (!resposta.sucesso) {
+          mostrarErroExpressao(resposta.mensagem);
+          return;
+        }
+        expressaoAtual = resposta.entrada.expressao;
+        resultadoAtual = resposta.entrada.resultado_formatado;
+        calculoConcluido = true;
+        atualizarVisor();
+        logTelemetria('HISTORICO:RECUPERADO', `Registro #${registro.id} recuperado.`);
+      });
+      item.appendChild(botao);
+      dom.listaHistorico.appendChild(item);
+    });
+  }
+  const desabilitado = registros.length === 0;
+  [dom.btnLimparHistorico, dom.btnHistoricoRodape].forEach(b => { if (b) b.disabled = desabilitado; });
+}
+
+function mostrarErroExpressao(mensagem) {
+  if (dom.visorResultado) dom.visorResultado.textContent = 'Erro';
+  if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = mensagem || 'Não foi possível calcular.';
+  logTelemetria('CALCULO:ERRO', mensagem || 'Falha ao avaliar expressão.');
+}
+
+function executarExpressaoAtual() {
+  if (!expressaoAtual.trim()) return;
+  try {
+    const resposta = avaliarExpressao(expressaoAtual, formatarExpressaoVisivel(expressaoAtual));
+    if (!resposta.sucesso) {
+      mostrarErroExpressao(resposta.mensagem);
+      return;
+    }
+    resultadoAtual = resposta.resultado;
+    calculoConcluido = true;
+    atualizarVisor();
+    renderizarHistorico();
+    logTelemetria('CALCULO:EXPRESSAO', `${expressaoAtual} = ${resultadoAtual}`);
+  } catch (erro) {
+    mostrarErroExpressao(erro.message);
+  }
+}
+
+function aplicarAcaoTecla(acao) {
+  const numeroOuOperador = /^[0-9.]$/.test(acao) || ['+', '-', '*', '/', '(', ')'].includes(acao);
+  if (numeroOuOperador) { inserirNaExpressao(acao); return; }
+  switch (acao) {
+    case 'equals': executarExpressaoAtual(); break;
+    case 'clear': limparVisor(); break;
+    case 'backspace':
+      expressaoAtual = expressaoAtual.slice(0, -1);
+      resultadoAtual = null; calculoConcluido = false; atualizarVisor(); break;
+    case 'sign':
+      if (resultadoAtual !== null) expressaoAtual = String(Number(resultadoAtual) * -1);
+      else if (expressaoAtual) expressaoAtual = `-(${expressaoAtual})`;
+      resultadoAtual = null; calculoConcluido = false; atualizarVisor(); break;
+    case 'percent': inserirNaExpressao('/100'); break;
+    case 'sqrt': inserirNaExpressao('sqrt('); break;
+    case 'square': inserirNaExpressao('**2'); break;
+    case 'reciprocal': inserirNaExpressao('1/('); break;
+    case 'absolute': inserirNaExpressao('abs('); break;
+    case 'memory-clear': memoriaCalculadora = 0; break;
+    case 'memory-store':
+      if (resultadoAtual !== null) memoriaCalculadora = Number(resultadoAtual);
+      break;
+    case 'memory-recall': inserirNaExpressao(String(memoriaCalculadora)); break;
+    case 'memory-add':
+      if (resultadoAtual !== null) memoriaCalculadora += Number(resultadoAtual);
+      break;
+    case 'memory-subtract':
+      if (resultadoAtual !== null) memoriaCalculadora -= Number(resultadoAtual);
+      break;
+  }
+}
+
+function configurarTema() {
+  const chave = 'theme_calculadora';
+  const salvo = localStorage.getItem(chave);
+  const temaInicial = salvo === 'light' || salvo === 'dark' ? salvo : 'dark';
+  document.documentElement.dataset.theme = temaInicial;
+  atualizarIconeTema(temaInicial);
+  if (dom.btnTema) {
+    dom.btnTema.addEventListener('click', () => {
+      const proximo = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = proximo;
+      localStorage.setItem(chave, proximo);
+      atualizarIconeTema(proximo);
+    });
+  }
+}
+
+function atualizarIconeTema(tema) {
+  if (!dom.btnTema) return;
+  dom.btnTema.textContent = tema === 'dark' ? '☀' : '☾';
+  dom.btnTema.setAttribute('aria-label', tema === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro');
+}
+
+async function copiarResultado() {
+  if (resultadoAtual === null || !navigator.clipboard || !navigator.clipboard.writeText) {
+    if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = 'Área de transferência indisponível.';
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(String(resultadoAtual));
+    if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = 'Resultado copiado!';
+  } catch (erro) {
+    if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = 'Não foi possível copiar.';
+    logTelemetria('CLIPBOARD:ERRO', erro.message);
+  }
+}
+
+function configurarNovaInterface() {
+  configurarTema();
+  if (dom.teclado) dom.teclado.addEventListener('click', e => {
+    const botao = e.target.closest('button[data-action]');
+    if (botao && !botao.disabled) aplicarAcaoTecla(botao.dataset.action);
+  });
+  if (dom.btnCopiar) dom.btnCopiar.addEventListener('click', copiarResultado);
+  const limpar = () => {
+    try {
+      const resposta = limparHistorico();
+      if (resposta.sucesso) renderizarHistorico();
+    } catch (erro) { mostrarErroExpressao(erro.message); }
+  };
+  if (dom.btnLimparHistorico) dom.btnLimparHistorico.addEventListener('click', limpar);
+  if (dom.btnHistoricoRodape) dom.btnHistoricoRodape.addEventListener('click', limpar);
+  if (dom.btnHistorico) dom.btnHistorico.addEventListener('click', () => dom.listaHistorico?.scrollIntoView({behavior:'smooth'}));
+  if (dom.btnInformacoes) dom.btnInformacoes.addEventListener('click', () => {
+    if (dom.feedbackCopiar) dom.feedbackCopiar.textContent = 'Calculadora 2.0 — motor Python executado via Pyodide.';
+  });
+  window.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey || e.target.matches('input, textarea, select')) return;
+    if (/^[0-9.]$/.test(e.key) || ['+', '-', '*', '/', '(', ')'].includes(e.key)) {
+      e.preventDefault(); inserirNaExpressao(e.key);
+    } else if (e.key === 'Enter' || e.key === '=') {
+      e.preventDefault(); executarExpressaoAtual();
+    } else if (e.key === 'Backspace') {
+      e.preventDefault(); aplicarAcaoTecla('backspace');
+    } else if (e.key === 'Escape') {
+      e.preventDefault(); limparVisor();
+    }
+  });
+  atualizarVisor();
 }
 
 // Configuração de Event Listeners
@@ -591,6 +806,7 @@ function configurarEventos() {
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
   configurarEventos();
+  configurarNovaInterface();
   inicializarPyodideEModulos();
 });
 
