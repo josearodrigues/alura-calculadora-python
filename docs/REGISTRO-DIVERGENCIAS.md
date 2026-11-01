@@ -155,3 +155,15 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 
 ### Pendência
 A execução integrada local via `python3 app.py` ainda não foi confirmada. Portanto, a Fase 5 permanece em andamento e a versão `v2.1.0` não foi publicada. O plano original permanece inalterado.
+
+
+## 8. Validação integrada local — Fase 5 (01/11/2026)
+
+O usuário confirmou a execução local da aplicação Web iniciada por `python3 app.py` e informou que todos os testes manuais solicitados funcionaram:
+
+- Operação aritmética básica.
+- Expressão envolvendo potência ou raiz.
+- Consulta e utilização do histórico.
+- Continuidade de cálculo com `ANS`.
+
+Este registro documenta a confirmação do usuário; não afirma que o assistente executou os testes no ambiente local. Em conjunto com os resultados informados das suítes Python (92/92) e Web (31/31) e a comparação da baseline, a validação integrada prevista na Fase 5 está concluída no escopo documentado. A versão `v2.1.0` continua não publicada.
