@@ -27,9 +27,9 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
 | Último commit de implementação identificado nesta revisão | `9ca9d1a` — ajuste visual da página de testes (Fase 4). |
-| Último commit remoto da branch verificado nesta atualização | `3de5628` — harmonização do histórico da Fase 5; HEAD consultado em 01/11/2026. |
+| Último commit remoto registrado antes da reorganização | `3de5628` — referência histórica; houve commits posteriores de documentação e organização. |
 | Commits documentais desta atualização | `702f2d3`, `2b02e02`, `5e2d82e`, `af3dc0a`, `4294bb8`, `b96c845` (README), `254de03` (CHANGELOG), além dos commits finais deste registro. |
-| Estado remoto da branch de trabalho | Confirmado pela API do GitHub no HEAD `3de562803890e3cb901c836d0d5557824702403e` antes desta atualização final. |
+| Estado remoto da branch de trabalho | Consultado diretamente no GitHub nesta revisão; a ponta deve ser conferida com `git log -1` após sincronização local. |
 | Estado local | Não acessível nesta revisão remota. É necessário executar `git pull` e conferir `git status`; não presumir sincronização. |
 | Última versão publicada conhecida | `v2.0.0` |
 | Próxima versão prevista no plano | `v2.1.0`; validações da Fase 5 concluídas, mas a versão ainda não publicada. |
@@ -232,7 +232,7 @@ Consulta direta ao GitHub em 01/11/2026 confirmou a seguinte organização na br
 | `docs/` | Plano, registro de divergências e estado atual | Compartilhado |
 | Raiz | `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` e `.nojekyll` | Compartilhados |
 
-A comparação remota entre `main` e `desafio-2-revisao-final` indicou a branch de trabalho **55 commits à frente e 0 atrás** na consulta realizada. A SHA da ponta da branch não foi obtida nesta consulta e não deve ser inferida a partir dos commits históricos listados anteriormente.
+A comparação remota confirmou que `desafio-2-revisao-final` está à frente de `main` e não está atrás. A contagem de commits varia à medida que os registros documentais são atualizados; consulte a comparação atual do GitHub em vez de tratar um número histórico como permanente.
 
 ### Verificações estáticas de coexistência
 
@@ -248,9 +248,10 @@ Essas verificações são estáticas. A rota pública `/v2.1.0/` no GitHub Pages
 ### Estado Git e publicação
 
 - Branch de trabalho consultada: `desafio-2-revisao-final`.
-- Comparação remota: 55 commits à frente de `main`, 0 atrás, na consulta de 01/11/2026.
+- Comparação remota: branch de trabalho à frente de `main` e sem commits pendentes de integração vindos de `main`, conforme consulta realizada nesta revisão. A contagem exata é dinâmica.
 - Branch `main`: não foi alterada por esta revisão documental.
 - Estado da working tree local e confirmação de sincronização com os commits documentais: não verificáveis pela consulta remota.
+- Commits documentais desta revisão remota: `4514e85` (README), `eb0f54f` (CHANGELOG), `6f26925` (REGISTRO-DIVERGENCIAS) e `0210e40` (ESTADO-ATUAL).
 - Última versão publicada conhecida: `v2.0.0`.
 - `v2.1.0`: ainda não declarada como release nem publicada.
 
