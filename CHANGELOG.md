@@ -41,7 +41,7 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ### Validado
 - Suíte Python: 92/92 testes aprovados, conforme execução informada pelo usuário em 31/10/2026.
-- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme resultado informado pelo usuário em 01/11/2026.
+- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme execução informada pelo usuário em 01/11/2026, anterior ao commit da última simplificação visual da página de testes.
 - Interface desktop: validação manual confirmada pelo usuário; 21/21 testes direcionados da interface e 92/92 da suíte Python informados como aprovados.
 - Interface Web: usuário confirmou funcionamento, exibição de evidências nos cenários que as fornecem e apresentação visual da página de testes em 01/11/2026.
 - Auditoria estática da baseline `v2.0.0`: os 25 métodos de teste legados continuam presentes e suas asserções originais foram preservadas. Cinco testes de integração passaram a chamar um método auxiliar renomeado; nenhum teste ou asserção original foi identificado como removido.
