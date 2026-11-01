@@ -204,7 +204,7 @@ As referências de recursos das interfaces Web são relativas ao diretório de c
 
 ## Contexto Acadêmico e Ferramentas
 
-O projeto foi desenvolvido no contexto de um desafio educacional da **Imersão Engenharia de Software: Dev na Era da IA**, promovida pela Alura. O enunciado propõe a criação de uma calculadora em Python utilizando recursos de inteligência artificial. Nesta atividade, o **Google AI Studio** foi a ferramenta escolhida para apoiar a concepção e a evolução da aplicação.
+O projeto foi desenvolvido no contexto de um desafio educacional da **Imersão Engenharia de Software: Dev na Era da IA**, promovida pela Alura. O enunciado propõe a criação de uma calculadora em Python utilizando recursos de inteligência artificial. No Desafio 1, o **Google AI Studio** foi utilizado como ferramenta de apoio; no Desafio 2, o **Google Antigravity** apoiou a concepção, a implementação e a evolução da aplicação.
 
 O uso dessas ferramentas fez parte do processo de desenvolvimento e não substitui a compreensão dos conceitos de Engenharia de Software, a análise das decisões técnicas ou a execução dos testes automatizados.
 
