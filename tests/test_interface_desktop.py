@@ -4,6 +4,7 @@ Testes unitários para o controlador da interface gráfica desktop CalculadoraGU
 
 import unittest
 import tkinter as tk
+from unittest.mock import patch
 from calculadora.interface import CalculadoraGUI
 
 def ambiente_grafico_indisponivel(erro):
@@ -55,6 +56,119 @@ class TestCalculadoraGUI(unittest.TestCase):
 
         self.app.executar_calculo()
         self.assertEqual(self.app.var_resultado.get(), "15")
+
+    def test_aplicar_raiz_n_com_e_sem_resultado_anterior(self):
+        """Verifica a inserção do modelo de raiz enésima nos dois estados."""
+        # Sem resultado anterior
+        self.app._aplicar_raiz_n()
+        self.assertEqual(self.app.var_expressao.get(), "root(")
+
+        # Após um resultado calculado
+        self.app.limpar_display()
+        self.app.var_expressao.set("25")
+        self.app.executar_calculo()
+
+        self.app._aplicar_raiz_n()
+        self.assertEqual(self.app.var_expressao.get(), "root(25; ")
+
+    def test_recuperar_historico_atualiza_visores_e_ans(self):
+        """Verifica a recuperação de uma entrada e a atualização do ANS."""
+        self.app.var_expressao.set("10+5")
+        self.app.executar_calculo()
+        primeira_entrada = self.app.historico.obter_todos()[0]
+
+        self.app.var_expressao.set("20+5")
+        self.app.executar_calculo()
+        self.assertEqual(self.app.historico.obter_ans(), 25.0)
+
+        self.app._recuperar_historico_por_id(primeira_entrada.id)
+
+        self.assertEqual(self.app.var_expressao.get(), "10+5")
+        self.assertEqual(self.app.var_resultado.get(), "15")
+        self.assertEqual(self.app.historico.obter_ans(), 15.0)
+
+    def test_continuidade_apos_recuperar_historico(self):
+        """Verifica a continuidade do cálculo após recuperar uma entrada."""
+        self.app.var_expressao.set("10+5")
+        self.app.executar_calculo()
+        entrada = self.app.historico.obter_todos()[0]
+
+        self.app.var_expressao.set("20+5")
+        self.app.executar_calculo()
+
+        self.app._recuperar_historico_por_id(entrada.id)
+        self.app._adicionar_operador("+")
+
+        self.assertEqual(self.app.var_expressao.get(), "15+")
+
+        self.app._adicionar_caractere("5")
+        self.app.executar_calculo()
+
+        self.assertEqual(self.app.var_resultado.get(), "20")
+
+    def test_limpar_historico_preserva_ans(self):
+        """Verifica que limpar o histórico mantém o ANS ativo."""
+        self.app.var_expressao.set("10+5")
+        self.app.executar_calculo()
+
+        self.assertEqual(self.app.historico.obter_ans(), 15.0)
+        self.assertEqual(len(self.app.historico.obter_todos()), 1)
+
+        self.app.limpar_historico()
+
+        self.assertEqual(self.app.historico.obter_todos(), [])
+        self.assertEqual(self.app.historico.obter_ans(), 15.0)
+
+    def test_mapeamento_atalhos_teclado(self):
+        """Verifica o encaminhamento das teclas físicas para as ações da interface."""
+
+        def pressionar(char="", keysym="", state=0):
+            evento = tk.Event()
+            evento.char = char
+            evento.keysym = keysym
+            evento.state = state
+            self.app._ao_pressionar_tecla(evento)
+
+        with patch.object(self.app, "_adicionar_caractere") as adicionar_caractere, \
+            patch.object(self.app, "_adicionar_operador") as adicionar_operador, \
+            patch.object(self.app, "executar_calculo") as executar_calculo, \
+            patch.object(self.app, "apagar_ultimo_caractere") as apagar, \
+            patch.object(self.app, "limpar_display") as limpar, \
+            patch.object(self.app, "copiar_resultado") as copiar:
+
+            for digito in "0123456789":
+                pressionar(digito, digito)
+
+            for char in ".()^%;":
+                pressionar(char, char)
+
+            pressionar(",", "comma")
+
+            for char in "+-*/":
+                pressionar(char, char)
+
+            pressionar("", "Return")
+            pressionar("", "KP_Enter")
+            pressionar("", "BackSpace")
+            pressionar("", "Escape")
+            pressionar("", "Delete")
+            pressionar("c", "c", 0x4)
+
+            caracteres_esperados = list("0123456789") + list(".()^%;") + ["."]
+            self.assertEqual(
+                [chamada.args[0] for chamada in adicionar_caractere.call_args_list],
+                caracteres_esperados,
+            )
+
+            self.assertEqual(
+                [chamada.args[0] for chamada in adicionar_operador.call_args_list],
+                ["+", "-", "×", "÷"],
+            )
+
+            self.assertEqual(executar_calculo.call_count, 2)
+            apagar.assert_called_once()
+            self.assertEqual(limpar.call_count, 2)
+            copiar.assert_called_once()
 
     def test_continuidade_ans_ao_pressionar_operador(self):
         """Verifica que após o cálculo, pressionar operador continua com o resultado."""
