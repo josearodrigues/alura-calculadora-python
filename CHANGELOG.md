@@ -6,11 +6,22 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ## [Não publicado] — desenvolvimento da v2.1.0
 
+### Adicionado
+- Avaliador de expressões matemáticas com parser e árvore sintática própria, sem uso de `eval()`.
+- Operações avançadas: potenciação, raiz quadrada, raiz de índice n, valor absoluto, inverso e troca de sinal.
+- Percentual isolado e contextual, incluindo percentuais sucessivos em operações aditivas.
+- Validação de literais numéricos com limite de 30 dígitos e controle de magnitude de expoente.
+- Histórico de sessão em Python, recuperação de entradas anteriores e gestão do resultado anterior por meio de `ANS`.
+- Operações de memória na interface desktop (MC, MR, M+, M- e MS), mantidas por decisão aceita durante a revisão.
+- Interface desktop Tkinter evoluída, com visor duplo, histórico interativo e atalhos de teclado.
+- Interface Web complementar com Pyodide, incluindo histórico, recuperação de resultados, alternância de tema, cópia do resultado e layout responsivo.
+
 ### Alterado
 - Interface Web: removido o fluxo de compatibilidade legado, preservando a interface atual, a aplicação desktop e o motor Python.
 - Suíte Web reescrita para a interface atual; após remoção autorizada do cenário estrutural TW-03, contém 31 cenários.
 - Página `testes.html`: cabeçalho reorganizado, tabela ajustada para telas menores e coluna de evidências/detalhes preservada.
 - Executor Web: captura os detalhes retornados pelos cenários aprovados, quando disponíveis.
+- README atualizado com sintaxe de expressões, exemplos de percentual e raiz de índice n, atalhos por interface e resultados de testes.
 
 ### Corrigido
 - Inicialização da interface Web após remoção de chamada obsoleta.
@@ -18,9 +29,12 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 - Contagem apresentada na página de testes, atualizada para 31 cenários.
 
 ### Validado
-- Usuário confirmou em 01/11/2026 o funcionamento da suíte Web, a exibição de evidências nos cenários que as fornecem e a apresentação visual da página de testes.
-- Não foi registrado total numérico de aprovações nessa última execução.
-- A validação integrada, a regressão da baseline e os demais critérios de aceitação permanecem pendentes na Fase 5.
+- Suíte Python: 92/92 testes aprovados, conforme execução informada pelo usuário em 31/10/2026.
+- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme resultado informado pelo usuário em 01/11/2026.
+- Interface desktop: validação manual confirmada pelo usuário; 21/21 testes direcionados da interface e 92/92 da suíte Python informados como aprovados.
+- Interface Web: usuário confirmou funcionamento, exibição de evidências nos cenários que as fornecem e apresentação visual da página de testes em 01/11/2026.
+- Auditoria estática da baseline `v2.0.0`: os 25 métodos de teste legados continuam presentes e suas asserções originais foram preservadas. Cinco testes de integração passaram a chamar um método auxiliar renomeado; nenhum teste ou asserção original foi identificado como removido.
+- A execução local integrada via `app.py` ainda não foi confirmada nesta revisão. A conclusão da Fase 5 e a publicação da `v2.1.0` permanecem condicionadas a essa validação e à conferência final.
 
 ## [2.0.0] - 2026-10-30
 
