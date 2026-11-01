@@ -259,3 +259,68 @@ Essas verificações são estáticas. A rota pública `/v2.1.0/` e a página `/v
 
 Buscar os dois commits documentais no ambiente local, confirmar sincronização e working tree limpa, validar as duas rotas públicas no GitHub Pages e revisar o diff completo contra `main`. Somente então decidir o merge. Não excluir branches temporárias nem criar tag/release antes dessas etapas e da autorização do usuário.
 
+
+
+## 13. Investigação da experiência visual do reteste Web — 01/11/2026
+
+### Sintoma relatado
+
+Na suíte Web da `v2.1.0`, ao clicar em Executar Bateria de Testes, a atualização é tão rápida que o usuário tem a impressão de que a tabela e as mensagens permanecem estáticas.
+
+Na comparação com a `v2.0.0`, o comportamento visual do reteste parece diferente.
+
+### Depuração realizada
+
+Investigação acompanhada pelo usuário no Firefox Developer Tools, utilizando breakpoint no manipulador de clique de `v2.1.0/testes.html`.
+
+Foram confirmados:
+
+1. O clique alcança o `addEventListener`.
+2. O botão é desabilitado durante a execução.
+3. A mensagem de status é atualizada.
+4. A tabela anterior é limpa por `corpoTabela.replaceChildren()`.
+5. O fluxo de espera pelo iframe/Pyodide é executado.
+6. A bateria de testes é executada.
+7. Os resultados são renderizados.
+8. O botão volta a ficar habilitado.
+
+Após a depuração, o usuário repetiu o reteste sem pausas do depurador e confirmou que tudo funcionou.
+
+### Análise do fluxo de renderização
+
+Na implementação atual de `v2.1.0/testes.html`:
+
+- A tabela é limpa no início.
+- O código aguarda a conclusão de `executarTodosOsTestesWeb()`.
+- Somente depois do retorno da função, `renderizarResultados(resultados)` apresenta os resultados.
+
+Consequentemente, a interface não apresenta cada teste à medida que ele é executado. A tabela permanece vazia durante o processamento e é preenchida ao final.
+
+### Conclusão
+
+**Funcionamento:** reteste operacional, confirmado pelo usuário.
+
+**Experiência visual:** melhoria necessária. A atualização atual não oferece acompanhamento progressivo suficientemente perceptível, causando a impressão de que o processo está estático.
+
+### Pendência para a continuidade
+
+O usuário deseja melhorar a experiência do reteste na `v2.1.0`, permitindo que quem utiliza a aplicação perceba que os testes estão sendo executados.
+
+Essa melhoria permanece pendente e deve ser tratada antes do fechamento final do desafio.
+
+Na retomada:
+
+- Examinar o fluxo atual de execução e renderização.
+- Avaliar alternativas de feedback visual e atualização progressiva.
+- Apresentar uma proposta técnica objetiva, explicando as implicações.
+- Aguardar a decisão do usuário antes de implementar.
+- Após autorização, implementar e validar a melhoria.
+- Preservar os 31 cenários existentes e confirmar que a suíte continua aprovada.
+
+Não introduzir atrasos artificiais apenas para tornar a execução mais perceptível sem antes avaliar uma solução adequada de feedback visual.
+
+### Limites desta investigação
+
+Nenhum arquivo de código foi alterado durante a depuração. Nenhum teste foi removido ou modificado. Nenhum commit, push, merge ou publicação foi realizado como consequência desta investigação.
+
+**Estado:** defeito funcional não reproduzido; melhoria de experiência do usuário identificada e pendente.
