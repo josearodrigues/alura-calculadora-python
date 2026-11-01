@@ -308,9 +308,6 @@ button:disabled { opacity: .48; cursor: not-allowed; }
   font: .75rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* Compatibilidade transitória: os nós antigos continuam no DOM para os testes legados,
-   mas não participam da interface visível. */
-.compatibilidade-legada { display: none !important; }
 
 @media (min-width: 1200px) {
   .app-container { width: min(100%, 1120px); }
