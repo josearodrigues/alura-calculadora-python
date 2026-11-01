@@ -689,9 +689,9 @@ function aplicarAcaoTecla(acao) {
       if (resultadoAtual !== null) expressaoAtual = String(Number(resultadoAtual) * -1);
       else if (expressaoAtual) expressaoAtual = `-(${expressaoAtual})`;
       resultadoAtual = null; calculoConcluido = false; atualizarVisor(); break;
-    case 'percent': inserirNaExpressao('/100'); break;
+    case 'percent': inserirNaExpressao('%'); break;
     case 'sqrt': inserirNaExpressao('sqrt('); break;
-    case 'square': inserirNaExpressao('**2'); break;
+    case 'square': inserirNaExpressao('^2'); break;
     case 'reciprocal': inserirNaExpressao('1/('); break;
     case 'absolute': inserirNaExpressao('abs('); break;
     case 'memory-clear': memoriaCalculadora = 0; break;
