@@ -63,8 +63,8 @@ Testes direcionados acrescentados e executados:
 - [x] Teste de encaminhamento dos atalhos físicos.
 - [x] Execução dos testes da interface: 21/21 aprovados.
 - [x] Execução da suíte completa: 92/92 aprovados.
-- [ ] Atualizar `docs/ESTADO-ATUAL.md`.
-- [ ] Concluir a revisão documental da Fase 3.
+- [x] Atualizar `docs/ESTADO-ATUAL.md` com a situação final da Fase 3.
+- [x] Concluir a revisão documental, confrontando o plano original, as adaptações aceitas, a implementação registrada e os resultados dos testes.
 
 As adaptações A-01 e A-02 não são pendências de correção: foram aceitas e devem permanecer como decisões registradas.
 
@@ -91,4 +91,5 @@ Nenhuma tag, release ou versão nova é presumida por este registro. A identific
 - Atualizada a cobertura da interface de 16 para 21 métodos, com resultado de 21/21 aprovados.
 - Atualizada a suíte completa de 87 para 92 testes, com resultado de 92/92 aprovados.
 - Registrada a confirmação do usuário sobre a validação manual da interface desktop.
-- Mantidas como pendências apenas a atualização de `docs/ESTADO-ATUAL.md` e a conclusão da revisão documental da Fase 3.
+- Na atualização final de 31/10/2026, foram concluídos `docs/ESTADO-ATUAL.md` e a revisão documental da Fase 3.
+- A Fase 3 foi encerrada. As Fases 4 e 5 permanecem pendentes conforme o plano original.
