@@ -27,9 +27,9 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
 | Último commit local informado pelo usuário | `c15bce5` — documentação da coexistência das versões. |
-| Último commit remoto após esta revisão documental | `9b9891e` — correção da sequência e referências do registro de divergências. |
+| Último commit remoto após esta revisão documental | `201da2f` — atualização do estado operacional da coexistência das versões. |
 | Estado local conhecido | Working tree limpa após fast-forward até `c15bce5`, conforme saída enviada pelo usuário. Os dois commits documentais posteriores feitos diretamente no GitHub ainda precisam ser buscados localmente. |
-| Comparação remota com `main` | `desafio-2-revisao-final` está 64 commits à frente e 0 atrás; comparação consultada no GitHub em 01/11/2026. |
+| Comparação remota com `main` | `desafio-2-revisao-final` está 65 commits à frente e 0 atrás; comparação consultada no GitHub em 01/11/2026. |
 | Último commit de `main` observado | `cff94f2` — não alterado nesta revisão. |
 | Última versão publicada conhecida | `v2.0.0` |
 | Evolução em desenvolvimento | `v2.1.0`, organizada em `v2.1.0/`; ainda não publicada como release. |
@@ -249,7 +249,7 @@ Essas verificações são estáticas. A rota pública `/v2.1.0/` e a página `/v
 ### Estado Git e publicação
 
 - Branch de trabalho remota: `desafio-2-revisao-final`.
-- Comparação consultada com `main`: 64 commits à frente e 0 atrás.
+- Comparação consultada com `main`: 65 commits à frente e 0 atrás.
 - Último commit da `main` observado: `cff94f2`; nenhuma alteração na `main` foi realizada nesta revisão.
 - Branch local do usuário: sincronizada e limpa até `c15bce5`, conforme saída fornecida. Os dois commits documentais subsequentes feitos diretamente no GitHub (`77c36dc` e `9b9891e`) ainda precisam ser buscados localmente.
 - Última versão publicada conhecida: `v2.0.0`.
