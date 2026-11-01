@@ -5,8 +5,8 @@ histórico lateral interativo, suporte a atalhos de teclado físico e cópia par
 """
 
 import tkinter as tk
-from tkinter import messagebox, ttk
-from typing import Callable, List, Optional
+from tkinter import ttk
+from typing import Callable, Optional
 
 from calculadora.expressoes import (
     ExpressaoInvalidaError,
@@ -23,6 +23,9 @@ from calculadora.operacoes import (
     OperacaoInvalidaError,
     RadicandoNegativoError,
     formatar_resultado,
+    # Validação numérica para as operações de memória
+    somar,
+    subtrair,
 )
 from calculadora.validacao import ErroValidacao
 
@@ -39,18 +42,19 @@ COR_BTN_OP = "#2563EB"          # Botões de operação (+, -, *, /)
 COR_BTN_FUNCAO = "#7C3AED"      # Botões de funções avançadas (%, √, x², root, etc)
 COR_BTN_EXEC = "#22C55E"        # Botão '=' (verde)
 COR_BTN_CLEAR = "#EF4444"       # Botão 'C' e '⌫' (vermelho)
-COR_BTN_MEMORIA = "#1E293B"     # Botões de memória (desabilitados)
+COR_BTN_MEMORIA = "#1E293B"     # Botões de memória
 COR_TEXTO_DESABILITADO = "#64748B"
 
 
 class CalculadoraGUI:
     """
-    Controladora da interface gráfica Tkinter para a Calculadora 2.1.
+    Controladora da interface gráfica Tkinter para a Calculadora 2.1.0.
     """
 
     def __init__(self, root: Optional[tk.Tk] = None) -> None:
         self.root = root if root is not None else tk.Tk()
         self.historico = HistoricoSessao()
+        self.memoria: float | None = None
 
         # Estado da digitação e do cálculo
         self.var_expressao = tk.StringVar(value="")
@@ -64,7 +68,7 @@ class CalculadoraGUI:
 
     def _configurar_janela(self) -> None:
         """Configurações de dimensões, título e cor da janela."""
-        self.root.title("Calculadora 2.0")
+        self.root.title("Calculadora 2.1.0")
         self.root.geometry("740x580")
         self.root.minsize(700, 540)
         self.root.configure(bg=COR_BG_APP)
@@ -109,7 +113,7 @@ class CalculadoraGUI:
 
         lbl_titulo = tk.Label(
             titulo_box,
-            text="Calculadora 2.0",
+            text="Calculadora 2.1.0",
             font=("Helvetica", 14, "bold"),
             bg=COR_BG_APP,
             fg=COR_TEXTO_PRINCIPAL,
@@ -180,10 +184,17 @@ class CalculadoraGUI:
         for row in range(7):
             teclado_frame.rowconfigure(row, weight=1, uniform="btn_row")
 
-        # Linha 0: Memória (Desabilitadas nesta versão)
-        botoes_memoria = [("MC", 0), ("MR", 1), ("M+", 2), ("M-", 3), ("MS", 4)]
-        for texto, col in botoes_memoria:
-            self._criar_botao_memoria(teclado_frame, texto, row=0, col=col)
+        # Linha 0: Botões de memória
+        botoes_memoria = [
+            ("MC", 0, self.memoria_limpar),
+            ("MR", 1, self.memoria_recuperar),
+            ("M+", 2, self.memoria_somar),
+            ("M-", 3, self.memoria_subtrair),
+            ("MS", 4, self.memoria_armazenar),
+        ]
+
+        for texto, col, comando in botoes_memoria:
+            self._criar_botao_memoria(teclado_frame, texto, comando, row=0, col=col)
 
         # Linha 1: Funções científicas
         self._criar_botao(teclado_frame, "%", COR_BTN_FUNCAO, lambda: self._adicionar_caractere("%"), 1, 0)
@@ -253,17 +264,20 @@ class CalculadoraGUI:
         btn.grid(row=row, column=col, columnspan=colspan, sticky="nsew", padx=3, pady=3)
         return btn
 
-    def _criar_botao_memoria(self, pai: tk.Frame, texto: str, row: int, col: int) -> tk.Button:
-        """Cria botões de memória desabilitados com indicação 'Em breve'."""
+    def _criar_botao_memoria(self, pai: tk.Frame, texto: str, comando: Callable[[], None], row: int, col: int) -> tk.Button:
+        """Cria e posiciona um botão de memória funcional"""
         btn = tk.Button(
             pai,
             text=texto,
             font=("Helvetica", 9, "bold"),
             bg=COR_BTN_MEMORIA,
-            fg=COR_TEXTO_DESABILITADO,
+            fg=COR_TEXTO_PRINCIPAL,
+            activebackground=COR_BORDA_CARD,
+            activeforeground=COR_RESULTADO_CIANO,
             relief=tk.FLAT,
-            state=tk.DISABLED,
             bd=0,
+            cursor="hand2",
+            command=comando,
         )
         btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
         return btn
@@ -544,6 +558,76 @@ class CalculadoraGUI:
             self.root.clipboard_append(resultado)
             self.var_status.set(f"Resultado '{resultado}' copiado para a área de transferência!")
 
+    def _obter_resultado_atual(self) -> Optional[float]:
+        """Retorna o resultado exibido quando há um cálculo válido."""
+        if not self._resultado_calculado:
+            return None
+
+        try:
+            return float(self.var_resultado.get())
+        except ValueError:
+            return None
+
+    def memoria_limpar(self) -> None:
+        """Limpa o valor armazenado na memória."""
+        self.memoria = None
+        self.var_status.set("Memória limpa.")
+
+    def memoria_recuperar(self) -> None:
+        """Recupera o valor da memória para o visor."""
+        if self.memoria is None:
+            self.var_status.set("Memória vazia.")
+            return
+
+        valor = formatar_resultado(self.memoria)
+        self.var_expressao.set(valor)
+        self.var_resultado.set(valor)
+        self._resultado_calculado = True
+        self.var_status.set("Valor recuperado da memória.")
+
+    def memoria_armazenar(self) -> None:
+        """Armazena o resultado atual na memória."""
+        valor = self._obter_resultado_atual()
+
+        if valor is None:
+            self.var_status.set("Nenhum resultado disponível para armazenar.")
+            return
+
+        self.memoria = valor
+        self.var_status.set("Resultado armazenado na memória.")
+
+    def memoria_somar(self) -> None:
+        """Adiciona o resultado atual ao valor armazenado."""
+        valor = self._obter_resultado_atual()
+
+        if valor is None:
+            self.var_status.set("Nenhum resultado disponível para somar.")
+            return
+
+        atual = self.memoria if self.memoria is not None else 0.0
+
+        try:
+            self.memoria = somar(atual, valor)
+            self.var_status.set("Resultado adicionado à memória.")
+        except ErroAritmetico as erro:
+            self.var_status.set(f"Erro na memória: {erro}")
+
+    def memoria_subtrair(self) -> None:
+        """Subtrai o resultado atual do valor armazenado."""
+        valor = self._obter_resultado_atual()
+
+        if valor is None:
+            self.var_status.set("Nenhum resultado disponível para subtrair.")
+            return
+
+        atual = self.memoria if self.memoria is not None else 0.0
+
+        try:
+            self.memoria = subtrair(atual, valor)
+            self.var_status.set("Resultado subtraído da memória.")
+        except ErroAritmetico as erro:
+            self.var_status.set(f"Erro na memória: {erro}")
+
     # -----------------------------------------------------------------------
     # Mapeamento do Teclado Físico
     # -----------------------------------------------------------------------
@@ -568,7 +652,7 @@ class CalculadoraGUI:
             self.apagar_ultimo_caractere()
         elif tecla in ("Escape", "Delete"):
             self.limpar_display()
-        elif char in "0123456789.()^%;":
+        elif char and char in "0123456789.()^%;":
             self._adicionar_caractere(char)
         elif char == ",":
             # Vírgula decimal converte para ponto
