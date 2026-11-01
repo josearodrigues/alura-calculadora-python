@@ -4,6 +4,24 @@ Todas as alterações relevantes deste projeto serão registradas neste arquivo.
 
 O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), com versões organizadas cronologicamente.
 
+## [Não publicado] — desenvolvimento da v2.1.0
+
+### Alterado
+- Interface Web: removido o fluxo de compatibilidade legado, preservando a interface atual, a aplicação desktop e o motor Python.
+- Suíte Web reescrita para a interface atual; após remoção autorizada do cenário estrutural TW-03, contém 31 cenários.
+- Página `testes.html`: cabeçalho reorganizado, tabela ajustada para telas menores e coluna de evidências/detalhes preservada.
+- Executor Web: captura os detalhes retornados pelos cenários aprovados, quando disponíveis.
+
+### Corrigido
+- Inicialização da interface Web após remoção de chamada obsoleta.
+- Sintaxe do executor de testes.
+- Contagem apresentada na página de testes, atualizada para 31 cenários.
+
+### Validado
+- Usuário confirmou em 01/11/2026 o funcionamento da suíte Web, a exibição de evidências nos cenários que as fornecem e a apresentação visual da página de testes.
+- Não foi registrado total numérico de aprovações nessa última execução.
+- A validação integrada, a regressão da baseline e os demais critérios de aceitação permanecem pendentes na Fase 5.
+
 ## [2.0.0] - 2026-10-30
 
 ### Adicionado
