@@ -27,7 +27,7 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
 | Último commit local informado pelo usuário | `c15bce5` — documentação da coexistência das versões. |
-| Último commit remoto após esta revisão documental | `201da2f` — atualização do estado operacional da coexistência das versões. |
+| Commit que consolidou a atualização operacional do estado | `201da2f` — atualização do estado operacional da coexistência das versões; houve depois um commit curto de correção da referência histórica deste registro. |
 | Estado local conhecido | Working tree limpa após fast-forward até `c15bce5`, conforme saída enviada pelo usuário. Os dois commits documentais posteriores feitos diretamente no GitHub ainda precisam ser buscados localmente. |
 | Comparação remota com `main` | `desafio-2-revisao-final` está 65 commits à frente e 0 atrás; comparação consultada no GitHub em 01/11/2026. |
 | Último commit de `main` observado | `cff94f2` — não alterado nesta revisão. |
