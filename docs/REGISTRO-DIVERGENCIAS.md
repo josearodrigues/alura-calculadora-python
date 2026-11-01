@@ -147,7 +147,7 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 
 ## 10. Registro intermediário da Fase 5 — 01/11/2026
 
-> Registro histórico anterior à confirmação final do usuário. A situação vigente está registrada na seção 8.
+> Registro histórico anterior à confirmação final do usuário. A confirmação posterior está registrada na seção 11.
 
 ### Resultados confirmados
 - Suíte Python: 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
@@ -159,7 +159,7 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 Naquele momento, a execução integrada local via `python3 app.py` ainda não havia sido confirmada. A confirmação posterior encerrou essa pendência, conforme seção 8. A versão `v2.1.0` permanece não publicada.
 
 
-## 8. Validação integrada local — Fase 5 (01/11/2026)
+## 11. Validação integrada local — Fase 5 (01/11/2026)
 
 O usuário confirmou a execução local da aplicação Web iniciada por `python3 app.py` e informou que todos os testes manuais solicitados funcionaram:
 
@@ -171,7 +171,7 @@ O usuário confirmou a execução local da aplicação Web iniciada por `python3
 Este registro documenta a confirmação do usuário; não afirma que o assistente executou os testes no ambiente local. Em conjunto com os resultados informados das suítes Python (92/92) e Web (31/31) e a comparação da baseline, a validação integrada prevista na Fase 5 está concluída no escopo documentado. A versão `v2.1.0` continua não publicada.
 
 
-## 11. Coexistência das versões — 01/11/2026
+## 12. Coexistência das versões — 01/11/2026
 
 ### Decisão de organização
 
