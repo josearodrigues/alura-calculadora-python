@@ -1,6 +1,6 @@
 # Estado Atual — Desafio 2: Calculadora Python
 
-**Última atualização:** 31/10/2026  
+**Última atualização:** 01/11/2026  
 **Repositório:** `josearodrigues/alura-calculadora-python`  
 **Branch de trabalho:** `desafio-2-revisao-final`  
 **Branch principal:** `main`  
@@ -42,8 +42,8 @@ Não foi feita nesta atualização uma conferência da branch `main`, das tags r
 | 1 | Motor matemático, segurança e avaliador AST | Implementada anteriormente; funcionalidades cobertas pela suíte Python atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
 | 2 | Histórico e gestão de ANS em Python | Implementada anteriormente; histórico, recuperação e ANS possuem testes na suíte atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
 | 3 | Interface desktop Tkinter | **Concluída.** Implementação conferida; 21/21 testes de interface e 92/92 testes da suíte completa aprovados, conforme execução informada pelo usuário. Validação manual da GUI confirmada pelo usuário. Revisão documental concluída em 31/10/2026. Adaptações A-01 e A-02 aceitas e registradas. |
-| 4 | Interface web com Pyodide, tema e responsividade | Pendente. Não iniciar antes de concluir a revisão da Fase 3 e confirmar o escopo da próxima etapa. |
-| 5 | Validação integrada, regressão e documentação da versão | Pendente. Inclui validação web, regressão integrada, atualização documental e preparação da versão prevista no plano. |
+| 4 | Interface web com Pyodide, tema e responsividade | **Implementada e validada pelo usuário no escopo executado.** Remoção do fluxo legado, suíte Web atualizada para 31 cenários, evidências restauradas e página de testes ajustada. A validação integrada e a regressão final pertencem à Fase 5. |
+| 5 | Validação integrada, regressão e documentação da versão | **Pendente.** Conferir critérios do plano, cobertura Python, regressão da baseline, execução local e documentação final. |
 
 ### 3.1 Adaptações aceitas na Fase 3
 
@@ -93,9 +93,9 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 | `tests/test_interface_desktop.py` | 21 métodos de teste, com resultado informado de 21/21 aprovados. |
 | Demais testes em `tests/` | Integram a suíte completa, com resultado informado de 92/92 aprovados. |
 | `docs/calculadora-2.0-plano.md` | Plano original preservado. |
-| `docs/REGISTRO-DIVERGENCIAS.md` | Atualizado em 31/10/2026 com adaptações, evidências e resultados da Fase 3. |
-| `docs/ESTADO-ATUAL.md` | Atualizado em 31/10/2026 para registrar o encerramento documental da Fase 3. |
-| `README.md` | Ainda descreve a baseline `v2.0.0` e os 25 testes Python/11 testes web da versão publicada. Atualização da documentação da versão evoluída permanece para a etapa apropriada do plano. |
+| `docs/REGISTRO-DIVERGENCIAS.md` | Atualizado em 01/11/2026 com decisões de escopo, arquivos, commits e validação da Fase 4. |
+| `docs/ESTADO-ATUAL.md` | Atualizado em 01/11/2026 para registrar a Fase 4 e as pendências da Fase 5. |
+| `README.md` | Atualizado em 01/11/2026 para distinguir a baseline publicada `v2.0.0` do estado em desenvolvimento e descrever a estrutura e execução atuais. |
 
 ## 7. Decisões e cuidados
 
@@ -109,15 +109,15 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 
 ## 8. Pendências e próxima ação
 
-**Fase 3 encerrada:** os critérios técnicos foram validados e a revisão documental foi concluída em 31/10/2026. O plano original e o registro de divergências foram confrontados; as adaptações aceitas permanecem explícitas e não foram tratadas como defeitos.
+**Fases 3 e 4 encerradas no escopo executado:** a Fase 3 foi validada e documentada em 31/10/2026. A Fase 4 foi implementada e validada pelo usuário em 01/11/2026. As decisões de escopo da interface Web estão registradas em `docs/REGISTRO-DIVERGENCIAS.md`; o plano original permanece preservado.
 
 Pendências gerais do desafio:
 
 - [ ] Conferir a sincronização Git local/remota antes de novas operações. A atualização documental foi realizada diretamente no GitHub; o estado local precisa ser novamente conferido.
-- [ ] Executar a Fase 4 — Interface Web (Pyodide, Dark Premium e Responsividade), conforme o plano original.
+- [x] Executar e validar a Fase 4 — Interface Web, com as adaptações registradas em `docs/REGISTRO-DIVERGENCIAS.md`.
 - [ ] Executar a Fase 5 — Validação Integrada, Regressão e Documentação.
 
-A Fase 3 está concluída, mas **o Desafio 2 como um todo não está concluído**. A versão `v2.0.0` continua sendo a última versão publicada conhecida; `v2.1.0` permanece condicionada à conclusão das fases previstas.
+As Fases 3 e 4 estão concluídas no escopo registrado, mas **o Desafio 2 como um todo não está concluído**. A versão `v2.0.0` continua sendo a última versão publicada conhecida; `v2.1.0` permanece condicionada à conclusão das fases previstas.
 
 **Próxima ação operacional recomendada:** antes de iniciar qualquer implementação, conferir no ambiente local:
 
@@ -126,4 +126,38 @@ git status --short --branch
 git log -1 --oneline
 ```
 
-Com a saída, confirmar a sincronização. A implementação da Fase 4 deve começar somente após essa conferência e respeitando os critérios do plano.
+Com a saída, confirmar a sincronização. A próxima atividade é revisar os critérios da Fase 5, somente após conferir a sincronização local/remota.
+
+## 9. Estado da Fase 4 — 01/11/2026
+
+### Implementação registrada
+- Remoção da seção de compatibilidade legada em `index.html`, das funções/ponte e eventos exclusivos em `app.js`, e da regra CSS correspondente.
+- Reescrita da suíte Web para a interface atual; remoção autorizada do cenário estrutural TW-03; total atual: 31 cenários.
+- Correção da inicialização e da sintaxe do executor após problemas identificados na primeira alteração.
+- Restauração da captura de detalhes retornados pelos cenários aprovados.
+- Ajuste visual do cabeçalho e da responsividade da página `testes.html`.
+
+### Commits da Fase 4
+| Commit | Resumo |
+|---|---|
+| `3711a5e` | Remoção da compatibilidade legada e reescrita da suíte |
+| `106bb55` | Correção da inicialização e sintaxe do executor |
+| `1b896ce` | Remoção autorizada do TW-03 |
+| `dcc96af` | Atualização da contagem para 31 cenários |
+| `c9f4ee7` | Restauração dos detalhes dos cenários aprovados |
+| `9ca9d1a` | Ajuste visual da página de testes |
+
+### Validação informada pelo usuário
+Em 01/11/2026, o usuário confirmou após `git pull`:
+- Suíte Web funcionando após a remoção do legado.
+- Evidências/detalhes visíveis nos cenários que fornecem retorno.
+- Cabeçalho e layout aprovados visualmente.
+- Tabela e última coluna visíveis na apresentação testada.
+
+Não foi informado um total numérico de aprovações nessa última execução; portanto, não registrar 31/31 como resultado. A validação integrada e a regressão da baseline continuam reservadas à Fase 5.
+
+### Estado documental e limites
+- O plano `docs/calculadora-2.0-plano.md` permanece preservado, sem reescrever requisitos originais.
+- Decisões e divergências da Fase 4 estão em `docs/REGISTRO-DIVERGENCIAS.md`.
+- A baseline publicada continua identificada como `v2.0.0`; não há confirmação de publicação da evolução `v2.1.0`.
+- A sincronização do ambiente local do usuário ainda precisa ser conferida antes de novas operações Git.
