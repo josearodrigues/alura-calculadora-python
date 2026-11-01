@@ -12,20 +12,14 @@ Este repositório tem finalidade educacional e demonstra conceitos de Engenharia
 
 ## O que você encontra neste projeto
 
-- **Expressões matemáticas:** operações aritméticas, potenciação (`^`), raízes, valor absoluto, inverso e troca de sinal.
-- **Percentual contextual:** por exemplo, `100 + 10%` resulta em `110`.
-- **Raiz de índice n:** função `root(rad; ind)`, com ponto e vírgula como separador de argumentos.
-- **Histórico e ANS:** recuperação de cálculos anteriores e continuidade de expressões com o último resultado.
-- **Memória na interface desktop:** MC, MR, M+, M- e MS.
-- **Duas interfaces complementares:**
-  - **Desktop (Tkinter):** janela nativa do Python.
-  - **Web (Pyodide / WebAssembly):** interface HTML5, CSS3 e JavaScript Vanilla que executa os módulos Python existentes diretamente no navegador, sem Node.js, npm ou frameworks.
-- **Reutilização da lógica Python:** as duas interfaces utilizam os mesmos módulos de validação e operações matemáticas.
-- **Entradas localizadas:** aceita ponto ou vírgula como separador decimal (`12,5` ou `12.5`).
-- **Validação de entradas:** rejeita campos vazios, entradas alfanuméricas e valores não finitos (`inf`, `nan`).
-- **Divisão por zero controlada:** apresenta mensagem específica e amigável.
-- **Recursos de acessibilidade:** navegação por teclado, identificação textual dos estados e agrupamento semântico dos controles.
-- **Duas suítes de testes automatizados independentes:** 92 testes Python no terminal e 31 cenários web no navegador na branch de desenvolvimento. A baseline publicada `v2.0.0` permanece preservada com seus quantitativos históricos.
+- **v2.0.0 (raiz):** baseline publicada com calculadora desktop Tkinter e interface Web original, operações básicas, validação dos operandos e testes históricos.
+- **v2.1.0 (`v2.1.0/`):** evolução com expressões matemáticas, potenciação (`^`), raízes, valor absoluto, inverso, troca de sinal, percentual contextual, histórico e `ANS`.
+- **Memória na interface desktop da v2.1.0:** MC, MR, M+, M- e MS.
+- **Interfaces da v2.1.0:** desktop nativa com Tkinter e Web com HTML5, CSS3, JavaScript Vanilla e Pyodide / WebAssembly.
+- **Reutilização da lógica Python na v2.1.0:** as interfaces desktop e Web utilizam os módulos Python da própria versão.
+- **Entradas localizadas:** aceita ponto ou vírgula como separador decimal (`12,5` ou `12.5`) na evolução documentada.
+- **Validação de entradas e tratamento de erros:** incluindo valores não finitos e divisão por zero.
+- **Testes independentes por versão:** a baseline mantém seus quantitativos históricos; a evolução possui 92 testes Python e 31 cenários Web, com resultados informados pelo usuário.
 
 ---
 
