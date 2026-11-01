@@ -41,7 +41,7 @@ Não foi feita nesta atualização uma conferência da branch `main`, das tags r
 |---|---|---|
 | 1 | Motor matemático, segurança e avaliador AST | Implementada anteriormente; funcionalidades cobertas pela suíte Python atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
 | 2 | Histórico e gestão de ANS em Python | Implementada anteriormente; histórico, recuperação e ANS possuem testes na suíte atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
-| 3 | Interface desktop Tkinter | Implementação conferida e validada. Testes direcionados adicionados; 21/21 testes de interface e 92/92 testes da suíte completa aprovados, conforme execução informada pelo usuário. Validação manual da GUI confirmada pelo usuário. Revisão documental ainda precisa ser concluída. |
+| 3 | Interface desktop Tkinter | **Concluída.** Implementação conferida; 21/21 testes de interface e 92/92 testes da suíte completa aprovados, conforme execução informada pelo usuário. Validação manual da GUI confirmada pelo usuário. Revisão documental concluída em 31/10/2026. Adaptações A-01 e A-02 aceitas e registradas. |
 | 4 | Interface web com Pyodide, tema e responsividade | Pendente. Não iniciar antes de concluir a revisão da Fase 3 e confirmar o escopo da próxima etapa. |
 | 5 | Validação integrada, regressão e documentação da versão | Pendente. Inclui validação web, regressão integrada, atualização documental e preparação da versão prevista no plano. |
 
@@ -94,7 +94,7 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 | Demais testes em `tests/` | Integram a suíte completa, com resultado informado de 92/92 aprovados. |
 | `docs/calculadora-2.0-plano.md` | Plano original preservado. |
 | `docs/REGISTRO-DIVERGENCIAS.md` | Atualizado em 31/10/2026 com adaptações, evidências e resultados da Fase 3. |
-| `docs/ESTADO-ATUAL.md` | Este documento; criado para registrar a continuidade do desafio. |
+| `docs/ESTADO-ATUAL.md` | Atualizado em 31/10/2026 para registrar o encerramento documental da Fase 3. |
 | `README.md` | Ainda descreve a baseline `v2.0.0` e os 25 testes Python/11 testes web da versão publicada. Atualização da documentação da versão evoluída permanece para a etapa apropriada do plano. |
 
 ## 7. Decisões e cuidados
@@ -109,19 +109,21 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 
 ## 8. Pendências e próxima ação
 
-Pendências registradas para concluir a revisão da Fase 3:
+**Fase 3 encerrada:** os critérios técnicos foram validados e a revisão documental foi concluída em 31/10/2026. O plano original e o registro de divergências foram confrontados; as adaptações aceitas permanecem explícitas e não foram tratadas como defeitos.
 
-- [ ] Sincronizar a branch local com o commit documental `60bc525` e conferir o estado Git.
-- [ ] Fazer a revisão documental final da Fase 3, confrontando plano, registro de divergências, estado atual e implementação.
-- [ ] Confirmar o encerramento da Fase 3 antes de iniciar outra fase.
+Pendências gerais do desafio:
 
-Depois da revisão da Fase 3, a próxima etapa prevista no plano é a **Fase 4 — Interface Web (Pyodide, Dark Premium e Responsividade)**. A Fase 5 permanece posterior.
+- [ ] Conferir a sincronização Git local/remota antes de novas operações. A atualização documental foi realizada diretamente no GitHub; o estado local precisa ser novamente conferido.
+- [ ] Executar a Fase 4 — Interface Web (Pyodide, Dark Premium e Responsividade), conforme o plano original.
+- [ ] Executar a Fase 5 — Validação Integrada, Regressão e Documentação.
 
-**Próxima ação operacional recomendada:** no ambiente local, conferir primeiro:
+A Fase 3 está concluída, mas **o Desafio 2 como um todo não está concluído**. A versão `v2.0.0` continua sendo a última versão publicada conhecida; `v2.1.0` permanece condicionada à conclusão das fases previstas.
+
+**Próxima ação operacional recomendada:** antes de iniciar qualquer implementação, conferir no ambiente local:
 
 ```bash
 git status --short --branch
 git log -1 --oneline
 ```
 
-Com a saída, confirmar a sincronização antes de qualquer nova alteração. Não iniciar implementação da Fase 4 nesta etapa.
+Com a saída, confirmar a sincronização. A implementação da Fase 4 deve começar somente após essa conferência e respeitando os critérios do plano.
