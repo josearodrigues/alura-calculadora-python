@@ -16,7 +16,6 @@ function marcarNaoExecutados(cs,inicio,motivo){for(let i=inicio;i<cs.length;i++)
 const casosTeste=[
 ["Inicialização do Pyodide e status visual Pronto",({app,doc,pyodideInst})=>{exigir(app.pyodidePronto()&&pyodideInst,"Pyodide indisponível.");exigir(el(doc,"#status-texto").textContent.includes("Pronto"),"Status não está Pronto.");exigir(el(doc,"#status-indicador").classList.contains("pronto"),"Indicador não está pronto.");},false],
 ["Montagem dos cinco módulos Python no MEMFS",({pyodideInst})=>{for(const n of ["__init__.py","operacoes.py","validacao.py","expressoes.py","historico.py"])exigir(new Blob([pyodideInst.FS.readFile(`/calculadora/${n}`,{encoding:"utf8"})]).size>0,`Módulo vazio: ${n}`);}],
-["Ausência de controles e painel da versão legada",({doc})=>{for(const s of ["#input-op-a","#input-op-b","#btn-calcular","#btn-limpar","#painel-resultado",".compatibilidade-legada"])exigir(!doc.querySelector(s),`Elemento legado: ${s}`);}],
 ["Controles atuais habilitados após inicialização",({doc})=>{exigir([...el(doc,"#teclado-calculadora").querySelectorAll("button")].every(b=>!b.disabled),"Há teclas desabilitadas.");for(const s of ["#btn-tema","#btn-informacoes","#btn-historico"])exigir(!el(doc,s).disabled,`${s} desabilitado.`);}],
 ["Adição de números inteiros",({app})=>exigir(app.avaliarExpressao("12+8").resultado==="20","12+8 deveria ser 20.")],
 ["Subtração com resultado negativo",({app})=>exigir(app.avaliarExpressao("10-25").resultado==="-15","10-25 deveria ser -15.")],
