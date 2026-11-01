@@ -59,7 +59,11 @@ async function executarTodosOsTestesWeb(onResultado=null){
  while((!app||!app.pyodidePronto())&&tentativas<80){await new Promise(r=>setTimeout(r,250));tentativas++;}
  const pyodideInst=app&&app.pyodidePronto()?app.obterPyodide():null,ctx={doc,app,pyodideInst};
  if(!app||!pyodideInst){registrarResultadoTeste("TW-01",casosTeste[0].descricao,"FALHOU","Pyodide indisponível.");marcarNaoExecutados(casosTeste,1,"Falha na inicialização.");notificarResultadoTeste=null;return relatorioTestes;}
- for(const c of casosTeste)await executarCaso(c,ctx);
+ for(const c of casosTeste){
+  await executarCaso(c,ctx);
+  // Aguarda dois frames para permitir que o navegador pinte a linha antes do próximo cenário.
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+ }
  try{preparar(ctx);}catch(e){console.error("Falha na limpeza final:",e);}
  notificarResultadoTeste=null;
  return relatorioTestes;

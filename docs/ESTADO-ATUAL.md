@@ -324,3 +324,25 @@ Não introduzir atrasos artificiais apenas para tornar a execução mais percept
 Nenhum arquivo de código foi alterado durante a depuração. Nenhum teste foi removido ou modificado. Nenhum commit, push, merge ou publicação foi realizado como consequência desta investigação.
 
 **Estado:** defeito funcional não reproduzido; melhoria de experiência do usuário identificada e pendente.
+
+## 14. Melhoria do acompanhamento visual da suíte Web — 01/11/2026
+
+### Implementação preparada para validação local
+
+Na página `v2.1.0/testes.html`, foram incluídos dois controles temporários para permitir observar separadamente os comportamentos solicitados:
+
+- **Executar testes (nova tabela):** inicia uma execução com a tabela limpa, permitindo observar as linhas surgirem progressivamente.
+- **Reexecutar mantendo resultados:** inicia uma nova execução sem apagar a tabela anterior; cada linha é atualizada quando seu respectivo cenário termina, enquanto os demais resultados permanecem visíveis.
+
+No executor `v2.1.0/tests_web.js`, a execução continua sequencial e os 31 cenários permanecem inalterados. Após cada cenário, o executor aguarda dois frames de animação do navegador, criando uma oportunidade de pintura entre os resultados sem inserir atraso fixo artificial.
+
+### Estado da validação
+
+- Implementação e commit remoto: registrados após a atualização.
+- Testes estáticos/sintáticos e execução no navegador: pendentes de validação local pelo usuário.
+- Nenhum resultado de teste novo é declarado nesta etapa.
+- Os dois controles são temporários para diagnóstico e deverão ser reavaliados após o teste local.
+
+### Próxima ação
+
+Sincronizar a branch local, abrir `v2.1.0/testes.html` e verificar primeiro a execução com tabela nova; depois, usar a reexecução mantendo resultados para observar a atualização gradual das linhas. Confirmar também o resultado final de 31 cenários.

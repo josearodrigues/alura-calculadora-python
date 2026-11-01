@@ -75,9 +75,12 @@
 
     <main class="calc-card">
       <div class="barra-acoes-testes" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <div>
-          <button id="btn-rodar-testes" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
-            Executar Bateria de Testes (31)
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <button id="btn-executar-novo" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
+            Executar testes (nova tabela)
+          </button>
+          <button id="btn-reexecutar" class="btn btn-secundario" style="flex: none; padding: 0.5rem 1rem;">
+            Reexecutar mantendo resultados
           </button>
         </div>
         <div id="resumo-geral" style="font-weight: 600; font-size: 0.875rem;">
@@ -110,7 +113,9 @@
   </div>
 
   <script>
-    const btnRodar = document.getElementById('btn-rodar-testes');
+    const btnExecutarNovo = document.getElementById('btn-executar-novo');
+    const btnReexecutar = document.getElementById('btn-reexecutar');
+    const botoesExecucao = [btnExecutarNovo, btnReexecutar];
     const resumoEl = document.getElementById('resumo-geral');
     const containerTabela = document.getElementById('container-tabela');
     const corpoTabela = document.getElementById('corpo-tabela-testes');
@@ -166,10 +171,14 @@
         : `Relatório incompleto: ${aprovados} aprovados; ${falhas} falhas; ${naoExecutados} não executados de ${total}.`;
     }
 
-    btnRodar.addEventListener('click', async () => {
-      btnRodar.disabled = true;
+    async function executarBateria(limparResultadosAnteriores) {
+      botoesExecucao.forEach(botao => { botao.disabled = true; });
       resumoEl.textContent = 'Aguardando carregamento do iframe e Pyodide...';
       containerTabela.style.display = 'block';
+
+      if (limparResultadosAnteriores) {
+        corpoTabela.replaceChildren();
+      }
 
       try {
         const iframeWin = iframeApp.contentWindow;
@@ -200,13 +209,16 @@
         console.error('Falha inesperada no executor da suíte web:', erro);
         resumoEl.textContent = `Falha no executor: ${erro.message || String(erro)}. Resultado não considerado aprovado.`;
       } finally {
-        btnRodar.disabled = false;
+        botoesExecucao.forEach(botao => { botao.disabled = false; });
       }
-    });
+    }
+
+    btnExecutarNovo.addEventListener('click', () => executarBateria(true));
+    btnReexecutar.addEventListener('click', () => executarBateria(false));
 
     // Mantém a execução automática da página de testes.
     window.addEventListener('load', () => {
-      setTimeout(() => btnRodar.click(), 1000);
+      setTimeout(() => btnExecutarNovo.click(), 1000);
     });
   </script>
 </body>
