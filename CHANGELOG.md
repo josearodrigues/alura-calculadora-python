@@ -6,6 +6,12 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ## [Não publicado] — desenvolvimento da v2.1.0
 
+### Organização das versões
+- Preservada a aplicação da versão publicada `v2.0.0` na raiz do repositório.
+- Organizada a aplicação evoluída `v2.1.0` em `v2.1.0/`, com módulos Python, interfaces e testes próprios.
+- Mantidos `docs/`, `README.md`, `CHANGELOG.md` e `LICENSE` como recursos compartilhados na raiz.
+- Esta reorganização não constitui publicação da versão `v2.1.0`; a release continua pendente.
+
 ### Adicionado
 - Avaliador de expressões matemáticas com parser e árvore sintática própria, sem uso de `eval()`.
 - Operações avançadas: potenciação, raiz quadrada, raiz de índice n, valor absoluto, inverso e troca de sinal.
