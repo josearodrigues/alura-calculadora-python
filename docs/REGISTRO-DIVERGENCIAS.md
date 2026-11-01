@@ -4,7 +4,7 @@
 **Repositório:** `josearodrigues/alura-calculadora-python`  
 **Branch de referência:** `desafio-2-revisao-final`  
 **Criado em:** 31/10/2026  
-**Última atualização:** 31/10/2026
+**Última atualização:** 01/11/2026
 
 > Documento complementar ao plano original. Os critérios publicados permanecem preservados como referência histórica e de rastreabilidade. As adaptações aceitas são registradas separadamente, sem reescrever os requisitos originais.
 
@@ -93,3 +93,53 @@ Nenhuma tag, release ou versão nova é presumida por este registro. A identific
 - Registrada a confirmação do usuário sobre a validação manual da interface desktop.
 - Na atualização final de 31/10/2026, foram concluídos `docs/ESTADO-ATUAL.md` e a revisão documental da Fase 3.
 - A Fase 3 foi encerrada. As Fases 4 e 5 permanecem pendentes conforme o plano original.
+
+## 8. Fase 4 — Evolução da interface Web e revisão do escopo
+
+A Fase 4 foi implementada na branch `desafio-2-revisao-final`. Durante a revisão da interface, identificou-se que o fluxo de compatibilidade da interface Web da baseline não fazia mais parte da experiência atual e permanecia distribuído entre HTML, JavaScript, CSS e testes.
+
+Por decisão expressa do usuário, foi removido esse fluxo legado, preservando a interface Web atual, a aplicação desktop Tkinter e o motor Python. A baseline publicada `v2.0.0` não foi reescrita nem substituída.
+
+### 8.1 Decisão de escopo
+
+| ID | Decisão | Motivo e limite |
+|---|---|---|
+| W-01 | Remover a seção de compatibilidade legada de `index.html`, a ponte e eventos exclusivos em `app.js`, e a regra CSS correspondente. | Eliminar o fluxo antigo que não integra a interface Web atual. |
+| W-02 | Reescrever `tests_web.js` para cobrir a interface atual e a integração com Pyodide. | Manter a suíte alinhada à aplicação efetivamente apresentada. |
+| W-03 | Remover o cenário estrutural TW-03 após avaliação com o usuário. | O teste verificava apenas a ausência de elementos legados; sua remoção foi autorizada. |
+| W-04 | Restaurar a captura dos detalhes retornados pelos cenários aprovados. | Preservar evidências úteis na coluna “Evidências / Detalhes”, sem forçar conteúdo em todos os testes. |
+| W-05 | Ajustar o cabeçalho e a apresentação responsiva da página `testes.html`. | Recuperar alinhamento visual e legibilidade da tabela de testes. |
+
+O plano original não foi alterado. Estas decisões registram uma adaptação do escopo executado e preservam a rastreabilidade em relação aos requisitos inicialmente planejados.
+
+### 8.2 Arquivos afetados e commits
+
+| Commit | Arquivos | Alteração |
+|---|---|---|
+| `3711a5e` | `app.js`, `index.html`, `tests_web.js`, `testes.html`, `style.css` | Remoção do fluxo legado e reescrita da suíte Web para 32 cenários. |
+| `106bb55` | `app.js`, `testes.html` | Correção da inicialização da interface atual e da sintaxe do executor. |
+| `1b896ce` | `tests_web.js` | Remoção autorizada do cenário estrutural TW-03. |
+| `dcc96af` | `testes.html` | Atualização da indicação fixa para 31 cenários. |
+| `c9f4ee7` | `tests_web.js` | Restauração da captura e apresentação de detalhes de cenários aprovados. |
+| `9ca9d1a` | `testes.html` | Ajuste do cabeçalho, largura do cartão e comportamento responsivo da tabela. |
+
+### 8.3 Validação confirmada pelo usuário
+
+Em 01/11/2026, após sincronizar a branch com `git pull`, o usuário confirmou:
+- A suíte Web executa e funciona após a remoção do legado.
+- A coluna “Evidências / Detalhes” voltou a exibir informações nos cenários que retornam detalhes; os demais podem apresentar `-`.
+- O cabeçalho e o layout da página de testes foram aprovados visualmente.
+- A tabela e sua última coluna estão visíveis na apresentação testada.
+
+A confirmação do usuário não estabelece um total numérico de aprovações por cenário nesta execução; por isso, este registro não declara uma contagem de 31/31 aprovações. A validação funcional da interface Web foi confirmada em conjunto com o resultado informado pelo usuário.
+
+## 9. Histórico de atualização da Fase 4
+
+### 01/11/2026 — Remoção do legado e revisão da suíte
+- Removido o fluxo de compatibilidade legado da interface Web.
+- Reescrita a suíte para a interface atual; após a remoção autorizada do TW-03, a suíte passou a conter 31 cenários.
+- Corrigidas falhas introduzidas na inicialização e no executor de testes.
+- Restaurada a captura de evidências positivas nos cenários que retornam detalhes.
+- Ajustado o cabeçalho da página de testes.
+- Usuário confirmou funcionamento da suíte, apresentação das evidências e aprovação visual do layout.
+- A Fase 4 fica registrada como implementada e validada pelo usuário no escopo executado. A validação integrada e a regressão final permanecem na Fase 5.
