@@ -217,3 +217,43 @@ A execução local da aplicação Web via `python3 app.py` também foi confirmad
 
 ### Limite da verificação
 A branch remota foi consultada; o estado da working tree local do usuário não é acessível por esta atualização. A sincronização local continua sendo uma tarefa operacional antes da publicação.
+
+
+## 12. Coexistência das versões — atualização de 01/11/2026
+
+### Estrutura confirmada na branch remota
+
+Consulta direta ao GitHub em 01/11/2026 confirmou a seguinte organização na branch `desafio-2-revisao-final`:
+
+| Local | Conteúdo | Situação |
+|---|---|---|
+| Raiz | Aplicação e testes da baseline `v2.0.0` | Preservados |
+| `v2.1.0/` | Aplicação evoluída, módulos Python, interfaces e testes próprios | Presente na branch |
+| `docs/` | Plano, registro de divergências e estado atual | Compartilhado |
+| Raiz | `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` e `.nojekyll` | Compartilhados |
+
+A comparação remota entre `main` e `desafio-2-revisao-final` indicou a branch de trabalho **55 commits à frente e 0 atrás** na consulta realizada. A SHA da ponta da branch não foi obtida nesta consulta e não deve ser inferida a partir dos commits históricos listados anteriormente.
+
+### Verificações estáticas de coexistência
+
+- O HTML da raiz utiliza referências relativas para os recursos da aplicação localizada na raiz.
+- O HTML em `v2.1.0/` utiliza referências relativas para os recursos dentro desse subdiretório.
+- Os arquivos `app.py` e `main.py` existem em ambos os diretórios; a execução deve respeitar o diretório de trabalho da versão desejada.
+- O README foi ajustado para distinguir execução, testes e endereços locais das duas versões.
+- O CHANGELOG registra a reorganização sem declarar uma release da v2.1.0.
+- O registro de divergências documenta a decisão estrutural sem alterar o plano original.
+
+Essas verificações são estáticas. A rota pública `/v2.1.0/` no GitHub Pages ainda precisa ser validada antes da integração na `main`.
+
+### Estado Git e publicação
+
+- Branch de trabalho consultada: `desafio-2-revisao-final`.
+- Comparação remota: 55 commits à frente de `main`, 0 atrás, na consulta de 01/11/2026.
+- Branch `main`: não foi alterada por esta revisão documental.
+- Estado da working tree local e confirmação de sincronização com os commits documentais: não verificáveis pela consulta remota.
+- Última versão publicada conhecida: `v2.0.0`.
+- `v2.1.0`: ainda não declarada como release nem publicada.
+
+### Próxima ação recomendada
+
+Sincronizar a branch local com os commits documentais desta revisão, conferir `git status --short --branch` e o último commit, executar as verificações finais das duas versões e validar a rota `/v2.1.0/` no GitHub Pages antes de propor merge para `main`. Não excluir branches temporárias nem criar tag/release antes dessas verificações.
