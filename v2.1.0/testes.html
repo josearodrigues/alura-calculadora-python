@@ -75,14 +75,9 @@
 
     <main class="calc-card">
       <div class="barra-acoes-testes" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-          <button id="btn-executar-novo" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
-            Executar testes (nova tabela)
-          </button>
-          <button id="btn-reexecutar" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
-            Reexecutar mantendo resultados
-          </button>
-        </div>
+        <button id="btn-rodar-testes" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
+          Executar Bateria de Testes (31)
+        </button>
         <div id="resumo-geral" style="font-weight: 600; font-size: 0.875rem;">
           Aguardando execução...
         </div>
@@ -113,54 +108,53 @@
   </div>
 
   <script>
-    const btnExecutarNovo = document.getElementById('btn-executar-novo');
-    const btnReexecutar = document.getElementById('btn-reexecutar');
-    const botoesExecucao = [btnExecutarNovo, btnReexecutar];
+    const btnRodar = document.getElementById('btn-rodar-testes');
     const resumoEl = document.getElementById('resumo-geral');
     const containerTabela = document.getElementById('container-tabela');
     const corpoTabela = document.getElementById('corpo-tabela-testes');
     const iframeApp = document.getElementById('iframe-app');
 
-    function atualizarLinhaTeste(teste) {
-      const status = teste.status || (teste.passou ? 'APROVADO' : 'FALHOU');
-      let linha = [...corpoTabela.rows].find(item => item.cells[0]?.textContent === teste.id);
-
-      if (!linha) {
-        linha = document.createElement('tr');
-        for (let indice = 0; indice < 4; indice++) {
-          linha.appendChild(document.createElement('td'));
-        }
-        corpoTabela.appendChild(linha);
-      }
-
-      const [celulaId, celulaDescricao, celulaStatus, celulaDetalhes] = linha.cells;
-      celulaId.replaceChildren();
-      const forte = document.createElement('strong');
-      forte.textContent = teste.id;
-      celulaId.appendChild(forte);
-      celulaDescricao.textContent = teste.descricao;
-
-      celulaStatus.replaceChildren();
-      const tag = document.createElement('span');
-      tag.className = 'tag-status ' + (status === 'APROVADO' ? 'tag-sucesso' : 'tag-falha');
-      tag.textContent = status;
-      celulaStatus.appendChild(tag);
-
-      celulaDetalhes.textContent = teste.detalhes || '-';
-      celulaDetalhes.style.fontSize = '0.75rem';
-      celulaDetalhes.style.fontFamily = 'monospace';
-    }
-
     function renderizarResultados(resultados) {
       let aprovados = 0;
       let falhas = 0;
       let naoExecutados = 0;
+      corpoTabela.replaceChildren();
 
       for (const teste of resultados) {
-        atualizarLinhaTeste(teste);
-        if (teste.status === 'APROVADO' || teste.passou === true) aprovados++;
-        else if (teste.status === 'NÃO EXECUTADO') naoExecutados++;
+        const status = teste.status || (teste.passou ? 'APROVADO' : 'FALHOU');
+        if (status === 'APROVADO' || teste.passou === true) aprovados++;
+        else if (status === 'NÃO EXECUTADO') naoExecutados++;
         else falhas++;
+
+        const linha = document.createElement('tr');
+        const valores = [
+          teste.id,
+          teste.descricao,
+          status,
+          teste.detalhes || '-'
+        ];
+
+        valores.forEach((valor, indice) => {
+          const celula = document.createElement('td');
+          if (indice === 0) {
+            const forte = document.createElement('strong');
+            forte.textContent = valor;
+            celula.appendChild(forte);
+          } else if (indice === 2) {
+            const tag = document.createElement('span');
+            tag.className = 'tag-status ' + (status === 'APROVADO' ? 'tag-sucesso' : 'tag-falha');
+            tag.textContent = valor;
+            celula.appendChild(tag);
+          } else {
+            celula.textContent = valor;
+          }
+          if (indice === 3) {
+            celula.style.fontSize = '0.75rem';
+            celula.style.fontFamily = 'monospace';
+          }
+          linha.appendChild(celula);
+        });
+        corpoTabela.appendChild(linha);
       }
 
       const total = resultados.length;
@@ -171,14 +165,11 @@
         : `Relatório incompleto: ${aprovados} aprovados; ${falhas} falhas; ${naoExecutados} não executados de ${total}.`;
     }
 
-    async function executarBateria(limparResultadosAnteriores) {
-      botoesExecucao.forEach(botao => { botao.disabled = true; });
+    btnRodar.addEventListener('click', async () => {
+      btnRodar.disabled = true;
       resumoEl.textContent = 'Aguardando carregamento do iframe e Pyodide...';
+      corpoTabela.replaceChildren();
       containerTabela.style.display = 'block';
-
-      if (limparResultadosAnteriores) {
-        corpoTabela.replaceChildren();
-      }
 
       try {
         const iframeWin = iframeApp.contentWindow;
@@ -198,27 +189,20 @@
         }
 
         iframeWin.documentContexto = iframeWin.document;
-        const resultados = [];
-        resumoEl.textContent = 'Executando testes...';
-        const relatorio = await iframeWin.executarTodosOsTestesWeb(teste => {
-          resultados.push(teste);
-          atualizarLinhaTeste(teste);
-        });
-        renderizarResultados(Array.isArray(relatorio) ? relatorio : resultados);
+        resumoEl.textContent = 'Executando 31 testes...';
+        const resultados = await iframeWin.executarTodosOsTestesWeb();
+        renderizarResultados(Array.isArray(resultados) ? resultados : []);
       } catch (erro) {
         console.error('Falha inesperada no executor da suíte web:', erro);
         resumoEl.textContent = `Falha no executor: ${erro.message || String(erro)}. Resultado não considerado aprovado.`;
       } finally {
-        botoesExecucao.forEach(botao => { botao.disabled = false; });
+        btnRodar.disabled = false;
       }
-    }
-
-    btnExecutarNovo.addEventListener('click', () => executarBateria(true));
-    btnReexecutar.addEventListener('click', () => executarBateria(false));
+    });
 
     // Mantém a execução automática da página de testes.
     window.addEventListener('load', () => {
-      setTimeout(() => btnExecutarNovo.click(), 1000);
+      setTimeout(() => btnRodar.click(), 1000);
     });
   </script>
 </body>
