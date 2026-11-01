@@ -698,7 +698,7 @@ function executarExpressaoAtual() {
 }
 
 function aplicarAcaoTecla(acao) {
-  const numeroOuOperador = /^[0-9.]$/.test(acao) || ['+', '-', '*', '/', '(', ')'].includes(acao);
+  const numeroOuOperador = /^[0-9.]$/.test(acao) || ['+', '-', '*', '/', '^', '(', ')'].includes(acao);
   if (numeroOuOperador) { inserirNaExpressao(acao); return; }
   switch (acao) {
     case 'equals': executarExpressaoAtual(); break;
