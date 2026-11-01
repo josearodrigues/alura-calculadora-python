@@ -6,6 +6,36 @@
   <title>Suíte de Testes Automatizados no Navegador - Calculadora Web Pyodide</title>
   <link rel="stylesheet" href="./style.css">
   <style>
+    .pagina-testes .app-header {
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 4px 4px 14px;
+      text-align: center;
+    }
+    .pagina-testes .app-header .app-titulo,
+    .pagina-testes .app-header .app-subtitulo {
+      margin: 0;
+      text-align: center;
+    }
+    .pagina-testes .app-header p:last-child {
+      margin: 0.5rem 0 0;
+    }
+    .pagina-testes .calc-card {
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      .pagina-testes .barra-acoes-testes {
+        flex-wrap: wrap;
+        justify-content: center !important;
+        gap: 0.75rem;
+      }
+      .pagina-testes #resumo-geral { text-align: center; }
+      .pagina-testes .calc-card { overflow-x: auto; }
+      .pagina-testes .tabela-testes { min-width: 620px; }
+    }
     .tabela-testes {
       width: 100%;
       border-collapse: collapse;
@@ -35,7 +65,7 @@
     .tag-falha { background-color: var(--danger); color: #fff; }
   </style>
 </head>
-<body>
+<body class="pagina-testes">
   <div class="app-container" style="max-width: 760px;">
     <header class="app-header">
       <h1 class="app-titulo">Suíte de Testes Automatizados no Navegador</h1>
@@ -44,7 +74,7 @@
     </header>
 
     <main class="calc-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <div class="barra-acoes-testes" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
           <button id="btn-rodar-testes" class="btn btn-primario" style="flex: none; padding: 0.5rem 1rem;">
             Executar Bateria de Testes (31)
