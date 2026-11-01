@@ -39,7 +39,7 @@
   <div class="app-container" style="max-width: 760px;">
     <header class="app-header">
       <h1 class="app-titulo">Suíte de Testes Automatizados no Navegador</h1>
-      <p class="app-subtitulo">Validação ponta a ponta dos 11 casos de teste web com Pyodide</p>
+      <p class="app-subtitulo">11 casos: integração atual e compatibilidade legada com Pyodide</p>
       <p style="margin-top: 0.5rem;"><a href="./index.html">← Voltar para a Calculadora</a></p>
     </header>
 
@@ -86,57 +86,102 @@
     const corpoTabela = document.getElementById('corpo-tabela-testes');
     const iframeApp = document.getElementById('iframe-app');
 
-    btnRodar.addEventListener('click', async () => {
-      btnRodar.disabled = true;
-      resumoEl.textContent = "Aguardando carregamento do iframe e Pyodide...";
-      corpoTabela.innerHTML = "";
-      containerTabela.style.display = "block";
+    function renderizarResultados(resultados) {
+      let aprovados = 0;
+      let falhas = 0;
+      let naoExecutados = 0;
+      corpoTabela.replaceChildren();
 
-      const iframeWin = iframeApp.contentWindow;
-      
-      // Aguarda até o Pyodide do iframe estar pronto
-      let tentativas = 0;
-      while ((!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) && tentativas < 80) {
-        await new Promise(r => setTimeout(r, 250));
-        tentativas++;
-      }
+      for (const teste of resultados) {
+        if (teste.status === 'APROVADO' || teste.passou === true) aprovados++;
+        else if (teste.status === 'NÃO EXECUTADO') naoExecutados++;
+        else falhas++;
 
-      if (!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) {
-        resumoEl.textContent = "Erro: Timeout ao carregar Pyodide no iframe.";
-        btnRodar.disabled = false;
-        return;
-      }
+        const linha = document.createElement('tr');
+        const celulas = [
+          teste.id,
+          teste.descricao,
+          teste.status || (teste.passou ? 'APROVADO' : 'FALHOU'),
+          teste.detalhes || '-'
+        ];
 
-      resumoEl.textContent = "Executando 11 testes...";
-      
-      // Conecta o runner ao contexto do iframe
-      iframeWin.documentContexto = iframeWin.document;
-      window.documentContexto = iframeWin.document;
-      
-      // Executa os testes no contexto do iframe
-      const resultados = await iframeWin.executarTodosOsTestesWeb();
-      
-      let passados = 0;
-      corpoTabela.innerHTML = "";
-
-      for (const t of resultados) {
-        if (t.passou) passados++;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${t.id}</strong></td>
-          <td>${t.descricao}</td>
-          <td><span class="tag-status ${t.passou ? 'tag-sucesso' : 'tag-falha'}">${t.passou ? 'APROVADO' : 'FALHOU'}</span></td>
-          <td style="font-size: 0.75rem; font-family: monospace;">${t.detalhes || '-'}</td>
-        `;
-        corpoTabela.appendChild(tr);
+        celulas.forEach((valor, indice) => {
+          const celula = document.createElement('td');
+          if (indice === 0) {
+            const forte = document.createElement('strong');
+            forte.textContent = valor;
+            celula.appendChild(forte);
+          } else if (indice === 2) {
+            const tag = document.createElement('span');
+            tag.className = 'tag-status ' +
+              (valor === 'APROVADO' ? 'tag-sucesso' : 'tag-falha');
+            tag.textContent = valor;
+            celula.appendChild(tag);
+          } else {
+            celula.textContent = valor;
+          }
+          if (indice === 3) {
+            celula.style.fontSize = '0.75rem';
+            celula.style.fontFamily = 'monospace';
+          }
+          linha.appendChild(celula);
+        });
+        corpoTabela.appendChild(linha);
       }
 
       const total = resultados.length;
-      resumoEl.textContent = `Resultado: ${passados}/${total} testes aprovados (${passados === total ? '100% OK ✓' : 'FALHA ✖'})`;
-      btnRodar.disabled = false;
+      const completos = total === 11 && aprovados + falhas + naoExecutados === 11;
+      const cemPorCento = completos && aprovados === 11 && falhas === 0 && naoExecutados === 0;
+      resumoEl.textContent = completos
+        ? \`Resultado: \${aprovados}/\${total} aprovados; \${falhas} falhas; \${naoExecutados} não executados (\${cemPorCento ? '100% OK ✓' : 'REVISÃO NECESSÁRIA ✖'})\`
+        : \`Relatório incompleto: \${aprovados} aprovados; \${falhas} falhas; \${naoExecutados} não executados de 11.\`;
+    }
+
+    btnRodar.addEventListener('click', async () => {
+      btnRodar.disabled = true;
+      resumoEl.textContent = 'Aguardando carregamento do iframe e Pyodide...';
+      corpoTabela.replaceChildren();
+      containerTabela.style.display = 'block';
+
+      try {
+        const iframeWin = iframeApp.contentWindow;
+        let tentativas = 0;
+
+        while (
+          (!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) &&
+          tentativas < 80
+        ) {
+          await new Promise(resolve => setTimeout(resolve, 250));
+          tentativas++;
+        }
+
+        if (!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) {
+          renderizarResultados([{
+            id: 'TW-01',
+            descricao: 'Inicialização assíncrona do Pyodide v0.27.8 e status Pronto',
+            status: 'FALHOU',
+            detalhes: 'Timeout ao carregar Pyodide no iframe.'
+          }, ...Array.from({ length: 10 }, (_, indice) => ({
+            id: \`TW-\${String(indice + 2).padStart(2, '0')}\`,
+            descricao: 'Caso dependente da inicialização',
+            status: 'NÃO EXECUTADO',
+            detalhes: 'Pyodide indisponível.'
+          }))]);
+          return;
+        }
+
+        iframeWin.documentContexto = iframeWin.document;
+        const resultados = await iframeWin.executarTodosOsTestesWeb();
+        renderizarResultados(Array.isArray(resultados) ? resultados : []);
+      } catch (erro) {
+        console.error('Falha inesperada no executor da suíte web:', erro);
+        resumoEl.textContent = \`Falha no executor: \${erro.message || String(erro)}. Resultado não considerado aprovado.\`;
+      } finally {
+        btnRodar.disabled = false;
+      }
     });
 
-    // Inicia automaticamente quando a página carrega
+    // Mantém a execução automática da página de testes.
     window.addEventListener('load', () => {
       setTimeout(() => btnRodar.click(), 1000);
     });
