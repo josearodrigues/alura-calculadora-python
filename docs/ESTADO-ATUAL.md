@@ -27,8 +27,8 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
 | Último commit de implementação identificado nesta revisão | `9ca9d1a` — ajuste visual da página de testes (Fase 4). |
-| Último commit remoto da branch verificado nesta atualização | `2b02e027d93ed247b8ed3fda951144d19a5e5d85` — `docs: consolidar changelog da calculadora 2.1`. |
-| Commits documentais desta atualização | `702f2d3` — README; `2b02e02` — CHANGELOG. |
+| Último commit remoto da branch verificado nesta atualização | Será atualizado após a consolidação documental final. |
+| Commits documentais desta atualização | `702f2d3`, `2b02e02`, `5e2d82e`, `af3dc0a`, `4294bb8`, `b96c845` (README), `254de03` (CHANGELOG), além dos commits finais deste registro. |
 | Estado remoto da branch de trabalho | Confirmado pela API do GitHub no commit `2b02e027d93ed247b8ed3fda951144d19a5e5d85`. |
 | Estado local | Não acessível nesta revisão remota. É necessário executar `git pull` e conferir `git status`; não presumir sincronização. |
 | Última versão publicada conhecida | `v2.0.0` |
@@ -44,7 +44,7 @@ Não foi feita nesta atualização uma conferência da branch `main`, das tags r
 | 2 | Histórico e gestão de ANS em Python | Implementada anteriormente; histórico, recuperação e ANS possuem testes na suíte atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
 | 3 | Interface desktop Tkinter | **Concluída.** Implementação conferida; 21/21 testes de interface e 92/92 testes da suíte completa aprovados, conforme execução informada pelo usuário. Validação manual da GUI confirmada pelo usuário. Revisão documental concluída em 31/10/2026. Adaptações A-01 e A-02 aceitas e registradas. |
 | 4 | Interface web com Pyodide, tema e responsividade | **Implementada e validada pelo usuário no escopo executado.** Remoção do fluxo legado, suíte Web atualizada para 31 cenários, evidências restauradas e página de testes ajustada. A validação integrada e a regressão final pertencem à Fase 5. |
-| 5 | Validação integrada, regressão e documentação da versão | **Parcialmente concluída.** Suítes Python e Web aprovadas conforme resultados informados; testes legados comparados sem perda de asserções identificada; README e CHANGELOG atualizados. Execução local integrada via `app.py` e conferência final da documentação/estado local ainda pendentes. |
+| 5 | Validação integrada, regressão e documentação da versão | **Concluída no escopo documentado.** Python 92/92, Web 31/31, comparação da baseline sem remoção de asserções identificada, execução integrada via `app.py` e verificações manuais de operação básica, potência/raiz, histórico e ANS confirmadas pelo usuário. Documentação atualizada. A release `v2.1.0` ainda não foi publicada. |
 
 ### 3.1 Adaptações aceitas na Fase 3
 
@@ -75,6 +75,8 @@ As decisões estão detalhadas em [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCI
 | Suíte completa Python | 92/92 aprovados |
 | Validação manual da interface desktop | Confirmada pelo usuário |
 | Suíte Web | 31/31 aprovados; 0 falhas; 0 não executados (01/11/2026) |
+| Integração local via `app.py` | Confirmada pelo usuário em 01/11/2026 |
+| Verificação manual integrada | Operação básica, potência ou raiz, histórico e ANS: todos funcionando, conforme confirmação do usuário em 01/11/2026 |
 | Comparação dos testes legados da baseline | 25 métodos preservados; nenhuma asserção original removida na análise comparativa |
 
 Os cinco testes direcionados adicionados foram:
@@ -97,7 +99,7 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 | Demais testes em `tests/` | Integram a suíte completa, com resultado informado de 92/92 aprovados. |
 | `docs/calculadora-2.0-plano.md` | Plano original preservado. |
 | `docs/REGISTRO-DIVERGENCIAS.md` | Atualizado em 01/11/2026 com decisões de escopo, arquivos, commits e validação da Fase 4. |
-| `docs/ESTADO-ATUAL.md` | Atualizado em 01/11/2026 para registrar a Fase 4 e as pendências da Fase 5. |
+| `docs/ESTADO-ATUAL.md` | Atualizado em 01/11/2026 para registrar a conclusão da Fase 5 no escopo documentado. |
 | `README.md` | Atualizado nesta revisão com recursos matemáticos, sintaxe `root(rad; ind)`, percentual contextual, atalhos por interface e resultados 92/92 e 31/31. Commit `702f2d3`. |
 | `CHANGELOG.md` | Consolidado para registrar as funcionalidades da evolução `v2.1.0`, mudanças da Fase 4 e resultados conhecidos, sem declarar release. Commit `2b02e02`. |
 
@@ -113,30 +115,19 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 
 ## 8. Pendências e próxima ação
 
-**Fases 3 e 4 encerradas no escopo executado:** a Fase 3 foi validada e documentada em 31/10/2026. A Fase 4 foi implementada e validada pelo usuário em 01/11/2026. As decisões de escopo da interface Web estão registradas em `docs/REGISTRO-DIVERGENCIAS.md`; o plano original permanece preservado.
+**Fases 3, 4 e 5 concluídas no escopo documentado.** A Fase 5 foi encerrada após a confirmação do usuário, em 01/11/2026, de que a execução local por `python3 app.py` e os testes integrados solicitados funcionaram.
 
-Pendências gerais do desafio:
-
-- [ ] Sincronizar o ambiente local com os commits documentais remotos `702f2d3` e `2b02e02`; o estado local não foi acessível nesta revisão.
-- [x] Executar e validar a Fase 4 — Interface Web, com as adaptações registradas em `docs/REGISTRO-DIVERGENCIAS.md`.
-- [ ] Confirmar a execução local da interface Web por `python3 app.py` e validar o acesso à calculadora e à página `testes.html`.
+- [x] Executar e validar a Fase 4 — Interface Web.
+- [x] Confirmar a execução local via `app.py` e os testes manuais integrados: operação básica, potência ou raiz, histórico e ANS.
 - [x] Registrar 92/92 testes Python e 31/31 cenários Web aprovados, conforme resultados informados pelo usuário.
-- [x] Comparar os 25 métodos de teste da baseline `v2.0.0` com a branch atual; não foi identificada remoção de teste ou asserção original.
-- [x] Atualizar README e CHANGELOG para a evolução em desenvolvimento `v2.1.0`.
-- [ ] Fazer revisão final da Fase 5 após a validação local e sincronização do ambiente.
+- [x] Comparar os testes da baseline `v2.0.0`; nenhuma remoção de método ou asserção original foi identificada na análise.
+- [x] Atualizar README, CHANGELOG, ESTADO-ATUAL e REGISTRO-DIVERGENCIAS.
+- [ ] Sincronizar no ambiente local os commits documentais remotos e conferir `git status`; o estado local não é acessível nesta revisão.
+- [ ] Revisar o estado local e decidir sobre a publicação da `v2.1.0`.
 
-As Fases 3 e 4 estão concluídas no escopo registrado, mas **o Desafio 2 como um todo não está concluído**. A versão `v2.0.0` continua sendo a última versão publicada conhecida; `v2.1.0` permanece condicionada à conclusão das fases previstas.
+A Fase 5 está concluída no escopo documentado. O Desafio 2 está tecnicamente validado, mas a evolução `v2.1.0` ainda não foi publicada. A última versão publicada conhecida permanece `v2.0.0`.
 
-**Próxima ação operacional recomendada:** sincronizar os commits documentais e confirmar o servidor local:
-
-```bash
-git pull
-git status --short --branch
-git log -1 --oneline
-python3 app.py
-```
-
-Com o servidor iniciado, abrir `http://127.0.0.1:3000` e `http://127.0.0.1:3000/testes.html`. Encerrar com `Ctrl+C`. A execução local ainda depende de confirmação no ambiente do usuário.
+**Próxima ação recomendada:** sincronizar a branch local com `git pull` e conferir `git status --short --branch` e `git log -1 --oneline`. Depois, fazer a revisão final de publicação. Nenhuma tag, release ou publicação foi criada nesta atualização.
 
 ## 9. Estado da Fase 4 — 01/11/2026
 
@@ -193,3 +184,33 @@ A branch remota foi consultada após as atualizações e está em `2b02e027d93ed
 
 ### Critério ainda necessário para encerrar a Fase 5
 Executar `python3 app.py` no ambiente local, confirmar o acesso à interface e à página de testes, e então atualizar este documento com o resultado observado. Até lá, não declarar a Fase 5 nem o Desafio 2 concluídos.
+
+
+## 11. Encerramento da Fase 5 — 01/11/2026
+
+### Confirmação integrada do usuário
+O usuário confirmou que executou os testes manuais solicitados e que todos funcionaram:
+- Operação aritmética básica.
+- Expressão envolvendo potência ou raiz.
+- Histórico.
+- Continuidade com `ANS`.
+
+A execução local da aplicação Web via `python3 app.py` também foi confirmada. Não se atribui ao assistente a execução local: os resultados são declarações de validação realizadas pelo usuário.
+
+### Situação final
+- Suíte Python: 92/92 aprovados (resultado informado pelo usuário).
+- Suíte Web: 31/31 aprovados, 0 falhas e 0 não executados (resultado informado pelo usuário).
+- Interface desktop: validação manual confirmada anteriormente pelo usuário.
+- Interface Web local: funcionamento confirmado pelo usuário, incluindo os cenários integrados acima.
+- Baseline `v2.0.0`: comparação estática dos 25 métodos legados, sem remoção identificada de métodos ou asserções.
+- Fase 5: concluída no escopo documentado.
+- Última versão publicada conhecida: `v2.0.0`. A evolução `v2.1.0` permanece não publicada.
+
+### Commits documentais
+- `b96c845` — README atualizado com validação integrada.
+- `254de03` — CHANGELOG atualizado com conclusão da Fase 5.
+- Commits de atualização do registro de divergências e deste estado serão identificados no histórico Git após a gravação.
+- HEAD remoto observado antes desta consolidação: `4294bb889bf8966b8099bca14c7bd0c7176384fe`.
+
+### Limite da verificação
+A branch remota foi consultada; o estado da working tree local do usuário não é acessível por esta atualização. A sincronização local continua sendo uma tarefa operacional antes da publicação.
