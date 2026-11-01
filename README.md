@@ -111,9 +111,9 @@ O servidor HTTP serve o diretório em que foi iniciado. Também é possível ini
 
 ---
 
-## Sintaxe de Expressões
+## Sintaxe de Expressões — v2.1.0
 
-A calculadora avalia expressões completas, com parênteses e precedência matemática.
+A evolução `v2.1.0` avalia expressões completas, com parênteses e precedência matemática. A baseline `v2.0.0` mantém o fluxo de dois operandos descrito em seu histórico.
 
 | Recurso | Sintaxe | Exemplo |
 |---|---|---|
@@ -129,9 +129,9 @@ A calculadora avalia expressões completas, com parênteses e precedência matem
 
 O ponto e vírgula (`;`) separa argumentos de funções com mais de um parâmetro. A vírgula continua disponível como separador decimal: `root(12,5; 3)`.
 
-## Atalhos de Teclado
+## Atalhos de Teclado — v2.1.0
 
-Os atalhos variam ligeiramente entre as interfaces:
+Os atalhos abaixo descrevem as interfaces da evolução `v2.1.0`:
 
 - **Desktop (Tkinter):** dígitos, ponto ou vírgula decimal, operadores `+`, `-`, `*`, `/`, `^`, parênteses, `;` e `%`; `Enter` calcula, `Backspace` apaga, `Esc` ou `Delete` limpa e `Ctrl+C` copia o resultado.
 - **Web:** dígitos, ponto decimal, operadores `+`, `-`, `*`, `/` e parênteses; `Enter` ou `=` calcula, `Backspace` apaga e `Esc` limpa. Os demais recursos podem ser inseridos pelos botões da interface.
