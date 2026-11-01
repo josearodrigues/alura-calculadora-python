@@ -27,41 +27,44 @@ Em 31/10/2026, o usuário aceitou manter as seguintes escolhas já implementadas
 
 O plano original não será alterado para fazer os requisitos parecerem iguais à implementação. A diferença entre requisito publicado e decisão aceita permanece explícita.
 
-## 3. Estado observado no código remoto
+## 3. Estado observado no código e nos testes
 
-Base da conferência: arquivos da branch `desafio-2-revisao-final` consultados em 31/10/2026.
+Base da conferência: arquivos da branch `desafio-2-revisao-final` e resultados de execução informados pelo usuário em 31/10/2026.
 
 | ID | Comportamento | Evidência observada | Situação |
 |---|---|---|---|
 | C-01 | Dimensões da janela | `calculadora/interface.py`: `geometry("740x580")` e `minsize(700, 540)`. | Adaptação A-01 aceita |
 | C-02 | Tema e visor | Tema `#0D1B2A`, expressão em cinza claro e resultado em ciano `#22D3EE`. | Implementado |
-| C-03 | Teclado e raiz enésima | Teclado completo; `_aplicar_raiz_n()` insere `root(` ou `root(valor; ` após resultado. | Implementado; teste direcionado pendente |
-| C-04 | Recuperação do histórico | `_recuperar_historico_por_id()` chama `historico.recuperar_entrada()`, restaura expressão/resultado e ativa o estado de resultado calculado. O modelo atualiza ANS para o valor recuperado. | Implementado; teste direcionado pendente |
-| C-05 | Continuidade após recuperação | `_adicionar_operador()` utiliza o resultado exibido quando `_resultado_calculado` está ativo. | Implementado; teste direcionado pendente |
-| C-06 | Limpeza do histórico | `limpar_historico()` remove registros visuais e do modelo; `HistoricoSessao.limpar_historico()` preserva ANS. | Implementado; teste direcionado pendente |
+| C-03 | Teclado e raiz enésima | Teclado completo; `_aplicar_raiz_n()` insere `root(` ou `root(valor; ` após resultado. | Implementado e coberto por teste direcionado |
+| C-04 | Recuperação do histórico | `_recuperar_historico_por_id()` restaura expressão/resultado e o modelo atualiza ANS para o valor recuperado. | Implementado e coberto por teste direcionado |
+| C-05 | Continuidade após recuperação | O operador utiliza o resultado recuperado quando o estado de resultado calculado está ativo. | Implementado e coberto por teste direcionado |
+| C-06 | Limpeza do histórico | A limpeza remove os registros e preserva o valor de ANS. | Implementado e coberto por teste direcionado |
 | C-07 | Memória | Os cinco botões são funcionais e possuem métodos correspondentes. | Adaptação A-02 aceita |
-| C-08 | Atalhos físicos | Tratamento de dígitos, operadores, parênteses, Enter, Backspace, Escape/Delete e Ctrl+C em `_ao_pressionar_tecla()`. | Implementado; cobertura direcionada pendente |
-| C-09 | Testes de interface | `tests/test_interface_desktop.py` contém 16 métodos de teste na versão consultada. | Cobertura existente; ampliar nos comportamentos listados acima |
+| C-08 | Atalhos físicos | O tratamento de teclado encaminha dígitos, operadores, parênteses, Enter, Backspace, Escape/Delete e Ctrl+C. | Implementado e coberto por teste de encaminhamento dos atalhos |
+| C-09 | Testes de interface | `tests/test_interface_desktop.py` contém 21 métodos de teste. | 21 testes de interface aprovados |
 
 ## 4. Evoluções além do escopo originalmente previsto
 
 | ID | Evolução | Relação com o plano | Situação |
 |---|---|---|---|
 | E-01 | Operações de memória MC, MR, M+, M- e MS. | O plano previa os botões desabilitados na Fase 3 e a memória em evolução posterior. | Implementadas e mantidas por decisão do usuário. |
-| E-02 | Ampliação dos testes da interface para 16 métodos. | Amplia a cobertura da Fase 3. | Código remoto conferido; resultado de execução atual ainda não revalidado nesta auditoria. |
-| E-03 | Suíte geral com 87 testes aprovados. | Resultado informado em sessão anterior. | Registro histórico; não reexecutado nesta conferência. |
-| E-04 | Validação manual da interface desktop pelo usuário. | Validação funcional da GUI. | Considerada realizada conforme confirmação anterior do usuário; não repetir sem justificativa. |
+| E-02 | Ampliação dos testes da interface de 16 para 21 métodos. | Amplia a cobertura da Fase 3. | 21/21 testes aprovados. |
+| E-03 | Ampliação da suíte completa de 87 para 92 testes. | Amplia a cobertura de regressão. | 92/92 testes aprovados. |
+| E-04 | Validação manual da interface desktop pelo usuário. | Validação funcional da GUI. | Confirmada pelo usuário. |
 
-## 5. Pendências da auditoria da Fase 3
+## 5. Validações realizadas e pendências documentais da Fase 3
 
-- [ ] Acrescentar testes direcionados para template `root(` e sua variante após resultado.
-- [ ] Acrescentar teste de recuperação de um registro do histórico, incluindo atualização do ANS.
-- [ ] Acrescentar teste da continuidade do cálculo após recuperar um registro.
-- [ ] Acrescentar teste de limpeza do histórico preservando ANS.
-- [ ] Acrescentar teste direcionado aos atalhos físicos essenciais.
-- [ ] Executar os testes novos e a suíte de regressão pertinente no ambiente local.
-- [ ] Atualizar o documento `docs/ESTADO-ATUAL.md` no repositório, após conferir o estado local e remoto.
-- [ ] Fechar a revisão documental e confirmar os critérios restantes da Fase 3 antes de iniciar a Fase 4.
+Testes direcionados acrescentados e executados:
+
+- [x] Teste do template de raiz enésima, com e sem resultado anterior.
+- [x] Teste de recuperação do histórico e atualização do ANS.
+- [x] Teste de continuidade após recuperação.
+- [x] Teste de limpeza do histórico preservando ANS.
+- [x] Teste de encaminhamento dos atalhos físicos.
+- [x] Execução dos testes da interface: 21/21 aprovados.
+- [x] Execução da suíte completa: 92/92 aprovados.
+- [ ] Atualizar `docs/ESTADO-ATUAL.md`.
+- [ ] Concluir a revisão documental da Fase 3.
 
 As adaptações A-01 e A-02 não são pendências de correção: foram aceitas e devem permanecer como decisões registradas.
 
@@ -82,4 +85,10 @@ Nenhuma tag, release ou versão nova é presumida por este registro. A identific
 - Confirmados no código remoto: janela 740×580, memória funcional, recuperação do histórico com atualização do ANS e 16 métodos de teste da interface.
 - O usuário aceitou manter a dimensão desktop 740×580 e a memória funcional.
 - Preservados os critérios originais no plano e registradas as duas adaptações como decisões aceitas.
-- Identificadas lacunas de testes direcionados; sua inclusão e execução permanecem pendentes.
+
+### 31/10/2026 — Atualização da validação da Fase 3
+- Registrados os cinco testes direcionados adicionados à interface desktop.
+- Atualizada a cobertura da interface de 16 para 21 métodos, com resultado de 21/21 aprovados.
+- Atualizada a suíte completa de 87 para 92 testes, com resultado de 92/92 aprovados.
+- Registrada a confirmação do usuário sobre a validação manual da interface desktop.
+- Mantidas como pendências apenas a atualização de `docs/ESTADO-ATUAL.md` e a conclusão da revisão documental da Fase 3.
