@@ -93,7 +93,7 @@ def validar_literal_numerico(texto_literal: str) -> float:
     if parte_expoente is not None:
         if not parte_expoente or not re.match(r"^[+-]?\d+$", parte_expoente):
             raise ErroValidacao(f"Expoente inválido no literal '{texto}'.")
-        
+
         # Tamanho do trecho textual do expoente (após e/E) limitado a 4 caracteres (ex.: +308, -308, 308)
         if len(parte_expoente) > 4:
             raise ErroValidacao("Trecho do expoente (após e/E) excede o limite textual de segurança permitido de 4 caracteres.")
