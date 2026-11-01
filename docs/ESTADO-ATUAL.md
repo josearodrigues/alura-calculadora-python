@@ -21,20 +21,22 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 
 ## 2. Repositório, branches e versionamento
 
-| Item | Estado conhecido |
+| Item | Estado confirmado em 01/11/2026 |
 |---|---|
 | Repositório | `josearodrigues/alura-calculadora-python` |
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
-| Último commit de implementação identificado nesta revisão | `9ca9d1a` — ajuste visual da página de testes (Fase 4). |
-| Último commit remoto registrado antes da reorganização | `3de5628` — referência histórica; houve commits posteriores de documentação e organização. |
-| Commits documentais desta atualização | `702f2d3`, `2b02e02`, `5e2d82e`, `af3dc0a`, `4294bb8`, `b96c845` (README), `254de03` (CHANGELOG), além dos commits finais deste registro. |
-| Estado remoto da branch de trabalho | Consultado diretamente no GitHub nesta revisão; a ponta deve ser conferida com `git log -1` após sincronização local. |
-| Estado local | Não acessível nesta revisão remota. É necessário executar `git pull` e conferir `git status`; não presumir sincronização. |
+| Último commit local informado pelo usuário | `c15bce5` — documentação da coexistência das versões. |
+| Último commit remoto após esta revisão documental | `9b9891e` — correção da sequência e referências do registro de divergências. |
+| Estado local conhecido | Working tree limpa após fast-forward até `c15bce5`, conforme saída enviada pelo usuário. Os dois commits documentais posteriores feitos diretamente no GitHub ainda precisam ser buscados localmente. |
+| Comparação remota com `main` | `desafio-2-revisao-final` está 64 commits à frente e 0 atrás; comparação consultada no GitHub em 01/11/2026. |
+| Último commit de `main` observado | `cff94f2` — não alterado nesta revisão. |
 | Última versão publicada conhecida | `v2.0.0` |
-| Próxima versão prevista no plano | `v2.1.0`; validações da Fase 5 concluídas, mas a versão ainda não publicada. |
+| Evolução em desenvolvimento | `v2.1.0`, organizada em `v2.1.0/`; ainda não publicada como release. |
 
-Não foi feita nesta atualização uma conferência da branch `main`, das tags remotas ou do estado de publicação do GitHub Pages. Não presumir que estejam sincronizados com a branch de trabalho.
+A comparação remota confirma que a branch de trabalho contém a linha de desenvolvimento em relação à `main`. A contagem de commits é dinâmica e deve ser consultada novamente antes do merge.
+
+Os commits documentais mais recentes foram feitos diretamente no GitHub. Portanto, antes de qualquer merge, execute `git fetch origin` e atualize a branch local por fast-forward, depois confira o estado da working tree. Não presumir que a branch local já contém esses commits.
 
 ## 3. Situação das fases do plano
 
@@ -115,19 +117,19 @@ Os testes foram executados pelo usuário. Este registro não afirma que foram re
 
 ## 8. Pendências e próxima ação
 
-**Fases 3, 4 e 5 concluídas no escopo documentado.** A Fase 5 foi encerrada após a confirmação do usuário, em 01/11/2026, de que a execução local por `python3 app.py` e os testes integrados solicitados funcionaram.
+**Fases 1 a 5 concluídas no escopo documentado.** A evolução `v2.1.0` está implementada e validada localmente pelo usuário, mas ainda não foi publicada.
 
-- [x] Executar e validar a Fase 4 — Interface Web.
-- [x] Confirmar a execução local via `app.py` e os testes manuais integrados: operação básica, potência ou raiz, histórico e ANS.
-- [x] Registrar 92/92 testes Python e 31/31 cenários Web aprovados, conforme resultados informados pelo usuário.
-- [x] Comparar os testes da baseline `v2.0.0`; nenhuma remoção de método ou asserção original foi identificada na análise.
-- [x] Atualizar README, CHANGELOG, ESTADO-ATUAL e REGISTRO-DIVERGENCIAS.
-- [ ] Sincronizar no ambiente local os commits documentais remotos e conferir `git status`; o estado local não é acessível nesta revisão.
-- [ ] Revisar o estado local e decidir sobre a publicação da `v2.1.0`.
+- [x] Concluir as fases de implementação e validação previstas no plano, com adaptações aceitas registradas separadamente.
+- [x] Confirmar 92/92 testes Python e 31/31 cenários Web aprovados, conforme resultados informados pelo usuário.
+- [x] Confirmar execução integrada local via `app.py` e fluxos manuais de operação básica, potência/raiz, histórico e ANS.
+- [x] Preservar a aplicação `v2.0.0` na raiz e organizar a aplicação `v2.1.0` em subdiretório próprio.
+- [x] Atualizar README, CHANGELOG, ESTADO-ATUAL e REGISTRO-DIVERGENCIAS para descrever a coexistência.
+- [ ] Validar publicamente a rota `/v2.1.0/` e a página `/v2.1.0/testes.html` no GitHub Pages. A verificação estática dos caminhos relativos não substitui essa validação.
+- [ ] Buscar localmente os dois commits documentais mais recentes (`77c36dc` e `9b9891e`) e confirmar sincronização e working tree limpa.
+- [ ] Revisar o diff final de `desafio-2-revisao-final` em relação à `main`, confirmando que a baseline `v2.0.0` permanece preservada.
+- [ ] Somente após as validações e autorização do usuário, integrar a branch na `main`, validar a publicação e considerar a remoção das branches temporárias.
 
-A Fase 5 está concluída no escopo documentado. O Desafio 2 está tecnicamente validado, mas a evolução `v2.1.0` ainda não foi publicada. A última versão publicada conhecida permanece `v2.0.0`.
-
-**Próxima ação recomendada:** sincronizar a branch local com `git pull` e conferir `git status --short --branch` e `git log -1 --oneline`. Depois, fazer a revisão final de publicação. Nenhuma tag, release ou publicação foi criada nesta atualização.
+**Próxima ação operacional:** no ambiente local, execute `git fetch origin`; em seguida, atualize a branch por fast-forward e confira `git status --short --branch`. Não executar merge na `main`, criar tag/release ou excluir branches antes da validação do GitHub Pages e da revisão final do diff.
 
 ## 9. Estado da Fase 4 — 01/11/2026
 
@@ -223,38 +225,37 @@ A branch remota foi consultada; o estado da working tree local do usuário não 
 
 ### Estrutura confirmada na branch remota
 
-Consulta direta ao GitHub em 01/11/2026 confirmou a seguinte organização na branch `desafio-2-revisao-final`:
+Consulta direta ao GitHub confirmou na branch `desafio-2-revisao-final`:
 
 | Local | Conteúdo | Situação |
 |---|---|---|
 | Raiz | Aplicação e testes da baseline `v2.0.0` | Preservados |
-| `v2.1.0/` | Aplicação evoluída, módulos Python, interfaces e testes próprios | Presente na branch |
-| `docs/` | Plano, registro de divergências e estado atual | Compartilhado |
+| `v2.1.0/` | Aplicação evoluída, módulos Python, interfaces e testes próprios | Presente |
+| `docs/` | Plano, adendo, registro de divergências e estado atual | Compartilhado |
 | Raiz | `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` e `.nojekyll` | Compartilhados |
-
-A comparação remota confirmou que `desafio-2-revisao-final` está à frente de `main` e não está atrás. A contagem de commits varia à medida que os registros documentais são atualizados; consulte a comparação atual do GitHub em vez de tratar um número histórico como permanente.
 
 ### Verificações estáticas de coexistência
 
-- O HTML da raiz utiliza referências relativas para os recursos da aplicação localizada na raiz.
-- O HTML em `v2.1.0/` utiliza referências relativas para os recursos dentro desse subdiretório.
-- Os arquivos `app.py` e `main.py` existem em ambos os diretórios; a execução deve respeitar o diretório de trabalho da versão desejada.
-- O README foi ajustado para distinguir execução, testes e endereços locais das duas versões.
-- O CHANGELOG registra a reorganização sem declarar uma release da v2.1.0.
-- O registro de divergências documenta a decisão estrutural sem alterar o plano original.
+- O HTML da raiz usa referências relativas para os recursos da aplicação da raiz.
+- O HTML em `v2.1.0/` usa referências relativas para os recursos do próprio subdiretório.
+- Os dois arquivos `app.js` carregam os módulos Python correspondentes à sua versão em caminhos relativos.
+- Os dois servidores `app.py` usam o diretório de trabalho em que são iniciados; o README orienta a execução de cada versão no diretório correto.
+- O README distingue comandos, testes e endereços locais das duas versões.
+- O CHANGELOG registra a organização sem declarar uma release da v2.1.0.
+- O plano original e o adendo permanecem preservados.
 
-Essas verificações são estáticas. A rota pública `/v2.1.0/` no GitHub Pages ainda precisa ser validada antes da integração na `main`.
+Essas verificações são estáticas. A rota pública `/v2.1.0/` e a página `/v2.1.0/testes.html` no GitHub Pages ainda precisam ser verificadas no navegador antes do merge. Não há confirmação de publicação pública da v2.1.0.
 
 ### Estado Git e publicação
 
-- Branch de trabalho consultada: `desafio-2-revisao-final`.
-- Comparação remota: branch de trabalho à frente de `main` e sem commits pendentes de integração vindos de `main`, conforme consulta realizada nesta revisão. A contagem exata é dinâmica.
-- Branch `main`: não foi alterada por esta revisão documental.
-- Estado da working tree local e confirmação de sincronização com os commits documentais: não verificáveis pela consulta remota.
-- Commits documentais desta revisão remota: `4514e85` (README), `eb0f54f` (CHANGELOG), `6f26925` (REGISTRO-DIVERGENCIAS) e `0210e40` (ESTADO-ATUAL).
+- Branch de trabalho remota: `desafio-2-revisao-final`.
+- Comparação consultada com `main`: 64 commits à frente e 0 atrás.
+- Último commit da `main` observado: `cff94f2`; nenhuma alteração na `main` foi realizada nesta revisão.
+- Branch local do usuário: sincronizada e limpa até `c15bce5`, conforme saída fornecida. Os dois commits documentais subsequentes feitos diretamente no GitHub (`77c36dc` e `9b9891e`) ainda precisam ser buscados localmente.
 - Última versão publicada conhecida: `v2.0.0`.
-- `v2.1.0`: ainda não declarada como release nem publicada.
+- `v2.1.0`: implementada e validada no escopo informado pelo usuário; não publicada como release.
 
 ### Próxima ação recomendada
 
-Sincronizar a branch local com os commits documentais desta revisão, conferir `git status --short --branch` e o último commit, executar as verificações finais das duas versões e validar a rota `/v2.1.0/` no GitHub Pages antes de propor merge para `main`. Não excluir branches temporárias nem criar tag/release antes dessas verificações.
+Buscar os dois commits documentais no ambiente local, confirmar sincronização e working tree limpa, validar as duas rotas públicas no GitHub Pages e revisar o diff completo contra `main`. Somente então decidir o merge. Não excluir branches temporárias nem criar tag/release antes dessas etapas e da autorização do usuário.
+
