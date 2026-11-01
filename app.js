@@ -75,6 +75,18 @@ function definirControlesHabilitados(habilitado) {
   document.querySelectorAll('input[name="operacao"]').forEach(r => {
     r.disabled = !habilitado;
   });
+
+  // Controles da interface 2.0 também dependem da inicialização do Pyodide.
+  if (dom.teclado) {
+    dom.teclado.querySelectorAll('button').forEach(botao => {
+      botao.disabled = !habilitado;
+    });
+  }
+  [dom.btnTema, dom.btnHistorico, dom.btnInformacoes].forEach(botao => {
+    if (botao) botao.disabled = !habilitado;
+  });
+  if (dom.btnLimparHistorico) dom.btnLimparHistorico.disabled = !habilitado;
+  if (dom.btnHistoricoRodape) dom.btnHistoricoRodape.disabled = !habilitado;
 }
 
 /**
@@ -606,7 +618,7 @@ function limparVisor() {
 }
 
 function formatarExpressaoVisivel(expressao) {
-  return String(expressao).replace(/\\*/g, '×').replace(/\\//g, '÷');
+  return String(expressao).replaceAll('*', '×').replaceAll('/', '÷');
 }
 
 function renderizarHistorico() {
