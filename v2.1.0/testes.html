@@ -190,10 +190,10 @@
 
         iframeWin.documentContexto = iframeWin.document;
         const resultados = [];
+        resumoEl.textContent = 'Executando testes...';
         const relatorio = await iframeWin.executarTodosOsTestesWeb(teste => {
           resultados.push(teste);
           atualizarLinhaTeste(teste);
-          resumoEl.textContent = `Executando testes... ${resultados.length}/31 resultados atualizados.`;
         });
         renderizarResultados(Array.isArray(relatorio) ? relatorio : resultados);
       } catch (erro) {
