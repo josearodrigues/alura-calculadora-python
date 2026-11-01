@@ -6,7 +6,7 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
- > **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução `v2.1.0` ainda não publicada. Na validação informada pelo usuário, a suíte Python teve 92/92 aprovações em 31/10/2026 e a suíte Web teve 31/31 aprovações em 01/11/2026. A execução local integrada via `app.py` ainda precisa ser confirmada antes do encerramento da Fase 5.
+ > **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução `v2.1.0` ainda não publicada. Na validação informada pelo usuário, a suíte Python teve 92/92 aprovações em 31/10/2026 e a suíte Web teve 31/31 aprovações em 01/11/2026. Em 01/11/2026, o usuário também confirmou a execução integrada local via `app.py`, incluindo operação básica, expressão com potência ou raiz, histórico e `ANS`. A evolução `v2.1.0` permanece não publicada.
 
 ---
 
@@ -216,7 +216,7 @@ A lógica das operações e validações permanece nos módulos Python, comparti
 
 ## Estado da Evolução
 
-O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A próxima etapa é confirmar a execução local integrada via `app.py` e fazer a revisão final da Fase 5 antes de publicar a versão `v2.1.0`.
+O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A validação integrada local via `app.py` foi confirmada pelo usuário em 01/11/2026. A Fase 5 está concluída no escopo documentado; a evolução `v2.1.0` ainda não foi publicada.
 
 ---
 
