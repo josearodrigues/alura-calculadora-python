@@ -215,10 +215,11 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 
 .teclado {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(20, minmax(0, 1fr));
   gap: 9px;
 }
 .tecla {
+  grid-column: span 5;
   min-width: 0;
   min-height: clamp(43px, 5.2vw, 58px);
   border: 1px solid rgba(142, 177, 222, .38);
@@ -234,12 +235,13 @@ button:disabled { opacity: .48; cursor: not-allowed; }
 :root[data-theme="light"] .tecla { background: linear-gradient(145deg, #f8fbff, #dce6f5); }
 .tecla:hover:not(:disabled) { filter: brightness(1.2); border-color: var(--accent); }
 .tecla:active:not(:disabled) { transform: translateY(2px); }
-.tecla-memoria { grid-column: span 1; font-size: 1rem; }
+.tecla:nth-child(-n+15) { grid-column: span 4; }
+.tecla-memoria { font-size: 1rem; }
 .tecla-funcao { background: linear-gradient(145deg, #245bb1, #15366e); }
 .tecla-operador { background: linear-gradient(145deg, #0878ed, #0646b6); font-size: 1.65rem; }
 .tecla-limpar { background: linear-gradient(145deg, #ff5366, #c50f32); }
 .tecla-igual { background: linear-gradient(145deg, #20e58c, #079b5d); color: #042c20; font-size: 1.8rem; }
-.tecla-igual { grid-column: span 1; }
+.tecla-igual { grid-column: span 5; }
 
 .painel-historico { display: flex; flex-direction: column; gap: 12px; }
 .historico-cabecalho { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
