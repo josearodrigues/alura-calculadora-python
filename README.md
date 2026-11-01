@@ -216,7 +216,7 @@ A lógica das operações e validações permanece nos módulos Python, comparti
 
 ## Estado da Evolução
 
-O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A próxima etapa é concluir as validações integradas e a documentação da Fase 5 antes de publicar a versão `v2.1.0`.
+O histórico de sessão, a recuperação de resultados anteriores via `ANS`, a continuidade de expressões, os atalhos de teclado e as operações de memória já fazem parte da implementação em desenvolvimento nesta branch. A próxima etapa é confirmar a execução local integrada via `app.py` e fazer a revisão final da Fase 5 antes de publicar a versão `v2.1.0`.
 
 ---
 
