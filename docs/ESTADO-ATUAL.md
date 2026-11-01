@@ -27,12 +27,12 @@ O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. E
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
 | Último commit de implementação identificado nesta revisão | `9ca9d1a` — ajuste visual da página de testes (Fase 4). |
-| Último commit remoto da branch verificado nesta atualização | Será atualizado após a consolidação documental final. |
+| Último commit remoto da branch verificado nesta atualização | `3de5628` — harmonização do histórico da Fase 5; HEAD consultado em 01/11/2026. |
 | Commits documentais desta atualização | `702f2d3`, `2b02e02`, `5e2d82e`, `af3dc0a`, `4294bb8`, `b96c845` (README), `254de03` (CHANGELOG), além dos commits finais deste registro. |
-| Estado remoto da branch de trabalho | Confirmado pela API do GitHub no commit `2b02e027d93ed247b8ed3fda951144d19a5e5d85`. |
+| Estado remoto da branch de trabalho | Confirmado pela API do GitHub no HEAD `3de562803890e3cb901c836d0d5557824702403e` antes desta atualização final. |
 | Estado local | Não acessível nesta revisão remota. É necessário executar `git pull` e conferir `git status`; não presumir sincronização. |
 | Última versão publicada conhecida | `v2.0.0` |
-| Próxima versão prevista no plano | `v2.1.0`, condicionada à conclusão das fases previstas e validações da Fase 5. Ainda não publicada. |
+| Próxima versão prevista no plano | `v2.1.0`; validações da Fase 5 concluídas, mas a versão ainda não publicada. |
 
 Não foi feita nesta atualização uma conferência da branch `main`, das tags remotas ou do estado de publicação do GitHub Pages. Não presumir que estejam sincronizados com a branch de trabalho.
 
@@ -209,8 +209,11 @@ A execução local da aplicação Web via `python3 app.py` também foi confirmad
 ### Commits documentais
 - `b96c845` — README atualizado com validação integrada.
 - `254de03` — CHANGELOG atualizado com conclusão da Fase 5.
-- Commits de atualização do registro de divergências e deste estado serão identificados no histórico Git após a gravação.
-- HEAD remoto observado antes desta consolidação: `4294bb889bf8966b8099bca14c7bd0c7176384fe`.
+- `0fcc3ce` — registro inicial da validação integrada em `REGISTRO-DIVERGENCIAS.md` (posteriormente harmonizado em `3de5628`).
+- `5bb1a15` — atualização inicial do `ESTADO-ATUAL.md` (posteriormente harmonizado neste commit).
+- `3de5628` — harmonização do histórico da Fase 5 e atualização de `REGISTRO-DIVERGENCIAS.md`.
+- `91478c6` — harmonização do histórico e situação final da Fase 5 neste `ESTADO-ATUAL.md`.
+- `HEAD` remoto consultado antes deste commit: `3de562803890e3cb901c836d0d5557824702403e`.
 
 ### Limite da verificação
 A branch remota foi consultada; o estado da working tree local do usuário não é acessível por esta atualização. A sincronização local continua sendo uma tarefa operacional antes da publicação.
