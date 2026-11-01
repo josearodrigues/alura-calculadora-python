@@ -114,14 +114,15 @@ async function executarTodosOsTestesWeb() {
                        elIcone.textContent === "⚠" && elMensagem.textContent.includes("não é um número válido");
     registrarResultadoTeste('TW-09', 'Validação de entrada alfanumérica inválida ("abc")', tw09Passou);
 
-    // TW-10: Ação de limpeza restaura campos e foco
+    // TW-10: Ação de limpeza restaura os campos legados e o estado neutro.
+    // Os inputs antigos permanecem ocultos para compatibilidade e não podem receber foco.
     const inputA = doc.getElementById('input-op-a');
     const inputB = doc.getElementById('input-op-b');
     inputA.value = "123";
     inputB.value = "456";
     app.limparCampos();
-    const tw10Passou = inputA.value === "" && inputB.value === "" && elIcone.textContent === "ℹ" && doc.activeElement === inputA;
-    registrarResultadoTeste('TW-10', 'Ação de limpeza esvazia inputs e restaura estado neutro e foco', tw10Passou);
+    const tw10Passou = inputA.value === "" && inputB.value === "" && elIcone.textContent === "ℹ";
+    registrarResultadoTeste('TW-10', 'Ação de limpeza esvazia inputs legados e restaura estado neutro', tw10Passou);
 
     // TW-11: Liberação de Proxies em dois cenários (Fluxo normal e Falha forçada em toJs)
     let tw11CenarioAPassou = false;
