@@ -88,10 +88,10 @@ Detalhes e rastreabilidade: [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 | Validação integrada local via `python3 app.py` | Operação básica, potência/raiz, histórico e ANS funcionando | Confirmado pelo usuário em 01/11/2026 |
 | GitHub Pages — raiz | Baseline `v2.0.0` acessível | Confirmado pelo usuário |
 | GitHub Pages — `/v2.1.0/` | Evolução acessível e funcional | Confirmado pelo usuário |
-| GitHub Pages — `/v2.1.0/testes.html` | Página funcional; 31/31 testes aprovados | Confirmado pelo usuário |
+| GitHub Pages — `/v2.1.0/testes.html` | Página funcional; a execução numérica de 31/31 é anterior à barra de progresso | Confirmado pelo usuário |
 | Comparação com testes legados da baseline | 25 métodos preservados; nenhuma asserção original identificada como removida | Análise comparativa registrada |
 
-Esta documentação registra evidências comunicadas pelo usuário. A barra de progresso foi aprovada visual e funcionalmente após sua integração, mas não foi informado um novo resultado numérico de execução dos 31 testes após essa alteração. Não houve execução de testes pelo assistente durante esta revisão documental. Não repetir as suítes sem justificativa técnica.
+Esta documentação registra evidências comunicadas pelo usuário. Após a inclusão da barra de progresso, o usuário confirmou novos testes localmente e no GitHub Pages e aprovou o funcionamento e a apresentação. Não foi informado o quantitativo final exibido nessas execuções. A revisão estática do código não identificou bloqueios técnicos; observou apenas que o total de 31 cenários está fixado em `testes.html` e precisará acompanhar futuras mudanças na quantidade de testes. Não houve execução de testes pelo assistente. Não repetir as suítes sem justificativa técnica.
 
 ## 5. Organização das versões
 
@@ -134,12 +134,13 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - [x] Confirmar 31/31 testes Web na versão anterior à barra de progresso.
 - [x] Integrar a barra de progresso à página de testes Web após a publicação da tag `v2.1.0`.
 - [x] Confirmar visual e funcionalmente a barra de progresso com o usuário.
+- [x] Confirmar testes locais e no GitHub Pages após a inclusão da barra de progresso.
 - [x] Revisar e alinhar os seis documentos do projeto.
 - [ ] Confirmar o estado do clone local e sua sincronização com `origin/main`.
 - [ ] Avaliar, com autorização do usuário, o versionamento da melhoria posterior como `v2.1.1`; ainda não criar tag ou release.
 - [ ] Não criar release GitHub sem solicitação.
 
-**Próxima ação recomendada:** conferir as atualizações documentais no GitHub e, quando conveniente, sincronizar o clone local. A tag `v2.1.0` já está publicada e deve permanecer intacta. A melhoria da barra de progresso pode ser considerada para uma versão corretiva `v2.1.1`, mediante decisão e autorização do usuário. Não há justificativa identificada para reabrir as cinco fases ou repetir os testes sem motivo técnico.
+**Próxima ação recomendada:** decidir se a melhoria posterior será formalizada como `v2.1.1`, mantendo a tag `v2.1.0` intacta. Antes de qualquer tag, conferir a sincronização do clone local e fechar a revisão documental. O quantitativo da execução posterior da suíte não foi informado; não atribuir a ela o resultado histórico de 31/31. Não há justificativa identificada para reabrir as cinco fases.
 
 ## 9. Histórico resumido de encerramento
 
@@ -149,6 +150,6 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - **01/11/2026:** branches de desenvolvimento local e remota e backup local excluídos mediante autorização.
 - **01/11/2026:** revisão documental dos seis arquivos iniciada; naquele momento, a tag `v2.1.0` ainda estava pendente.
 - **02/11/2026:** tag `v2.1.0` confirmada como publicada; commit `481bbaa`.
-- **02/11/2026:** melhoria da barra de progresso integrada à `main` no commit `c681745`; usuário confirmou a validação visual e funcional.
+- **02/11/2026:** melhoria da barra de progresso integrada à `main` no commit `c681745`; usuário confirmou testes locais e no GitHub Pages e aprovou a validação visual e funcional. O quantitativo final dessas execuções não foi informado.
 - **02/11/2026:** documentação atualizada para refletir a tag publicada, a melhoria posterior e a ausência de uma nova confirmação numérica dos testes após a barra de progresso.
 
