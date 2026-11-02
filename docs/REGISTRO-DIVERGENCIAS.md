@@ -256,9 +256,13 @@ A implementação utiliza o callback de acompanhamento já disponibilizado pelo 
 - Commit integrado à `main`: `c681745` — `feat(testes): adicionar barra de progresso à suíte web`.
 - O commit foi enviado pelo usuário ao GitHub em 02/11/2026.
 - A tag `v2.1.0`, que aponta para `481bbaa`, permaneceu intacta.
-- O usuário confirmou que a apresentação visual e o funcionamento da barra ficaram satisfatórios.
+- O usuário confirmou que testou a página localmente e no GitHub Pages e aprovou a apresentação visual e o funcionamento da barra.
 
-**Limite da evidência:** não foi informado um novo resultado numérico da execução dos 31 cenários após a inclusão da barra. Assim, o resultado de 31/31 aprovado registrado na seção 8.3 refere-se à execução anterior à barra de progresso e não deve ser atribuído a um reteste posterior.
+**Limite da evidência:** embora o usuário tenha confirmado novos testes locais e no GitHub Pages após a inclusão da barra, não informou o quantitativo final apresentado. Assim, o resultado de 31/31 aprovado registrado na seção 8.3 refere-se à execução anterior à barra de progresso e não deve ser atribuído às execuções posteriores.
+
+### Revisão técnica
+
+A revisão estática do commit `c681745` e de sua integração com `v2.1.0/tests_web.js` não identificou bloqueios técnicos. O callback recebe os resultados individuais dos cenários e atualiza os contadores de aprovados, falhas e não executados. Como observação de manutenção, o total de 31 cenários está fixado em `testes.html`; futuras alterações na quantidade de cenários exigirão atualizar esse valor.
 
 ### Versionamento
 
@@ -266,4 +270,4 @@ A melhoria foi integrada depois da tag `v2.1.0`. Recomenda-se avaliá-la como ca
 
 ### Documentação
 
-A melhoria foi registrada em `README.md`, `CHANGELOG.md`, `docs/ESTADO-ATUAL.md` e neste documento. O plano original `docs/calculadora-2.0-plano.md` não foi alterado, pois a barra de progresso é uma melhoria posterior e não modifica os requisitos ou critérios das cinco fases concluídas.
+A melhoria foi registrada em `README.md`, `CHANGELOG.md`, `docs/ESTADO-ATUAL.md` e neste documento. Após a confirmação de testes locais e no GitHub Pages pelo usuário, os registros foram ajustados para distinguir essa validação funcional do resultado numérico histórico de 31/31, obtido antes da barra. O plano original `docs/calculadora-2.0-plano.md` não foi alterado, pois a barra de progresso é uma melhoria posterior e não modifica os requisitos ou critérios das cinco fases concluídas.
