@@ -6,7 +6,7 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Versão publicada:** `v2.0.0` (baseline histórica preservada). **Desenvolvimento:** branch `desafio-2-revisao-final`, evolução `v2.1.0` ainda não publicada. Na validação informada pelo usuário, a suíte Python teve 92/92 aprovações em 31/10/2026 e a suíte Web teve 31/31 aprovações em execução anterior à última simplificação visual da página de testes, em 01/11/2026. Em 01/11/2026, o usuário também confirmou a execução integrada local via `app.py`, incluindo operação básica, expressão com potência ou raiz, histórico e `ANS`. A evolução `v2.1.0` permanece não publicada.
+> **Versões:** `v2.0.0` permanece preservada na raiz; a evolução `v2.1.0` está integrada à branch `main` e acessível no GitHub Pages em `v2.1.0/`. A suíte Python foi aprovada (92/92), os testes direcionados da interface desktop (21/21) e a suíte Web (31/31) também foram aprovados. Em 01/11/2026, o usuário confirmou a execução dos 31 testes Web após a última melhoria visual, com duração aproximada de 1 minuto, além da validação manual das rotas públicas. A tag e a release `v2.1.0` ainda não foram criadas.
 
 ---
 
@@ -166,9 +166,9 @@ Com o servidor iniciado na raiz:
 - v2.0.0: `http://localhost:3000/testes.html`
 - v2.1.0: `http://localhost:3000/v2.1.0/testes.html`
 
-Resultado informado pelo usuário em 01/11/2026, em execução anterior à última simplificação visual da página de testes: **31/31 cenários aprovados, 0 falhas e 0 não executados**.
+Resultado confirmado pelo usuário em 01/11/2026, após a última melhoria visual e no GitHub Pages: **31/31 cenários aprovados, 0 falhas e 0 não executados**. Duração aproximada informada: **1 minuto**.
 
-Os resultados acima são registros das execuções informadas pelo usuário; esta atualização documental não representa uma nova execução dos testes.
+Os resultados acima registram execuções e validações informadas pelo usuário; esta documentação não representa uma nova execução dos testes.
 
 ---
 
@@ -196,9 +196,9 @@ As referências de recursos das interfaces Web são relativas ao diretório de c
 ## Estado das Versões
 
 - **v2.0.0:** baseline publicada, preservada na raiz do repositório.
-- **v2.1.0:** evolução validada no escopo documentado, organizada em `v2.1.0/`; ainda não publicada como release.
-- A coexistência dos diretórios na branch de trabalho não altera, por si só, a branch `main` nem a publicação existente.
-- Os resultados de validação da v2.1.0 estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
+- **v2.1.0:** evolução integrada à `main` e acessível no GitHub Pages em `/v2.1.0/`; tag e release ainda pendentes.
+- A raiz continua servindo a baseline `v2.0.0`; a evolução permanece isolada no subdiretório `v2.1.0/`.
+- Os resultados de validação estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
 
 ---
 
