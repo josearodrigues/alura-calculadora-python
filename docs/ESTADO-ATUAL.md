@@ -1,12 +1,12 @@
 # Estado Atual — Desafio 2: Calculadora Python
 
-**Última atualização:** 01/11/2026
+**Última atualização:** 02/11/2026
 
 **Repositório:** `josearodrigues/alura-calculadora-python`
 
 **Branch de referência remota:** `main`
 
-**Último commit remoto conhecido antes desta revisão documental:** `b915990` — `docs: consolidar estado atual do desafio 2`
+**Último commit remoto confirmado nesta revisão:** `c681745` — `feat(testes): adicionar barra de progresso à suíte web`
 
 **Plano de referência:** [calculadora-2.0-plano.md](calculadora-2.0-plano.md)
 
@@ -14,7 +14,7 @@
 
 **Registro de decisões:** [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 
-> Este é o registro operacional de continuidade. Os dados locais abaixo refletem a última saída de terminal informada pelo usuário; não foram revalidados nesta revisão. Os resultados de testes e as validações de interface são confirmações do usuário, não execuções realizadas pelo assistente.
+> Este é o registro operacional de continuidade. O estado remoto foi consultado em 02/11/2026. O estado local do repositório não foi verificado nesta revisão. Os resultados de testes e as validações de interface são confirmações do usuário, não execuções realizadas pelo assistente.
 
 ## 1. Identificação e objetivo
 
@@ -24,7 +24,7 @@ Objetivo pedagógico: compreender um código existente, implementar melhorias e 
 
 Princípio de trabalho: **Compreender, implementar, validar e explicar.**
 
-As cinco fases do plano foram concluídas no escopo acordado. A aplicação evoluída está integrada à `main` e acessível no GitHub Pages. A criação da tag e da release formal `v2.1.0` permanece como etapa pendente de versionamento.
+As cinco fases do plano foram concluídas no escopo acordado. A aplicação evoluída está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages. Uma melhoria na página de testes Web foi integrada posteriormente à publicação da tag; ela ainda não recebeu uma versão/tag própria. A release formal do GitHub não foi criada.
 
 ## 2. Estado Git e versionamento
 
@@ -32,20 +32,20 @@ As cinco fases do plano foram concluídas no escopo acordado. A aplicação evol
 |---|---|
 | Repositório | `josearodrigues/alura-calculadora-python` |
 | Branch principal remota | `main` |
-| Último commit remoto conhecido antes desta revisão | `b915990` — `docs: consolidar estado atual do desafio 2` |
+| Último commit remoto confirmado | `c681745` — `feat(testes): adicionar barra de progresso à suíte web` |
 | Branch remota de desenvolvimento | `desafio-2-revisao-final` — excluída por autorização do usuário |
 | Branch local de desenvolvimento | `desafio-2-revisao-final` — excluída por autorização do usuário |
 | Backup local `backup-v2.1.0` | Excluído por autorização do usuário |
 | Última verificação das branches remotas | Apenas `main` listada |
-| Último estado local informado | Branch `main` limpa, em `cff94f2`, 83 commits atrás de `origin/main` |
-| Último `origin/main` observado após `git fetch origin` | `b915990` |
-| Sincronização local após o fetch | Pendente de confirmação; foi recomendado `git pull --ff-only origin main`, mas não há resultado informado de sua execução |
+| Estado local atual | Não verificado nesta revisão; conferir com o usuário antes de orientar operações locais |
+| `origin/main` | Atualizada pelo push do commit `c681745`, confirmado no GitHub em 02/11/2026 |
+| Sincronização local | O usuário informou que realizou o push da melhoria; o estado atual do clone local não foi consultado nesta revisão |
 | Baseline histórica | `v2.0.0`, preservada na raiz e sem alteração pretendida |
 | Evolução | `v2.1.0/`, integrada à `main` e servida pelo GitHub Pages |
-| Tag `v2.1.0` | Ainda não criada |
+| Tag `v2.1.0` | Publicada; aponta para o commit `481bbaa` e não foi alterada pela melhoria posterior |
 | Release GitHub `v2.1.0` | Ainda não criada; não solicitada |
 
-Os commits documentais desta revisão estão sendo gravados diretamente na `main` via GitHub. O SHA mais recente deve ser consultado no GitHub ao retomar. Não se deve tratar a `main` local como sincronizada até o usuário confirmar o pull e o estado do Git.
+As atualizações documentais desta sessão são gravadas diretamente na `main` via GitHub. O SHA de cada atualização é informado ao usuário. Não se deve presumir que o clone local está sincronizado apenas porque o push anterior foi realizado; o estado local precisa ser confirmado separadamente.
 
 ## 3. Situação das cinco fases
 
@@ -74,6 +74,7 @@ Detalhes e rastreabilidade: [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 - Memória na interface desktop.
 - Interfaces desktop Tkinter e Web com Pyodide.
 - Suítes de testes independentes para a baseline e para a evolução.
+- Página de testes Web com barra de progresso, percentual, contagem de cenários concluídos e contadores de resultados, melhoria posterior à tag `v2.1.0`.
 
 ### 4.2 Resultados informados pelo usuário
 
@@ -81,8 +82,8 @@ Detalhes e rastreabilidade: [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 |---|---:|---|
 | Suíte Python da v2.1.0 | 92/92 aprovados | Confirmado pelo usuário em 31/10/2026 |
 | Testes direcionados da interface desktop | 21/21 aprovados | Confirmado pelo usuário |
-| Suíte Web da v2.1.0 | 31/31 aprovados, 0 falhas e 0 não executados | Confirmado pelo usuário em 01/11/2026, após a última melhoria visual |
-| Duração aproximada da suíte Web | 1 minuto | Informada pelo usuário |
+| Suíte Web da v2.1.0 | 31/31 aprovados, 0 falhas e 0 não executados | Confirmado pelo usuário em 01/11/2026, antes da inclusão posterior da barra de progresso |
+| Duração aproximada da suíte Web | 1 minuto | Informada pelo usuário para a execução de 31/31 anterior à barra de progresso |
 | Validação manual desktop | Funcionamento confirmado | Confirmado pelo usuário |
 | Validação integrada local via `python3 app.py` | Operação básica, potência/raiz, histórico e ANS funcionando | Confirmado pelo usuário em 01/11/2026 |
 | GitHub Pages — raiz | Baseline `v2.0.0` acessível | Confirmado pelo usuário |
@@ -90,7 +91,7 @@ Detalhes e rastreabilidade: [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 | GitHub Pages — `/v2.1.0/testes.html` | Página funcional; 31/31 testes aprovados | Confirmado pelo usuário |
 | Comparação com testes legados da baseline | 25 métodos preservados; nenhuma asserção original identificada como removida | Análise comparativa registrada |
 
-Esta documentação registra evidências comunicadas pelo usuário. Não houve nova execução de testes durante a revisão documental. Não repetir as suítes sem alteração de código ou justificativa técnica.
+Esta documentação registra evidências comunicadas pelo usuário. A barra de progresso foi aprovada visual e funcionalmente após sua integração, mas não foi informado um novo resultado numérico de execução dos 31 testes após essa alteração. Não houve execução de testes pelo assistente durante esta revisão documental. Não repetir as suítes sem justificativa técnica.
 
 ## 5. Organização das versões
 
@@ -119,6 +120,7 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - Não reabrir as cinco fases nem ampliar funcionalidades sem evidência ou solicitação.
 - Não repetir testes aprovados sem mudança relevante ou justificativa.
 - Diferenciar GitHub Pages funcional de tag/release formal.
+- Preservar a tag publicada `v2.1.0`; melhorias posteriores devem receber versionamento próprio, se e quando aprovado.
 - Não criar tag ou release sem autorização explícita.
 - Não presumir que o repositório local está sincronizado com a `main` remota.
 - Manter a rastreabilidade entre requisitos, adaptações aceitas, implementação e validações.
@@ -129,13 +131,15 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - [x] Integrar a evolução à branch remota `main`.
 - [x] Excluir as branches de desenvolvimento locais e remotas, conforme autorização do usuário.
 - [x] Validar as três rotas do GitHub Pages.
-- [x] Confirmar 31/31 testes Web após a última melhoria visual.
+- [x] Confirmar 31/31 testes Web na versão anterior à barra de progresso.
+- [x] Integrar a barra de progresso à página de testes Web após a publicação da tag `v2.1.0`.
+- [x] Confirmar visual e funcionalmente a barra de progresso com o usuário.
 - [x] Revisar e alinhar os seis documentos do projeto.
-- [ ] Confirmar a sincronização da `main` local com `origin/main`; última informação disponível indicava 83 commits de atraso.
-- [ ] Após concluir a revisão documental e confirmar o estado remoto, obter autorização específica para criar a tag `v2.1.0`.
+- [ ] Confirmar o estado do clone local e sua sincronização com `origin/main`.
+- [ ] Avaliar, com autorização do usuário, o versionamento da melhoria posterior como `v2.1.1`; ainda não criar tag ou release.
 - [ ] Não criar release GitHub sem solicitação.
 
-**Próxima ação recomendada:** concluir a conferência documental dos arquivos atualizados e, em seguida, tratar exclusivamente da sincronização local e da autorização para criar a tag `v2.1.0`. Não há justificativa identificada para novas funcionalidades ou repetição dos testes já aprovados.
+**Próxima ação recomendada:** conferir as atualizações documentais no GitHub e, quando conveniente, sincronizar o clone local. A tag `v2.1.0` já está publicada e deve permanecer intacta. A melhoria da barra de progresso pode ser considerada para uma versão corretiva `v2.1.1`, mediante decisão e autorização do usuário. Não há justificativa identificada para reabrir as cinco fases ou repetir os testes sem motivo técnico.
 
 ## 9. Histórico resumido de encerramento
 
@@ -143,5 +147,8 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - **01/11/2026:** usuário confirmou validação integrada local, funcionamento das rotas públicas do GitHub Pages e reteste Web 31/31 após a melhoria visual final.
 - **01/11/2026:** branch de desenvolvimento integrada à `main`; commit remoto de consolidação anterior à revisão documental: `b915990`.
 - **01/11/2026:** branches de desenvolvimento local e remota e backup local excluídos mediante autorização.
-- **01/11/2026:** revisão documental dos seis arquivos iniciada. Tag e release formal `v2.1.0` continuam pendentes.
+- **01/11/2026:** revisão documental dos seis arquivos iniciada; naquele momento, a tag `v2.1.0` ainda estava pendente.
+- **02/11/2026:** tag `v2.1.0` confirmada como publicada; commit `481bbaa`.
+- **02/11/2026:** melhoria da barra de progresso integrada à `main` no commit `c681745`; usuário confirmou a validação visual e funcional.
+- **02/11/2026:** documentação atualizada para refletir a tag publicada, a melhoria posterior e a ausência de uma nova confirmação numérica dos testes após a barra de progresso.
 
