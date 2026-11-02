@@ -6,7 +6,9 @@
 
 **Branch de referência remota:** `main`
 
-**Último commit remoto confirmado nesta revisão:** `c681745` — `feat(testes): adicionar barra de progresso à suíte web`
+**Último commit remoto confirmado antes da atualização de versionamento:** `c681745` — `feat(testes): adicionar barra de progresso à suíte web`
+
+**Tag corretiva publicada:** `v2.1.1`, apontando para `1e33727`.
 
 **Plano de referência:** [calculadora-2.0-plano.md](calculadora-2.0-plano.md)
 
@@ -24,7 +26,7 @@ Objetivo pedagógico: compreender um código existente, implementar melhorias e 
 
 Princípio de trabalho: **Compreender, implementar, validar e explicar.**
 
-As cinco fases do plano foram concluídas no escopo acordado. A aplicação evoluída está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages. Uma melhoria na página de testes Web foi integrada posteriormente à publicação da tag; ela ainda não recebeu uma versão/tag própria. A release formal do GitHub não foi criada.
+As cinco fases do plano foram concluídas no escopo acordado. A aplicação evoluída está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages. A melhoria posterior na página de testes Web foi formalizada pela tag publicada `v2.1.1`. A release formal do GitHub não foi criada.
 
 ## 2. Estado Git e versionamento
 
@@ -42,8 +44,9 @@ As cinco fases do plano foram concluídas no escopo acordado. A aplicação evol
 | Sincronização local | O usuário informou que realizou o push da melhoria; o estado atual do clone local não foi consultado nesta revisão |
 | Baseline histórica | `v2.0.0`, preservada na raiz e sem alteração pretendida |
 | Evolução | `v2.1.0/`, integrada à `main` e servida pelo GitHub Pages |
-| Tag `v2.1.0` | Publicada; aponta para o commit `481bbaa` e não foi alterada pela melhoria posterior |
-| Release GitHub `v2.1.0` | Ainda não criada; não solicitada |
+| Tag `v2.1.0` | Publicada; aponta para o commit `481bbaa` e permanece intacta |
+| Tag `v2.1.1` | Publicada pelo usuário em 02/11/2026; aponta para `1e33727` |
+| Release GitHub | Não criada; não solicitada |
 
 As atualizações documentais desta sessão são gravadas diretamente na `main` via GitHub. O SHA de cada atualização é informado ao usuário. Não se deve presumir que o clone local está sincronizado apenas porque o push anterior foi realizado; o estado local precisa ser confirmado separadamente.
 
@@ -120,7 +123,7 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - Não reabrir as cinco fases nem ampliar funcionalidades sem evidência ou solicitação.
 - Não repetir testes aprovados sem mudança relevante ou justificativa.
 - Diferenciar GitHub Pages funcional de tag/release formal.
-- Preservar a tag publicada `v2.1.0`; melhorias posteriores devem receber versionamento próprio, se e quando aprovado.
+- Preservar as tags publicadas `v2.1.0` e `v2.1.1`; não alterar versões já publicadas.
 - Não criar tag ou release sem autorização explícita.
 - Não presumir que o repositório local está sincronizado com a `main` remota.
 - Manter a rastreabilidade entre requisitos, adaptações aceitas, implementação e validações.
@@ -137,10 +140,10 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - [x] Confirmar testes locais e no GitHub Pages após a inclusão da barra de progresso.
 - [x] Revisar e alinhar os seis documentos do projeto.
 - [ ] Confirmar o estado do clone local e sua sincronização com `origin/main`.
-- [ ] Avaliar, com autorização do usuário, o versionamento da melhoria posterior como `v2.1.1`; ainda não criar tag ou release.
+- [x] Formalizar a melhoria posterior como `v2.1.1`; tag criada localmente e enviada ao GitHub pelo usuário.
 - [ ] Não criar release GitHub sem solicitação.
 
-**Próxima ação recomendada:** decidir se a melhoria posterior será formalizada como `v2.1.1`, mantendo a tag `v2.1.0` intacta. Antes de qualquer tag, conferir a sincronização do clone local e fechar a revisão documental. O quantitativo da execução posterior da suíte não foi informado; não atribuir a ela o resultado histórico de 31/31. Não há justificativa identificada para reabrir as cinco fases.
+**Próxima ação recomendada:** se desejar continuar o trabalho, confirmar a sincronização do clone local com `origin/main`. A tag `v2.1.1` já foi publicada e a tag `v2.1.0` permanece intacta. O quantitativo da execução posterior da suíte não foi informado; não atribuir a ela o resultado histórico de 31/31. Não há justificativa identificada para reabrir as cinco fases.
 
 ## 9. Histórico resumido de encerramento
 
@@ -151,5 +154,5 @@ A revisão busca eliminar instruções de trabalho já superadas, corrigir afirm
 - **01/11/2026:** revisão documental dos seis arquivos iniciada; naquele momento, a tag `v2.1.0` ainda estava pendente.
 - **02/11/2026:** tag `v2.1.0` confirmada como publicada; commit `481bbaa`.
 - **02/11/2026:** melhoria da barra de progresso integrada à `main` no commit `c681745`; usuário confirmou testes locais e no GitHub Pages e aprovou a validação visual e funcional. O quantitativo final dessas execuções não foi informado.
-- **02/11/2026:** documentação atualizada para refletir a tag publicada, a melhoria posterior e a ausência de uma nova confirmação numérica dos testes após a barra de progresso.
+- **02/11/2026:** documentação atualizada para refletir a tag publicada `v2.1.1`, a melhoria posterior e a ausência de uma nova confirmação numérica dos testes após a barra de progresso.
 
