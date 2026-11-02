@@ -5,381 +5,146 @@
 **Branch de trabalho:** `desafio-2-revisao-final`  
 **Branch principal:** `main`  
 **Plano de referência:** [calculadora-2.0-plano.md](calculadora-2.0-plano.md)  
-**Registro complementar:** [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
+**Registro de decisões:** [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 
-> Este documento registra o estado conhecido para continuidade do desafio. Distingue implementação, testes, commits, sincronização remota e publicação. Informações locais que não puderam ser verificadas nesta atualização estão identificadas como pendentes de confirmação.
+> Este documento é a referência operacional de continuidade. Registra o estado confirmado, as validações conhecidas e as pendências reais. O plano original e os registros históricos continuam sendo as fontes de requisitos e decisões.
 
 ## 1. Identificação e objetivo
 
 Desafio 2 da Imersão Engenharia de Software: Dev na Era da IA, iniciativa da Alura Imersões em parceria com Google for Startups.
 
-Objetivo pedagógico: praticar uma atividade comum na Engenharia de Software — compreender um código existente, implementar melhorias e verificar se o funcionamento anterior foi preservado.
+Objetivo pedagógico: compreender um código existente, implementar melhorias e verificar se o funcionamento anterior foi preservado.
 
 Princípio de trabalho: **Compreender, implementar, validar e explicar.**
 
-O escopo da Calculadora 2.0 está organizado no plano original em cinco fases. Este documento não substitui nem reescreve esse plano.
+A evolução da calculadora foi organizada em cinco fases, conforme o plano original. As fases de implementação estão concluídas no escopo acordado. A integração na branch principal e a publicação da evolução ainda não foram realizadas.
 
-## 2. Repositório, branches e versionamento
+## 2. Estado do Git e versionamento
 
-| Item | Estado confirmado em 01/11/2026 |
+| Item | Estado confirmado |
 |---|---|
 | Repositório | `josearodrigues/alura-calculadora-python` |
 | Branch de trabalho | `desafio-2-revisao-final` |
 | Branch principal | `main` |
-| Último commit local informado pelo usuário | `c15bce5` — documentação da coexistência das versões. |
-| Commit que consolidou a atualização operacional do estado | `201da2f` — atualização do estado operacional da coexistência das versões; houve depois um commit curto de correção da referência histórica deste registro. |
-| Estado local conhecido | Working tree limpa após fast-forward até `c15bce5`, conforme saída enviada pelo usuário. Os dois commits documentais posteriores feitos diretamente no GitHub ainda precisam ser buscados localmente. |
-| Comparação remota com `main` | `desafio-2-revisao-final` está 65 commits à frente e 0 atrás; comparação consultada no GitHub em 01/11/2026. |
-| Último commit de `main` observado | `cff94f2` — não alterado nesta revisão. |
+| Último commit local informado pelo usuário | `89482b1` — `docs: remover espaço indevido do plano` |
+| Sincronização local/remota | Confirmada pelo usuário; `git push` retornou `Everything up-to-date` e `git status -sb` não indicou divergência nem alterações locais |
+| Comparação com `main` consultada no GitHub | 82 commits à frente, 0 atrás |
+| Último commit de `main` observado | `cff94f2` |
+| Arquivos no diff da branch | 27: 25 adicionados, 2 modificados, nenhum removido |
+| PR aberto para a branch | Nenhum encontrado na consulta realizada |
 | Última versão publicada conhecida | `v2.0.0` |
-| Evolução em desenvolvimento | `v2.1.0`, organizada em `v2.1.0/`; ainda não publicada como release. |
+| Evolução em desenvolvimento | `v2.1.0`, organizada em `v2.1.0/`; ainda não publicada como release |
 
-A comparação remota confirma que a branch de trabalho contém a linha de desenvolvimento em relação à `main`. A contagem de commits é dinâmica e deve ser consultada novamente antes do merge.
+A comparação confirma que a branch de trabalho está baseada na versão observada de `main`, sem commits faltantes em relação a ela. A contagem de commits pode mudar e deve ser consultada novamente antes de uma integração futura.
 
-Os commits documentais mais recentes foram feitos diretamente no GitHub. Portanto, antes de qualquer merge, execute `git fetch origin` e atualize a branch local por fast-forward, depois confira o estado da working tree. Não presumir que a branch local já contém esses commits.
+O diff remoto confirma que nenhum arquivo foi removido em relação à `main`. A aplicação existente na raiz permanece presente na branch, enquanto a evolução está organizada no subdiretório `v2.1.0/`. Essa comparação estrutural não substitui a validação funcional das rotas públicas.
 
-## 3. Situação das fases do plano
+## 3. Situação das fases
 
-| Fase | Escopo | Situação registrada |
+| Fase | Escopo | Situação |
 |---|---|---|
-| 1 | Motor matemático, segurança e avaliador AST | Implementada anteriormente; funcionalidades cobertas pela suíte Python atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
-| 2 | Histórico e gestão de ANS em Python | Implementada anteriormente; histórico, recuperação e ANS possuem testes na suíte atual. Não foi realizada nova auditoria individual de cada critério nesta atualização. |
-| 3 | Interface desktop Tkinter | **Concluída.** Implementação conferida; 21/21 testes de interface e 92/92 testes da suíte completa aprovados, conforme execução informada pelo usuário. Validação manual da GUI confirmada pelo usuário. Revisão documental concluída em 31/10/2026. Adaptações A-01 e A-02 aceitas e registradas. |
-| 4 | Interface web com Pyodide, tema e responsividade | **Implementada e validada pelo usuário no escopo executado.** Remoção do fluxo legado, suíte Web atualizada para 31 cenários, evidências restauradas e página de testes ajustada. A validação integrada e a regressão final pertencem à Fase 5. |
-| 5 | Validação integrada, regressão e documentação da versão | **Concluída no escopo documentado.** Python 92/92, Web 31/31, comparação da baseline sem remoção de asserções identificada, execução integrada via `app.py` e verificações manuais de operação básica, potência/raiz, histórico e ANS confirmadas pelo usuário. Documentação atualizada. A release `v2.1.0` ainda não foi publicada. |
+| 1 | Motor matemático, segurança e avaliador AST | Implementada. Funcionalidades cobertas pela suíte Python. |
+| 2 | Histórico e gestão de ANS | Implementada. Histórico, recuperação e ANS cobertos pela suíte Python. |
+| 3 | Interface desktop Tkinter | Concluída e validada no escopo informado pelo usuário. |
+| 4 | Interface Web com Pyodide, tema e responsividade | Implementada; interface e página de testes ajustadas e verificadas localmente pelo usuário. |
+| 5 | Validação integrada, regressão e documentação | Concluída no escopo documentado. A publicação e a integração na `main` permanecem pendentes. |
 
-### 3.1 Adaptações aceitas na Fase 3
+### 3.1 Adaptações aceitas
 
-As seguintes diferenças em relação aos requisitos originais foram aceitas pelo usuário e não devem ser tratadas como defeitos pendentes:
+As diferenças abaixo foram aceitas pelo usuário e estão detalhadas em [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md):
 
-- **A-01:** manter a janela desktop em 740×580 px, com mínimo de 700×540 px, em vez de 720×560 px.
-- **A-02:** manter funcionais os botões MC, MR, M+, M- e MS, embora o plano original previsse botões desabilitados com indicação “Em breve”.
+- **A-01:** janela desktop de 740×580 px, mínimo de 700×540 px, em vez de 720×560 px.
+- **A-02:** botões MC, MR, M+, M- e MS funcionais, embora o plano original previsse esses controles desabilitados.
 
-As decisões estão detalhadas em [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md). O plano original permanece preservado.
+## 4. Funcionalidades e validações confirmadas
 
-## 4. Funcionalidades da Fase 3 verificadas
+### 4.1 Aplicação
 
-- Interface desktop Tkinter com tema Dark, visor duplo e teclado completo.
-- Botão de raiz enésima insere o template `root(` e, após resultado, `root(valor; `.
-- Recuperação de item do histórico restaura expressão e resultado e atualiza o ANS.
-- Operador após recuperação permite continuar o cálculo a partir do valor recuperado.
-- Limpeza do histórico preserva o ANS.
-- Atalhos físicos são encaminhados aos métodos correspondentes.
-- Botões de memória permanecem funcionais por decisão aceita.
+- Motor de expressões matemáticas com avaliação AST, sem uso de `eval()`.
+- Operações matemáticas, percentual contextual e raiz de índice n.
+- Histórico de cálculos e recuperação de registros.
+- ANS atualizado conforme as regras implementadas.
+- Interface desktop Tkinter com tema Dark.
+- Interface Web com Pyodide, tema e layout responsivo.
+- Estrutura independente para a versão `v2.1.0/`, mantendo a aplicação da raiz.
 
-## 5. Testes e validações
+### 4.2 Resultados de testes e validações
 
-**Resultados informados pelo usuário em 31/10 e 01/11/2026:**
+| Validação | Resultado conhecido | Evidência |
+|---|---:|---|
+| Testes da interface desktop | 21/21 aprovados | Resultado informado pelo usuário |
+| Suíte completa Python | 92/92 aprovados | Resultado informado pelo usuário |
+| Validação manual desktop | Confirmada | Confirmação do usuário |
+| Suíte Web antes da última melhoria visual | 31/31 aprovados | Resultado informado pelo usuário em 01/11/2026 |
+| Validação manual integrada Web | Confirmada | Usuário confirmou execução local via `python3 app.py`, operação básica, potência/raiz, histórico e ANS |
+| Comparação com testes legados da baseline | 25 métodos preservados; nenhuma asserção original identificada como removida | Análise comparativa registrada |
+| Experiência visual da página de testes após a última melhoria | Aprovada pelo usuário | Confirmação após o commit `49a5215` |
 
-| Validação | Resultado |
-|---|---:|
-| Testes da interface desktop | 21/21 aprovados |
-| Suíte completa Python | 92/92 aprovados |
-| Validação manual da interface desktop | Confirmada pelo usuário |
-| Suíte Web | 31/31 aprovados; 0 falhas; 0 não executados (01/11/2026) |
-| Integração local via `app.py` | Confirmada pelo usuário em 01/11/2026 |
-| Verificação manual integrada | Operação básica, potência ou raiz, histórico e ANS: todos funcionando, conforme confirmação do usuário em 01/11/2026 |
-| Comparação dos testes legados da baseline | 25 métodos preservados; nenhuma asserção original removida na análise comparativa |
+**Limite importante:** não há confirmação numérica de uma nova execução dos 31 testes Web após a última alteração de apresentação em `v2.1.0/testes.html`. Portanto, 31/31 não deve ser apresentado como resultado repetido após essa alteração. Essa confirmação será obtida na validação da página pública.
 
-Os cinco testes direcionados adicionados foram:
+Os testes Python e desktop não precisam ser repetidos sem alteração de código ou outra justificativa técnica. A pendência numérica específica é a execução da suíte Web após a melhoria visual final.
 
-1. Template de raiz enésima com e sem resultado anterior.
-2. Recuperação do histórico e atualização do ANS.
-3. Continuidade do cálculo após recuperação.
-4. Limpeza do histórico preservando ANS.
-5. Encaminhamento dos atalhos físicos.
+## 5. Estrutura e preservação das versões
 
-Os testes foram executados pelo usuário. Este registro não afirma que foram reexecutados durante a atualização documental.
-
-## 6. Arquivos e documentação envolvidos
-
-| Arquivo | Situação |
-|---|---|
-| `calculadora/interface.py` | Interface desktop implementada; referência da Fase 3. |
-| `calculadora/historico.py` | Modelo de histórico e ANS utilizado pela interface. |
-| `tests/test_interface_desktop.py` | 21 métodos de teste, com resultado informado de 21/21 aprovados. |
-| Demais testes em `tests/` | Integram a suíte completa, com resultado informado de 92/92 aprovados. |
-| `docs/calculadora-2.0-plano.md` | Plano original preservado. |
-| `docs/REGISTRO-DIVERGENCIAS.md` | Atualizado em 01/11/2026 com decisões de escopo, arquivos, commits e validação da Fase 4. |
-| `docs/ESTADO-ATUAL.md` | Atualizado em 01/11/2026 para registrar a conclusão da Fase 5 no escopo documentado. |
-| `README.md` | Atualizado nesta revisão com recursos matemáticos, sintaxe `root(rad; ind)`, percentual contextual, atalhos por interface e resultados 92/92 e 31/31. Commit `702f2d3`. |
-| `CHANGELOG.md` | Consolidado para registrar as funcionalidades da evolução `v2.1.0`, mudanças da Fase 4 e resultados conhecidos, sem declarar release. Commit `2b02e02`. |
-
-## 7. Decisões e cuidados
-
-- Preservar os requisitos originais e registrar separadamente as adaptações aceitas.
-- Não ampliar o escopo da Fase 3 nem reimplementar funcionalidades já validadas.
-- Não repetir testes aprovados sem justificativa técnica.
-- Não confundir o commit local de implementação com os commits documentais feitos diretamente na branch remota.
-- Antes de novas operações Git, conferir o estado local e remoto. Não executar operações destrutivas.
-- A interface web da Fase 4 possui requisitos próprios; as dimensões da janela desktop não determinam o layout web.
-- A versão `v2.1.0` é uma previsão do plano, não uma release já criada.
-
-## 8. Pendências e próxima ação
-
-**Fases 1 a 5 concluídas no escopo documentado.** A evolução `v2.1.0` está implementada e validada localmente pelo usuário, mas ainda não foi publicada.
-
-- [x] Concluir as fases de implementação e validação previstas no plano, com adaptações aceitas registradas separadamente.
-- [x] Confirmar 92/92 testes Python e 31/31 cenários Web aprovados, conforme resultados informados pelo usuário.
-- [x] Confirmar execução integrada local via `app.py` e fluxos manuais de operação básica, potência/raiz, histórico e ANS.
-- [x] Preservar a aplicação `v2.0.0` na raiz e organizar a aplicação `v2.1.0` em subdiretório próprio.
-- [x] Atualizar README, CHANGELOG, ESTADO-ATUAL e REGISTRO-DIVERGENCIAS para descrever a coexistência.
-- [ ] Validar publicamente a rota `/v2.1.0/` e a página `/v2.1.0/testes.html` no GitHub Pages. A verificação estática dos caminhos relativos não substitui essa validação.
-- [ ] Buscar localmente os dois commits documentais mais recentes (`77c36dc` e `9b9891e`) e confirmar sincronização e working tree limpa.
-- [ ] Revisar o diff final de `desafio-2-revisao-final` em relação à `main`, confirmando que a baseline `v2.0.0` permanece preservada.
-- [ ] Somente após as validações e autorização do usuário, integrar a branch na `main`, validar a publicação e considerar a remoção das branches temporárias.
-
-**Próxima ação operacional:** no ambiente local, execute `git fetch origin`; em seguida, atualize a branch por fast-forward e confira `git status --short --branch`. Não executar merge na `main`, criar tag/release ou excluir branches antes da validação do GitHub Pages e da revisão final do diff.
-
-## 9. Estado da Fase 4 — 01/11/2026
-
-### Implementação registrada
-- Remoção da seção de compatibilidade legada em `index.html`, das funções/ponte e eventos exclusivos em `app.js`, e da regra CSS correspondente.
-- Reescrita da suíte Web para a interface atual; remoção autorizada do cenário estrutural TW-03; total atual: 31 cenários.
-- Correção da inicialização e da sintaxe do executor após problemas identificados na primeira alteração.
-- Restauração da captura de detalhes retornados pelos cenários aprovados.
-- Ajuste visual do cabeçalho e da responsividade da página `testes.html`.
-
-### Commits da Fase 4
-| Commit | Resumo |
-|---|---|
-| `3711a5e` | Remoção da compatibilidade legada e reescrita da suíte |
-| `106bb55` | Correção da inicialização e sintaxe do executor |
-| `1b896ce` | Remoção autorizada do TW-03 |
-| `dcc96af` | Atualização da contagem para 31 cenários |
-| `c9f4ee7` | Restauração dos detalhes dos cenários aprovados |
-| `9ca9d1a` | Ajuste visual da página de testes |
-
-### Validação informada pelo usuário
-Em 01/11/2026, o usuário confirmou após `git pull`:
-- Suíte Web funcionando após a remoção do legado.
-- Evidências/detalhes visíveis nos cenários que fornecem retorno.
-- Cabeçalho e layout aprovados visualmente.
-- Tabela e última coluna visíveis na apresentação testada.
-
-Resultado numérico confirmado pelo usuário na página: **31/31 aprovados, 0 falhas e 0 não executados (100% OK)**. A execução local integrada via `app.py` permanece pendente.
-
-### Estado documental e limites
-- O plano `docs/calculadora-2.0-plano.md` permanece preservado, sem reescrever requisitos originais.
-- Decisões e divergências da Fase 4 estão em `docs/REGISTRO-DIVERGENCIAS.md`.
-- A baseline publicada continua identificada como `v2.0.0`; não há confirmação de publicação da evolução `v2.1.0`.
-- A sincronização do ambiente local do usuário ainda precisa ser conferida; o commit remoto mais recente desta atualização é `2b02e027d93ed247b8ed3fda951144d19a5e5d85`.
-
-
-## 10. Atualização da Fase 5 — 01/11/2026
-
-### Resultados consolidados
-- Python: 92/92 aprovados, conforme execução informada pelo usuário em 31/10/2026.
-- Web: 31/31 aprovados, 0 falhas e 0 não executados, conforme resultado exibido e informado pelo usuário em 01/11/2026.
-- Baseline `v2.0.0`: comparação dos 25 métodos de teste legados; nenhum método ou asserção original foi identificado como removido. Cinco testes de integração passaram a chamar o método auxiliar `executar_fluxo_legado()`, cuja sequência de validação, cálculo e formatação foi comparada à implementação anterior.
-- README e CHANGELOG atualizados nesta revisão remota. Não foi criada tag ou release.
-- Execução local real por `app.py`: ainda não confirmada.
-
-### Commits documentais desta atualização
-| Commit | Arquivo |
-|---|---|
-| `702f2d3` | `README.md` |
-| `2b02e02` | `CHANGELOG.md` |
-
-### Estado remoto e local
-A branch remota foi consultada após as atualizações e está em `2b02e027d93ed247b8ed3fda951144d19a5e5d85`. O estado local do usuário não é verificável por esta consulta remota e precisa ser sincronizado. A versão publicada conhecida continua `v2.0.0`; `v2.1.0` permanece não publicada.
-
-### Critério que estava pendente naquele registro
-A confirmação local foi recebida posteriormente e está documentada na seção 11. A Fase 5 está concluída no escopo documentado.
-
-
-## 11. Encerramento da Fase 5 — 01/11/2026
-
-### Confirmação integrada do usuário
-O usuário confirmou que executou os testes manuais solicitados e que todos funcionaram:
-- Operação aritmética básica.
-- Expressão envolvendo potência ou raiz.
-- Histórico.
-- Continuidade com `ANS`.
-
-A execução local da aplicação Web via `python3 app.py` também foi confirmada. Não se atribui ao assistente a execução local: os resultados são declarações de validação realizadas pelo usuário.
-
-### Situação final
-- Suíte Python: 92/92 aprovados (resultado informado pelo usuário).
-- Suíte Web: 31/31 aprovados, 0 falhas e 0 não executados (resultado informado pelo usuário).
-- Interface desktop: validação manual confirmada anteriormente pelo usuário.
-- Interface Web local: funcionamento confirmado pelo usuário, incluindo os cenários integrados acima.
-- Baseline `v2.0.0`: comparação estática dos 25 métodos legados, sem remoção identificada de métodos ou asserções.
-- Fase 5: concluída no escopo documentado.
-- Última versão publicada conhecida: `v2.0.0`. A evolução `v2.1.0` permanece não publicada.
-
-### Commits documentais
-- `b96c845` — README atualizado com validação integrada.
-- `254de03` — CHANGELOG atualizado com conclusão da Fase 5.
-- `0fcc3ce` — registro inicial da validação integrada em `REGISTRO-DIVERGENCIAS.md` (posteriormente harmonizado em `3de5628`).
-- `5bb1a15` — atualização inicial do `ESTADO-ATUAL.md` (posteriormente harmonizado neste commit).
-- `3de5628` — harmonização do histórico da Fase 5 e atualização de `REGISTRO-DIVERGENCIAS.md`.
-- `91478c6` — harmonização do histórico e situação final da Fase 5 neste `ESTADO-ATUAL.md`.
-- `HEAD` remoto consultado antes deste commit: `3de562803890e3cb901c836d0d5557824702403e`.
-
-### Limite da verificação
-A branch remota foi consultada; o estado da working tree local do usuário não é acessível por esta atualização. A sincronização local continua sendo uma tarefa operacional antes da publicação.
-
-
-## 12. Coexistência das versões — atualização de 01/11/2026
-
-### Estrutura confirmada na branch remota
-
-Consulta direta ao GitHub confirmou na branch `desafio-2-revisao-final`:
+A comparação da branch com `main` identificou 27 arquivos alterados: 25 adicionados e 2 modificados, sem arquivos removidos.
 
 | Local | Conteúdo | Situação |
 |---|---|---|
-| Raiz | Aplicação e testes da baseline `v2.0.0` | Preservados |
-| `v2.1.0/` | Aplicação evoluída, módulos Python, interfaces e testes próprios | Presente |
-| `docs/` | Plano, adendo, registro de divergências e estado atual | Compartilhado |
-| Raiz | `README.md`, `CHANGELOG.md`, `LICENSE`, `.gitignore` e `.nojekyll` | Compartilhados |
+| Raiz | Aplicação e testes da baseline `v2.0.0` | Preservados no diff |
+| `v2.1.0/` | Aplicação evoluída, módulos Python, interfaces e testes próprios | Adicionados |
+| `docs/` | Plano, adendo, registro de divergências e estado atual | Documentação do desafio |
+| Raiz | README, CHANGELOG e arquivos de configuração compartilhados | Mantidos/atualizados |
 
-### Verificações estáticas de coexistência
+As verificações estáticas registradas indicam que os recursos HTML, JavaScript e Python de cada versão usam seus próprios caminhos relativos. Isso ainda não comprova o funcionamento das rotas publicadas no GitHub Pages.
 
-- O HTML da raiz usa referências relativas para os recursos da aplicação da raiz.
-- O HTML em `v2.1.0/` usa referências relativas para os recursos do próprio subdiretório.
-- Os dois arquivos `app.js` carregam os módulos Python correspondentes à sua versão em caminhos relativos.
-- Os dois servidores `app.py` usam o diretório de trabalho em que são iniciados; o README orienta a execução de cada versão no diretório correto.
-- O README distingue comandos, testes e endereços locais das duas versões.
-- O CHANGELOG registra a organização sem declarar uma release da v2.1.0.
-- O plano original e o adendo permanecem preservados.
+## 6. Decisões e cuidados vigentes
 
-Essas verificações são estáticas. A rota pública `/v2.1.0/` e a página `/v2.1.0/testes.html` no GitHub Pages ainda precisam ser verificadas no navegador antes do merge. Não há confirmação de publicação pública da v2.1.0.
+- Preservar a baseline `v2.0.0` e não alterar sua tag.
+- Não reescrever o plano original; divergências aceitas permanecem no registro próprio.
+- Não repetir testes aprovados sem mudança relevante ou justificativa.
+- Não confundir implementação, validação local, commit, push, merge e publicação.
+- Não integrar a branch à `main`, criar tag, release ou excluir branches sem autorização expressa.
+- A versão `v2.1.0` está implementada, mas ainda não é uma release publicada.
 
-### Estado Git e publicação
+## 7. Pendências reais e próxima ação
 
-- Branch de trabalho remota: `desafio-2-revisao-final`.
-- Comparação consultada com `main`: 65 commits à frente e 0 atrás.
-- Último commit da `main` observado: `cff94f2`; nenhuma alteração na `main` foi realizada nesta revisão.
-- Branch local do usuário: sincronizada e limpa até `c15bce5`, conforme saída fornecida. Os dois commits documentais subsequentes feitos diretamente no GitHub (`77c36dc` e `9b9891e`) ainda precisam ser buscados localmente.
-- Última versão publicada conhecida: `v2.0.0`.
-- `v2.1.0`: implementada e validada no escopo informado pelo usuário; não publicada como release.
+As fases de implementação estão concluídas. Não há necessidade identificada de reabrir fases anteriores ou ampliar funcionalidades.
 
-### Próxima ação recomendada
+- [x] Implementar as cinco fases no escopo acordado.
+- [x] Registrar as adaptações aceitas.
+- [x] Confirmar os resultados conhecidos das suítes Python e Web e as validações manuais informadas.
+- [x] Preservar a aplicação da raiz e organizar a evolução em `v2.1.0/`.
+- [x] Sincronizar a branch local com a remota até o commit `89482b1`.
+- [x] Revisar a comparação remota com `main`: 82 commits à frente, 0 atrás, 27 arquivos alterados e nenhuma remoção.
+- [ ] Abrir e validar no navegador a rota pública [`/v2.1.0/`](https://josearodrigues.github.io/alura-calculadora-python/v2.1.0/).
+- [ ] Abrir [`/v2.1.0/testes.html`](https://josearodrigues.github.io/alura-calculadora-python/v2.1.0/testes.html), executar a bateria e confirmar o resultado numérico após a última melhoria visual.
+- [ ] Conferir que a rota raiz continua apresentando a baseline `v2.0.0`: [GitHub Pages](https://josearodrigues.github.io/alura-calculadora-python/).
+- [ ] Após as validações e nova revisão do estado Git, decidir com o usuário se a branch deve ser integrada à `main`.
 
-Buscar os dois commits documentais no ambiente local, confirmar sincronização e working tree limpa, validar as duas rotas públicas no GitHub Pages e revisar o diff completo contra `main`. Somente então decidir o merge. Não excluir branches temporárias nem criar tag/release antes dessas etapas e da autorização do usuário.
+**Próxima ação recomendada:** validar as três rotas do GitHub Pages no navegador, com atenção à execução dos 31 testes Web na página pública. Não repetir a suíte Python nem reabrir as fases anteriores sem evidência de regressão. Não realizar merge, criar tag/release ou excluir branches nesta etapa.
 
+## 8. Registro histórico resumido
 
+Esta seção preserva decisões e evidências relevantes das etapas anteriores sem manter várias cópias de estados operacionais que já ficaram desatualizados.
 
-## 13. Investigação da experiência visual do reteste Web — 01/11/2026
+### Fases 3 a 5
 
-### Sintoma relatado
+- Fase 3: interface desktop revisada; adaptações A-01 e A-02 aceitas.
+- Fase 4: compatibilidade legada removida da interface Web; suíte reorganizada em 31 cenários; detalhes dos cenários aprovados restaurados; apresentação da página de testes ajustada.
+- Fase 5: testes Python, testes Web, comparação com a baseline e validação manual integrada registrados conforme resultados informados pelo usuário.
+- Commits documentais e de implementação permanecem rastreáveis no histórico Git e em [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md).
 
-Na suíte Web da `v2.1.0`, ao clicar em Executar Bateria de Testes, a atualização é tão rápida que o usuário tem a impressão de que a tabela e as mensagens permanecem estáticas.
+### Investigação e melhoria da experiência visual da suíte Web
 
-Na comparação com a `v2.0.0`, o comportamento visual do reteste parece diferente.
+A investigação inicial identificou que a página limpava a tabela no início, aguardava a execução completa e só então renderizava os resultados. Isso explicava a impressão de interface estática, sem caracterizar falha funcional do executor.
 
-### Depuração realizada
+Uma implementação intermediária com controles temporários e atualização progressiva foi avaliada. A solução final simplificou a página para um único botão, informou o estado da espera pelo iframe/Pyodide e apresentou o relatório ao término, sem introduzir atraso artificial ou alterar os 31 cenários.
 
-Investigação acompanhada pelo usuário no Firefox Developer Tools, utilizando breakpoint no manipulador de clique de `v2.1.0/testes.html`.
-
-Foram confirmados:
-
-1. O clique alcança o `addEventListener`.
-2. O botão é desabilitado durante a execução.
-3. A mensagem de status é atualizada.
-4. A tabela anterior é limpa por `corpoTabela.replaceChildren()`.
-5. O fluxo de espera pelo iframe/Pyodide é executado.
-6. A bateria de testes é executada.
-7. Os resultados são renderizados.
-8. O botão volta a ficar habilitado.
-
-Após a depuração, o usuário repetiu o reteste sem pausas do depurador e confirmou que tudo funcionou.
-
-### Análise do fluxo de renderização
-
-Na implementação atual de `v2.1.0/testes.html`:
-
-- A tabela é limpa no início.
-- O código aguarda a conclusão de `executarTodosOsTestesWeb()`.
-- Somente depois do retorno da função, `renderizarResultados(resultados)` apresenta os resultados.
-
-Consequentemente, a interface não apresenta cada teste à medida que ele é executado. A tabela permanece vazia durante o processamento e é preenchida ao final.
-
-### Conclusão
-
-**Funcionamento:** reteste operacional, confirmado pelo usuário.
-
-**Experiência visual:** melhoria necessária. A atualização atual não oferece acompanhamento progressivo suficientemente perceptível, causando a impressão de que o processo está estático.
-
-### Pendência para a continuidade
-
-O usuário deseja melhorar a experiência do reteste na `v2.1.0`, permitindo que quem utiliza a aplicação perceba que os testes estão sendo executados.
-
-Essa melhoria permanece pendente e deve ser tratada antes do fechamento final do desafio.
-
-Na retomada:
-
-- Examinar o fluxo atual de execução e renderização.
-- Avaliar alternativas de feedback visual e atualização progressiva.
-- Apresentar uma proposta técnica objetiva, explicando as implicações.
-- Aguardar a decisão do usuário antes de implementar.
-- Após autorização, implementar e validar a melhoria.
-- Preservar os 31 cenários existentes e confirmar que a suíte continua aprovada.
-
-Não introduzir atrasos artificiais apenas para tornar a execução mais perceptível sem antes avaliar uma solução adequada de feedback visual.
-
-### Limites desta investigação
-
-Nenhum arquivo de código foi alterado durante a depuração. Nenhum teste foi removido ou modificado. Nenhum commit, push, merge ou publicação foi realizado como consequência desta investigação.
-
-**Estado:** defeito funcional não reproduzido; melhoria de experiência do usuário identificada e pendente.
-
-## 14. Melhoria do acompanhamento visual da suíte Web — 01/11/2026
-
-### Implementação preparada para validação local
-
-Na página `v2.1.0/testes.html`, foram incluídos dois controles temporários para permitir observar separadamente os comportamentos solicitados:
-
-- **Executar testes (nova tabela):** inicia uma execução com a tabela limpa, permitindo observar as linhas surgirem progressivamente.
-- **Reexecutar mantendo resultados:** inicia uma nova execução sem apagar a tabela anterior; cada linha é atualizada quando seu respectivo cenário termina, enquanto os demais resultados permanecem visíveis.
-
-No executor `v2.1.0/tests_web.js`, a execução continua sequencial e os 31 cenários permanecem inalterados. Após cada cenário, o executor aguarda dois frames de animação do navegador, criando uma oportunidade de pintura entre os resultados sem inserir atraso fixo artificial.
-
-### Estado da validação
-
-- Implementação e commit remoto: registrados após a atualização.
-- Testes estáticos/sintáticos e execução no navegador: pendentes de validação local pelo usuário.
-- Nenhum resultado de teste novo é declarado nesta etapa.
-- Os dois controles são temporários para diagnóstico e deverão ser reavaliados após o teste local.
-
-### Próxima ação
-
-Sincronizar a branch local, abrir `v2.1.0/testes.html` e verificar primeiro a execução com tabela nova; depois, usar a reexecução mantendo resultados para observar a atualização gradual das linhas. Confirmar também o resultado final de 31 cenários.
-
-
-## 15. Resultado da melhoria visual da suíte Web — 01/11/2026
-
-### Solução final aplicada
-
-As seções 13 e 14 registram a investigação e a implementação experimental que antecederam a solução final. Seus estados de pendência foram superados pelo commit abaixo e devem ser lidos como histórico, não como situação atual.
-
-Na página `v2.1.0/testes.html`, foi simplificado o fluxo de execução:
-- Um único botão: **“Executar Bateria de Testes (31)”**.
-- A tabela anterior é limpa no início da execução.
-- O status informa a espera pelo iframe/Pyodide e, em seguida, a execução dos 31 testes.
-- O relatório completo é renderizado ao término.
-- O botão é reabilitado ao final, inclusive em caso de erro.
-
-### Escopo preservado
-
-- Arquivo alterado: `v2.1.0/testes.html`.
-- `v2.1.0/tests_web.js` não foi alterado.
-- Os 31 cenários, suas asserções e a lógica de execução dos testes foram preservados.
-- Não foi introduzido atraso artificial entre os testes.
-- A mudança trata da apresentação e do acompanhamento da execução, não da cobertura ou do resultado dos testes.
-
-### Commit e aprovação
-
-- Commit remoto: `49a521556a6e400b4c4df85507e3c1de81573ad5`.
+- Commit da solução final: `49a521556a6e400b4c4df85507e3c1de81573ad5`.
 - Mensagem: `refactor: simplifica visualização da suíte web`.
-- Branch: `desafio-2-revisao-final`.
-- O usuário testou a página após a alteração e aprovou explicitamente a experiência visual, informando que o fluxo funcionou bem.
+- O usuário aprovou a experiência visual após testar a alteração.
+- A aprovação visual não substitui a confirmação numérica de uma nova execução 31/31 após essa alteração; essa confirmação permanece na pendência da seção 7.
 
-### Limite da validação
+### Histórico documental
 
-A aprovação do usuário confirma a experiência visual e o funcionamento observado na página. Não registrar um novo resultado numérico de 31/31 após este commit: a confirmação numérica anterior permanece vinculada à execução informada antes desta última alteração. A suíte deverá ser observada novamente na validação final da página pública, sem presumir o resultado.
-
-### Estado
-
-A melhoria de acompanhamento visual está **implementada e aprovada pelo usuário**. As pendências de experiência visual descritas nas seções 13 e 14 estão superadas. Permanecem válidas as etapas gerais de finalização já listadas na seção 8: sincronização local, validação das rotas no GitHub Pages e revisão do diff antes de qualquer decisão sobre merge/publicação.
+As seções antigas do documento registravam, em momentos diferentes, o estado das Fases 4 e 5, a coexistência das versões e a investigação da página de testes. Suas informações relevantes foram consolidadas nas seções atuais; detalhes de decisões e divergências permanecem no registro complementar e no histórico de commits.
