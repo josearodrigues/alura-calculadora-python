@@ -167,7 +167,7 @@ Com o servidor iniciado na raiz:
 - v2.0.0: `http://localhost:3000/testes.html`
 - v2.1.0: `http://localhost:3000/v2.1.0/testes.html`
 
-Resultado confirmado pelo usuário em 01/11/2026, antes da inclusão posterior da barra de progresso: **31/31 cenários aprovados, 0 falhas e 0 não executados**. Duração aproximada informada: **1 minuto**. A barra de progresso adicionada depois foi aprovada visual e funcionalmente pelo usuário; não foi informado um novo resultado numérico após essa alteração.
+Resultado confirmado pelo usuário em 01/11/2026, antes da inclusão posterior da barra de progresso: **31/31 cenários aprovados, 0 falhas e 0 não executados**. Duração aproximada informada: **1 minuto**. Após a inclusão da barra de progresso, o usuário confirmou que testou a página localmente e no GitHub Pages e aprovou seu funcionamento e apresentação. Não foi informado o quantitativo exibido ao final dessas novas execuções.
 
 Os resultados acima registram execuções e validações informadas pelo usuário; esta documentação não representa uma nova execução dos testes.
 
@@ -198,7 +198,7 @@ As referências de recursos das interfaces Web são relativas ao diretório de c
 
 - **v2.0.0:** baseline publicada, preservada na raiz do repositório.
 - **v2.1.0:** evolução integrada à `main`, tag `v2.1.0` publicada e aplicação acessível no GitHub Pages em `/v2.1.0/`. A release formal do GitHub não foi criada.
-- **Melhoria posterior:** barra de progresso da suíte Web integrada à `main` após a publicação da tag; candidata a uma versão corretiva `v2.1.1`, ainda sem tag ou release.
+- **Melhoria posterior:** barra de progresso da suíte Web integrada à `main` após a publicação da tag; o usuário confirmou testes locais e no GitHub Pages. A melhoria é candidata a uma versão corretiva `v2.1.1`, ainda sem tag ou release.
 - A raiz continua servindo a baseline `v2.0.0`; a evolução permanece isolada no subdiretório `v2.1.0/`.
 - Os resultados de validação estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
 
