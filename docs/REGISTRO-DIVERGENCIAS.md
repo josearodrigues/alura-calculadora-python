@@ -266,8 +266,8 @@ A revisão estática do commit `c681745` e de sua integração com `v2.1.0/tests
 
 ### Versionamento
 
-A melhoria foi integrada depois da tag `v2.1.0`. Recomenda-se avaliá-la como candidata à versão corretiva `v2.1.1`, mas nenhuma nova tag ou release foi criada ou autorizada nesta etapa. A tag publicada `v2.1.0` deve permanecer imutável.
+A melhoria foi integrada depois da tag `v2.1.0` e formalizada pela tag anotada `v2.1.1`, criada localmente e enviada ao GitHub pelo usuário em 02/11/2026. A tag `v2.1.1` aponta para o commit `1e33727`; a tag publicada `v2.1.0`, que aponta para `481bbaa`, permanece imutável. A release formal do GitHub não foi criada.
 
 ### Documentação
 
-A melhoria foi registrada em `README.md`, `CHANGELOG.md`, `docs/ESTADO-ATUAL.md` e neste documento. Após a confirmação de testes locais e no GitHub Pages pelo usuário, os registros foram ajustados para distinguir essa validação funcional do resultado numérico histórico de 31/31, obtido antes da barra. O plano original `docs/calculadora-2.0-plano.md` não foi alterado, pois a barra de progresso é uma melhoria posterior e não modifica os requisitos ou critérios das cinco fases concluídas.
+A melhoria foi registrada em `README.md`, `CHANGELOG.md`, `docs/ESTADO-ATUAL.md` e neste documento. Após a confirmação de testes locais e no GitHub Pages pelo usuário, os registros foram ajustados para distinguir essa validação funcional do resultado numérico histórico de 31/31, obtido antes da barra. Em 02/11/2026, o usuário criou e enviou ao GitHub a tag `v2.1.1`, apontando para `1e33727`. O plano original `docs/calculadora-2.0-plano.md` não foi alterado, pois a barra de progresso é uma melhoria posterior e não modifica os requisitos ou critérios das cinco fases concluídas.
