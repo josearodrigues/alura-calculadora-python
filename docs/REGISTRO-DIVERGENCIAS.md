@@ -2,7 +2,8 @@
 
 **Projeto:** Calculadora Python — Desafio 2  
 **Repositório:** `josearodrigues/alura-calculadora-python`  
-**Branch de referência:** `desafio-2-revisao-final`  
+**Branch de referência atual:** `main`  
+**Branch histórica de desenvolvimento:** `desafio-2-revisao-final` (integrada e posteriormente excluída)  
 **Criado em:** 31/10/2026  
 **Última atualização:** 01/11/2026
 
@@ -10,7 +11,7 @@
 
 ## 1. Referência da Fase 3
 
-A referência é a seção **“Fase 3 — Interface Desktop Tkinter (Calculadora 2.0 Dark)”** de [docs/calculadora-2.0-plano.md](calculadora-2.0-plano.md), na branch `desafio-2-revisao-final`.
+A referência de requisitos é a seção **“Fase 3 — Interface Desktop Tkinter (Calculadora 2.0 Dark)”** de [docs/calculadora-2.0-plano.md](calculadora-2.0-plano.md). A implementação foi inicialmente desenvolvida na branch histórica `desafio-2-revisao-final`, depois integrada à `main`.
 
 Os critérios incluem: janela de 720×560 px, tema Dark, visor duplo, teclado completo, template de raiz enésima `root(` com separador `;`, recuperação de histórico com atualização do ANS, continuidade após recuperação, limpeza do histórico preservando ANS, botões de memória desabilitados com indicação “Em breve” e atalhos físicos.
 
@@ -29,7 +30,7 @@ O plano original não será alterado para fazer os requisitos parecerem iguais �
 
 ## 3. Estado observado no código e nos testes
 
-Base da conferência: arquivos da branch `desafio-2-revisao-final` e resultados de execução informados pelo usuário em 31/10/2026.
+Base da conferência: arquivos e histórico da implementação, inicialmente na branch `desafio-2-revisao-final`, e resultados de execução informados pelo usuário em 31/10/2026.
 
 | ID | Comportamento | Evidência observada | Situação |
 |---|---|---|---|
@@ -96,7 +97,7 @@ Nenhuma tag, release ou versão nova é presumida por este registro. A identific
 
 ## 8. Fase 4 — Evolução da interface Web e revisão do escopo
 
-A Fase 4 foi implementada na branch `desafio-2-revisao-final`. Durante a revisão da interface, identificou-se que o fluxo de compatibilidade da interface Web da baseline não fazia mais parte da experiência atual e permanecia distribuído entre HTML, JavaScript, CSS e testes.
+A Fase 4 foi implementada inicialmente na branch histórica `desafio-2-revisao-final`, posteriormente integrada à `main`. Durante a revisão da interface, identificou-se que o fluxo de compatibilidade da interface Web da baseline não fazia mais parte da experiência atual e permanecia distribuído entre HTML, JavaScript, CSS e testes.
 
 Por decisão expressa do usuário, foi removido esse fluxo legado, preservando a interface Web atual, a aplicação desktop Tkinter e o motor Python. A baseline publicada `v2.0.0` não foi reescrita nem substituída.
 
@@ -175,7 +176,7 @@ Este registro documenta a confirmação do usuário; não afirma que o assistent
 
 ### Decisão de organização
 
-A branch de trabalho mantém duas árvores de aplicação independentes:
+A organização integrada à `main` mantém duas árvores de aplicação independentes:
 
 - **v2.0.0:** arquivos da aplicação preservados na raiz, correspondentes à baseline publicada.
 - **v2.1.0:** aplicação evoluída organizada em `v2.1.0/`, incluindo módulos Python, interfaces e suítes de testes próprias.
@@ -191,10 +192,38 @@ A documentação e os recursos comuns permanecem na raiz: `docs/`, `README.md`, 
 
 ### Verificações documentais realizadas no GitHub
 
-Em 01/11/2026, a branch `desafio-2-revisao-final` foi consultada diretamente. Foram localizados os arquivos de aplicação em `v2.1.0/` e os arquivos da aplicação da baseline na raiz. Os documentos compartilhados foram revisados para refletir essa organização.
+Em 01/11/2026, a estrutura da branch de desenvolvimento foi consultada diretamente. Os arquivos da aplicação evoluída estavam em `v2.1.0/` e os arquivos da baseline permaneciam na raiz. A branch foi posteriormente integrada à `main`.
 
-A compatibilidade dos caminhos relativos foi inspecionada nos arquivos HTML e JavaScript. Isso é uma verificação estática; não substitui a validação efetiva da publicação no GitHub Pages. A configuração de publicação e a rota pública da v2.1.0 permanecem sujeitas a validação antes do merge na `main`.
+A compatibilidade dos caminhos relativos foi inspecionada nos arquivos HTML e JavaScript. Em seguida, o usuário confirmou a validação efetiva no GitHub Pages: a raiz continuou apresentando a baseline `v2.0.0`, a rota `/v2.1.0/` apresentou a evolução e `/v2.1.0/testes.html` executou a suíte Web com 31/31 aprovações após a última melhoria visual.
 
 ### Limites
 
-Esta decisão organiza as duas versões na branch de trabalho sem alterar os requisitos históricos do plano original. O arquivo `docs/calculadora-2.0-plano.md` permanece preservado.
+Esta decisão organiza as duas versões na `main` sem alterar os requisitos históricos do plano original. O arquivo `docs/calculadora-2.0-plano.md` permanece preservado.
+
+
+## 13. Integração, validação pública e encerramento — 01/11/2026
+
+### Integração e branches
+
+- A branch histórica `desafio-2-revisao-final` foi integrada diretamente à `main`; ambas apontavam para o commit `b915990` antes da revisão documental.
+- O usuário autorizou e executou a exclusão da branch remota `desafio-2-revisao-final`.
+- O usuário autorizou e executou a exclusão local das branches `desafio-2-revisao-final` e `backup-v2.1.0`.
+- A consulta remota posterior indicou somente a branch `main`.
+- A última verificação local informada mostrou `main` limpa, mas 83 commits atrás de `origin/main`; a sincronização local ainda não foi confirmada.
+
+### Validação do GitHub Pages
+
+O usuário confirmou que:
+- A rota raiz continua apresentando a baseline `v2.0.0`.
+- A rota `/v2.1.0/` apresenta a evolução.
+- A página `/v2.1.0/testes.html` executou **31/31 cenários aprovados, 0 falhas e 0 não executados**, após a última melhoria visual.
+- A execução da suíte Web levou aproximadamente 1 minuto.
+- A interface e a página de testes apresentaram o comportamento esperado.
+
+### Estado de versionamento
+
+A evolução `v2.1.0` está integrada à `main` e acessível pelo GitHub Pages. Isso não equivale à criação da tag ou da release formal. A tag `v2.1.0` permanece pendente de autorização específica; nenhuma release foi solicitada.
+
+### Documentação e rastreabilidade
+
+A revisão documental de 01/11/2026 atualiza README, CHANGELOG, plano, adendo, este registro e `ESTADO-ATUAL.md`. Os registros anteriores foram mantidos como histórico, com contextualização quando descreviam etapas já superadas.
