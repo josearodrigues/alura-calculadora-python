@@ -6,7 +6,21 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ## [Não publicado] — melhoria posterior à v2.1.0 (candidata a v2.1.1)
 
-> A tag `v2.1.0` foi publicada e permanece imutável. Esta entrada registra uma melhoria integrada posteriormente à `main`; a identificação `v2.1.1` é apenas uma candidata, ainda sem tag ou release.
+> A tag `v2.1.0` foi publicada e permanece imutável. Esta entrada registra exclusivamente a melhoria integrada posteriormente à `main`; `v2.1.1` é apenas uma candidata, ainda sem tag ou release.
+
+### Adicionado
+- Barra de progresso em `v2.1.0/testes.html`, com percentual, quantidade de testes concluídos e contadores de aprovados, falhas e não executados.
+- Estado indeterminado durante a inicialização do Pyodide, antes do início da execução dos cenários.
+
+### Validado
+- A melhoria foi integrada à `main` após a publicação da tag `v2.1.0`, no commit `c681745`.
+- O usuário confirmou testes locais e no GitHub Pages e aprovou o funcionamento e a apresentação da barra.
+- Não foi informado o quantitativo final exibido nessas novas execuções. O resultado numérico de 31/31 abaixo refere-se à execução anterior, em 01/11/2026.
+
+### Observação de manutenção
+- O total de cenários (31) está declarado em `testes.html`; se a suíte mudar de tamanho, esse valor também precisará ser atualizado.
+
+## [2.1.0] - 2026-11-02
 
 ### Organização das versões
 - Preservada a aplicação da versão publicada `v2.0.0` na raiz do repositório.
@@ -31,14 +45,6 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 - Executor Web: captura os detalhes retornados pelos cenários aprovados, quando disponíveis.
 - README atualizado com sintaxe de expressões, exemplos de percentual e raiz de índice n, atalhos por interface e resultados de testes.
 
-### Experiência da suíte Web
-- Adicionada à página `v2.1.0/testes.html` uma barra de progresso que informa percentual e quantidade de testes concluídos, além dos contadores de aprovados, falhas e não executados.
-- A alteração foi integrada à `main` após a publicação da tag `v2.1.0`, sem modificar os 31 cenários nem a lógica em `v2.1.0/tests_web.js`.
-- O usuário confirmou a apresentação visual e o funcionamento da melhoria. Não foi informado um novo resultado numérico da suíte após essa alteração; portanto, o resultado histórico de 31/31 abaixo não é atribuído a uma execução posterior à barra de progresso.
-- Simplificada a página `v2.1.0/testes.html` para usar um único botão de execução, limpar a tabela no início e apresentar o relatório ao final.
-- Mantidos inalterados os 31 cenários e a lógica de testes em `v2.1.0/tests_web.js`.
-- A versão anterior da página de testes foi aprovada pelo usuário após teste visual; o resultado numérico de 31/31 registrado abaixo refere-se à execução confirmada em 01/11/2026, antes da inclusão posterior da barra de progresso.
-
 ### Corrigido
 - Inicialização da interface Web após remoção de chamada obsoleta.
 - Sintaxe do executor de testes.
@@ -46,12 +52,11 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ### Validado
 - Suíte Python: 92/92 testes aprovados, conforme execução informada pelo usuário em 31/10/2026.
-- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme reteste confirmado pelo usuário em 01/11/2026, após a última melhoria visual e na página pública do GitHub Pages; duração aproximada informada: 1 minuto.
+- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme execução confirmada pelo usuário em 01/11/2026, anterior à inclusão da barra de progresso; duração aproximada informada: 1 minuto.
 - Interface desktop: validação manual confirmada pelo usuário; 21/21 testes direcionados da interface e 92/92 da suíte Python informados como aprovados.
-- Interface Web: usuário confirmou funcionamento da aplicação e da página pública de testes, exibição de evidências nos cenários que as fornecem e apresentação visual final em 01/11/2026.
+- Interface Web: usuário confirmou funcionamento da aplicação e da página pública de testes, exibição de evidências nos cenários que as fornecem e apresentação visual final em 01/11/2026. Após a barra de progresso, confirmou novos testes localmente e no GitHub Pages, com aprovação funcional e visual; sem quantitativo final informado.
 - Auditoria estática da baseline `v2.0.0`: os 25 métodos de teste legados continuam presentes e suas asserções originais foram preservadas. Cinco testes de integração passaram a chamar um método auxiliar renomeado; nenhum teste ou asserção original foi identificado como removido.
 - Execução integrada local via `python3 app.py`: confirmada pelo usuário em 01/11/2026. O usuário informou que os testes manuais solicitados (operação básica, expressão com potência ou raiz, histórico e `ANS`) funcionaram. A Fase 5 está concluída no escopo documentado. A aplicação `v2.1.0` está integrada à `main`, identificada pela tag publicada e acessível no GitHub Pages. A release formal do GitHub não foi criada.
-
 ## [2.0.0] - 2026-10-30
 
 ### Adicionado
