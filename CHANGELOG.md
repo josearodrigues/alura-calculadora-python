@@ -4,13 +4,13 @@ Todas as alterações relevantes deste projeto serão registradas neste arquivo.
 
 O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), com versões organizadas cronologicamente.
 
-## [Não publicado] — desenvolvimento da v2.1.0
+## [Não publicado] — v2.1.0 integrada e validada; tag/release pendentes
 
 ### Organização das versões
 - Preservada a aplicação da versão publicada `v2.0.0` na raiz do repositório.
 - Organizada a aplicação evoluída `v2.1.0` em `v2.1.0/`, com módulos Python, interfaces e testes próprios.
 - Mantidos `docs/`, `README.md`, `CHANGELOG.md` e `LICENSE` como recursos compartilhados na raiz.
-- Esta reorganização não constitui publicação da versão `v2.1.0`; a release continua pendente.
+- A evolução está integrada à branch `main` e acessível no GitHub Pages em `/v2.1.0/`. A tag e a release formal `v2.1.0` continuam pendentes.
 
 ### Adicionado
 - Avaliador de expressões matemáticas com parser e árvore sintática própria, sem uso de `eval()`.
@@ -41,11 +41,11 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ### Validado
 - Suíte Python: 92/92 testes aprovados, conforme execução informada pelo usuário em 31/10/2026.
-- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme execução informada pelo usuário em 01/11/2026, anterior ao commit da última simplificação visual da página de testes.
+- Suíte Web: 31/31 cenários aprovados, 0 falhas e 0 não executados, conforme reteste confirmado pelo usuário em 01/11/2026, após a última melhoria visual e na página pública do GitHub Pages; duração aproximada informada: 1 minuto.
 - Interface desktop: validação manual confirmada pelo usuário; 21/21 testes direcionados da interface e 92/92 da suíte Python informados como aprovados.
-- Interface Web: usuário confirmou funcionamento, exibição de evidências nos cenários que as fornecem e apresentação visual da página de testes em 01/11/2026.
+- Interface Web: usuário confirmou funcionamento da aplicação e da página pública de testes, exibição de evidências nos cenários que as fornecem e apresentação visual final em 01/11/2026.
 - Auditoria estática da baseline `v2.0.0`: os 25 métodos de teste legados continuam presentes e suas asserções originais foram preservadas. Cinco testes de integração passaram a chamar um método auxiliar renomeado; nenhum teste ou asserção original foi identificado como removido.
-- Execução integrada local via `python3 app.py`: confirmada pelo usuário em 01/11/2026. O usuário informou que os testes manuais solicitados (operação básica, expressão com potência ou raiz, histórico e `ANS`) funcionaram. A Fase 5 está concluída no escopo documentado; a `v2.1.0` permanece não publicada.
+- Execução integrada local via `python3 app.py`: confirmada pelo usuário em 01/11/2026. O usuário informou que os testes manuais solicitados (operação básica, expressão com potência ou raiz, histórico e `ANS`) funcionaram. A Fase 5 está concluída no escopo documentado. A aplicação `v2.1.0` está integrada à `main` e publicada no GitHub Pages; a tag e a release formal ainda não foram criadas.
 
 ## [2.0.0] - 2026-10-30
 
