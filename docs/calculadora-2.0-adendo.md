@@ -16,21 +16,21 @@ Para assegurar que **a potenciação tenha precedência estrita sobre o sinal un
 Expressao           := TermoAditivo
 TermoAditivo        := TermoMultiplicativo ( ( '+' | '-' ) TermoMultiplicativo )*
 TermoMultiplicativo := FatorUnario ( ( '*' | '/' ) FatorUnario )*
-FatorUnario         := ( '+' | '-' ) FatorUnario 
+FatorUnario         := ( '+' | '-' ) FatorUnario
                      | FatorPotencia
 FatorPotencia       := FatorPosfixado ( '^' FatorUnario )?
 FatorPosfixado      := Primario '%'?
-Primario            := Numero 
-                     | Identificador '(' ListaArgumentos ')' 
+Primario            := Numero
+                     | Identificador '(' ListaArgumentos ')'
                      | '(' Expressao ')'
 ListaArgumentos     := Expressao ( ';' Expressao )*
 ```
 
 #### Efeitos Formais da Nova Gramática:
-1. **Precedência de `-2^2 = -4`:** 
+1. **Precedência de `-2^2 = -4`:**
    - A entrada `-2^2` é derivada como `FatorUnario('-', FatorPotencia(Primario(2), '^', FatorPotencia(Primario(2))))`.
    - O nó de potenciação `2^2` é avaliado primeiro ($\rightarrow 4$), e o unário `-` é aplicado ao resultado final ($\rightarrow -4$).
-2. **Associatividade de `(-2)^2 = 4`:** 
+2. **Associatividade de `(-2)^2 = 4`:**
    - Os parênteses fecham a derivação no nível `Primario`, contendo o `FatorUnario` internamente. Avalia $(-2)^2 = 4$.
 3. **Associatividade à Direita de `2^3^2 = 512`:**
    - A recursão em `FatorPotencia := FatorPosfixado ('^' FatorUnario)?` garante que `2^(3^2) = 2^9 = 512`.
