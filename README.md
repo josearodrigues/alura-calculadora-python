@@ -6,7 +6,7 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Versões:** `v2.0.0` permanece preservada na raiz; a evolução `v2.1.0` está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages em `v2.1.0/`. A release formal do GitHub não foi criada. Após a publicação da tag, foi adicionada à página de testes Web uma barra de progresso com percentual, quantidade de testes concluídos e contadores de resultados. Essa melhoria posterior está integrada à `main`; sua validação visual e funcional foi confirmada pelo usuário. Não há confirmação de uma nova execução numérica da suíte após essa alteração.
+> **Versões:** `v2.0.0` permanece preservada na raiz; a evolução `v2.1.0` está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages em `v2.1.0/`. A melhoria posterior da barra de progresso foi formalizada pela tag publicada `v2.1.1`, que aponta para o commit `1e33727`. A release formal do GitHub não foi criada. O usuário confirmou testes locais e no GitHub Pages após a inclusão da barra, mas não informou o quantitativo final dessas execuções.
 
 ---
 
@@ -198,7 +198,7 @@ As referências de recursos das interfaces Web são relativas ao diretório de c
 
 - **v2.0.0:** baseline publicada, preservada na raiz do repositório.
 - **v2.1.0:** evolução integrada à `main`, tag `v2.1.0` publicada e aplicação acessível no GitHub Pages em `/v2.1.0/`. A release formal do GitHub não foi criada.
-- **Melhoria posterior:** barra de progresso da suíte Web integrada à `main` após a publicação da tag; o usuário confirmou testes locais e no GitHub Pages. A melhoria é candidata a uma versão corretiva `v2.1.1`, ainda sem tag ou release.
+- **v2.1.1:** versão corretiva identificada pela tag publicada, apontando para o commit `1e33727`; formaliza a barra de progresso da suíte Web integrada após a publicação de `v2.1.0`. O usuário confirmou testes locais e no GitHub Pages. A release formal do GitHub não foi criada.
 - A raiz continua servindo a baseline `v2.0.0`; a evolução permanece isolada no subdiretório `v2.1.0/`.
 - Os resultados de validação estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
 
