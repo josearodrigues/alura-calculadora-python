@@ -156,8 +156,8 @@ Na execução confirmada em 01/11/2026, a página apresentou **31/31 aprovados, 
 - Comparação dos testes da baseline `v2.0.0`: os 25 métodos legados foram preservados e nenhuma asserção original foi identificada como removida. A análise distinguiu mudanças de chamada auxiliar e comentários de alterações efetivas nas verificações.
 - README e CHANGELOG foram atualizados para descrever a evolução da calculadora e os resultados das suítes.
 
-### Pendência
-Naquele momento, a execução integrada local via `python3 app.py` ainda não havia sido confirmada. A confirmação posterior encerrou essa pendência, conforme seção 8. A versão `v2.1.0` permanece não publicada.
+### Pendência registrada naquele momento
+Naquele momento, a execução integrada local via `python3 app.py` ainda não havia sido confirmada. A confirmação posterior encerrou essa pendência, conforme seção 11. Naquele registro intermediário, a versão `v2.1.0` ainda não estava integrada à `main` nem validada no Pages; a situação posterior está descrita nas seções 12 e 13.
 
 
 ## 11. Validação integrada local — Fase 5 (01/11/2026)
@@ -169,7 +169,7 @@ O usuário confirmou a execução local da aplicação Web iniciada por `python3
 - Consulta e utilização do histórico.
 - Continuidade de cálculo com `ANS`.
 
-Este registro documenta a confirmação do usuário; não afirma que o assistente executou os testes no ambiente local. Em conjunto com os resultados informados das suítes Python (92/92) e Web (31/31) e a comparação da baseline, a validação integrada prevista na Fase 5 está concluída no escopo documentado. A versão `v2.1.0` continua não publicada.
+Este registro documenta a confirmação do usuário; não afirma que o assistente executou os testes no ambiente local. Em conjunto com os resultados informados das suítes Python (92/92) e Web (31/31) e a comparação da baseline, a validação integrada prevista na Fase 5 ficou concluída no escopo documentado. Na data deste registro intermediário, a integração na `main` e a publicação no Pages ainda estavam pendentes; a atualização posterior consta na seção 13.
 
 
 ## 12. Coexistência das versões — 01/11/2026
