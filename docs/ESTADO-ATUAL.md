@@ -1,11 +1,17 @@
 # Estado Atual — Desafio 2: Calculadora Python
 
-**Última atualização:** 01/11/2026  
-**Repositório:** `josearodrigues/alura-calculadora-python`  
-**Branch de referência remota:** `main`  
-**Último commit remoto conhecido antes desta revisão documental:** `b915990` — `docs: consolidar estado atual do desafio 2`  
-**Plano de referência:** [calculadora-2.0-plano.md](calculadora-2.0-plano.md)  
-**Adendo técnico:** [calculadora-2.0-adendo.md](calculadora-2.0-adendo.md)  
+**Última atualização:** 01/11/2026
+
+**Repositório:** `josearodrigues/alura-calculadora-python`
+
+**Branch de referência remota:** `main`
+
+**Último commit remoto conhecido antes desta revisão documental:** `b915990` — `docs: consolidar estado atual do desafio 2`
+
+**Plano de referência:** [calculadora-2.0-plano.md](calculadora-2.0-plano.md)
+
+**Adendo técnico:** [calculadora-2.0-adendo.md](calculadora-2.0-adendo.md)
+
 **Registro de decisões:** [REGISTRO-DIVERGENCIAS.md](REGISTRO-DIVERGENCIAS.md)
 
 > Este é o registro operacional de continuidade. Os dados locais abaixo refletem a última saída de terminal informada pelo usuário; não foram revalidados nesta revisão. Os resultados de testes e as validações de interface são confirmações do usuário, não execuções realizadas pelo assistente.
