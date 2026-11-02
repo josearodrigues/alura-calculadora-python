@@ -10,7 +10,7 @@
 
 **Criado em:** 31/10/2026
 
-**Última atualização:** 01/11/2026
+**Última atualização:** 02/11/2026
 
 
 > Documento complementar ao plano original. Os critérios publicados permanecem preservados como referência histórica e de rastreabilidade. As adaptações aceitas são registradas separadamente, sem reescrever os requisitos originais.
@@ -209,6 +209,8 @@ Esta decisão organiza as duas versões na `main` sem alterar os requisitos hist
 
 ## 13. Integração, validação pública e encerramento — 01/11/2026
 
+> Esta seção registra o estado conhecido em 01/11/2026. As informações de versionamento foram atualizadas posteriormente na seção 14.
+
 ### Integração e branches
 
 - A branch histórica `desafio-2-revisao-final` foi integrada diretamente à `main`; ambas apontavam para o commit `b915990` antes da revisão documental.
@@ -228,8 +230,40 @@ O usuário confirmou que:
 
 ### Estado de versionamento
 
-A evolução `v2.1.0` está integrada à `main` e acessível pelo GitHub Pages. Isso não equivale à criação da tag ou da release formal. A tag `v2.1.0` permanece pendente de autorização específica; nenhuma release foi solicitada.
+Na data deste registro, a evolução `v2.1.0` estava integrada à `main` e acessível pelo GitHub Pages, mas a tag ainda não havia sido criada. Posteriormente, a tag `v2.1.0` foi publicada em commit próprio; a atualização consta na seção 14. Nenhuma release formal do GitHub foi criada.
 
 ### Documentação e rastreabilidade
 
-A revisão documental de 01/11/2026 atualiza README, CHANGELOG, plano, adendo, este registro e `ESTADO-ATUAL.md`. Os registros anteriores foram mantidos como histórico, com contextualização quando descreviam etapas já superadas.
+A revisão documental iniciada em 01/11/2026 atualizou os documentos pertinentes. Os registros anteriores foram mantidos como histórico, com contextualização quando descreviam etapas já superadas.
+
+
+## 14. Melhoria posterior à publicação da v2.1.0 — 02/11/2026
+
+### Contexto e decisão
+
+Após a publicação da tag `v2.1.0`, foi identificada uma oportunidade de melhorar a experiência de acompanhamento da suíte Web, cuja execução confirmada anteriormente levava aproximadamente um minuto.
+
+Foi adicionada à página `v2.1.0/testes.html` uma barra de progresso que apresenta:
+- percentual de conclusão;
+- quantidade de testes concluídos;
+- contadores de testes aprovados, com falha e não executados;
+- estado indeterminado durante a inicialização do runtime, antes de haver progresso mensurável.
+
+A implementação utiliza o callback de acompanhamento já disponibilizado pelo executor da suíte. Não houve alteração nos cenários de teste nem em `v2.1.0/tests_web.js`.
+
+### Integração e validação
+
+- Commit integrado à `main`: `c681745` — `feat(testes): adicionar barra de progresso à suíte web`.
+- O commit foi enviado pelo usuário ao GitHub em 02/11/2026.
+- A tag `v2.1.0`, que aponta para `481bbaa`, permaneceu intacta.
+- O usuário confirmou que a apresentação visual e o funcionamento da barra ficaram satisfatórios.
+
+**Limite da evidência:** não foi informado um novo resultado numérico da execução dos 31 cenários após a inclusão da barra. Assim, o resultado de 31/31 aprovado registrado na seção 8.3 refere-se à execução anterior à barra de progresso e não deve ser atribuído a um reteste posterior.
+
+### Versionamento
+
+A melhoria foi integrada depois da tag `v2.1.0`. Recomenda-se avaliá-la como candidata à versão corretiva `v2.1.1`, mas nenhuma nova tag ou release foi criada ou autorizada nesta etapa. A tag publicada `v2.1.0` deve permanecer imutável.
+
+### Documentação
+
+A melhoria foi registrada em `README.md`, `CHANGELOG.md`, `docs/ESTADO-ATUAL.md` e neste documento. O plano original `docs/calculadora-2.0-plano.md` não foi alterado, pois a barra de progresso é uma melhoria posterior e não modifica os requisitos ou critérios das cinco fases concluídas.
