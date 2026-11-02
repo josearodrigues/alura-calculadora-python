@@ -63,6 +63,48 @@
     }
     .tag-sucesso { background-color: var(--success); color: #fff; }
     .tag-falha { background-color: var(--danger); color: #fff; }
+    .progresso-testes {
+      margin: 1rem 0 1.25rem;
+      padding: 0.875rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-panel-soft);
+    }
+    .progresso-cabecalho,
+    .progresso-detalhes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .progresso-cabecalho { margin-bottom: 0.5rem; }
+    .progresso-detalhes {
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    .progresso-testes progress {
+      display: block;
+      width: 100%;
+      height: 12px;
+      border: 0;
+      border-radius: 999px;
+      overflow: hidden;
+      accent-color: var(--success);
+    }
+    .progresso-testes progress::-webkit-progress-bar {
+      background: var(--border);
+      border-radius: 999px;
+    }
+    .progresso-testes progress::-webkit-progress-value {
+      background: var(--success);
+      border-radius: 999px;
+    }
+    .progresso-testes progress::-moz-progress-bar {
+      background: var(--success);
+      border-radius: 999px;
+    }
   </style>
 </head>
 <body class="pagina-testes">
@@ -82,6 +124,18 @@
           Aguardando execução...
         </div>
       </div>
+
+      <section id="progresso-testes" class="progresso-testes" aria-label="Progresso da execução dos testes" hidden>
+        <div class="progresso-cabecalho">
+          <span id="status-progresso">Aguardando inicialização...</span>
+          <strong id="percentual-progresso">—</strong>
+        </div>
+        <progress id="barra-progresso" max="31" aria-label="Testes concluídos"></progress>
+        <div class="progresso-detalhes" aria-live="polite">
+          <span id="contagem-progresso">0 de 31 testes concluídos</span>
+          <span id="resumo-progresso">0 aprovados · 0 falhas · 0 não executados</span>
+        </div>
+      </section>
 
       <div id="container-tabela" style="display: none;">
         <table class="tabela-testes">
@@ -113,6 +167,43 @@
     const containerTabela = document.getElementById('container-tabela');
     const corpoTabela = document.getElementById('corpo-tabela-testes');
     const iframeApp = document.getElementById('iframe-app');
+    const progressoEl = document.getElementById('progresso-testes');
+    const barraProgresso = document.getElementById('barra-progresso');
+    const statusProgresso = document.getElementById('status-progresso');
+    const percentualProgresso = document.getElementById('percentual-progresso');
+    const contagemProgresso = document.getElementById('contagem-progresso');
+    const resumoProgresso = document.getElementById('resumo-progresso');
+    const totalTestes = 31;
+    let progressoAtual;
+
+    function reiniciarProgresso() {
+      progressoAtual = { executados: 0, aprovados: 0, falhas: 0, naoExecutados: 0 };
+      progressoEl.hidden = false;
+      barraProgresso.removeAttribute('value');
+      statusProgresso.textContent = 'Aguardando carregamento do Pyodide...';
+      percentualProgresso.textContent = '—';
+      contagemProgresso.textContent = `0 de ${totalTestes} testes concluídos`;
+      resumoProgresso.textContent = '0 aprovados · 0 falhas · 0 não executados';
+    }
+
+    function atualizarProgresso(resultado) {
+      progressoAtual.executados++;
+      if (resultado.status === 'APROVADO') progressoAtual.aprovados++;
+      else if (resultado.status === 'NÃO EXECUTADO') progressoAtual.naoExecutados++;
+      else progressoAtual.falhas++;
+
+      const percentual = Math.floor((progressoAtual.executados / totalTestes) * 100);
+      barraProgresso.value = progressoAtual.executados;
+      percentualProgresso.textContent = `${percentual}%`;
+      contagemProgresso.textContent =
+        `${progressoAtual.executados} de ${totalTestes} testes concluídos`;
+      resumoProgresso.textContent =
+        `${progressoAtual.aprovados} aprovados · ${progressoAtual.falhas} falhas · ` +
+        `${progressoAtual.naoExecutados} não executados`;
+      statusProgresso.textContent = progressoAtual.executados === totalTestes
+        ? 'Execução concluída.'
+        : 'Executando testes...';
+    }
 
     function renderizarResultados(resultados) {
       let aprovados = 0;
@@ -168,6 +259,7 @@
     btnRodar.addEventListener('click', async () => {
       btnRodar.disabled = true;
       resumoEl.textContent = 'Aguardando carregamento do iframe e Pyodide...';
+      reiniciarProgresso();
       corpoTabela.replaceChildren();
       containerTabela.style.display = 'block';
 
@@ -185,16 +277,22 @@
 
         if (!iframeWin.calculadoraApp || !iframeWin.calculadoraApp.pyodidePronto()) {
           resumoEl.textContent = 'Falha de inicialização: Pyodide indisponível. Nenhum cenário foi executado.';
+          barraProgresso.value = 0;
+          statusProgresso.textContent = 'Falha na inicialização; nenhum teste foi executado.';
           return;
         }
 
         iframeWin.documentContexto = iframeWin.document;
         resumoEl.textContent = 'Executando 31 testes...';
-        const resultados = await iframeWin.executarTodosOsTestesWeb();
+        barraProgresso.value = 0;
+        statusProgresso.textContent = 'Executando testes...';
+        percentualProgresso.textContent = '0%';
+        const resultados = await iframeWin.executarTodosOsTestesWeb(atualizarProgresso);
         renderizarResultados(Array.isArray(resultados) ? resultados : []);
       } catch (erro) {
         console.error('Falha inesperada no executor da suíte web:', erro);
         resumoEl.textContent = `Falha no executor: ${erro.message || String(erro)}. Resultado não considerado aprovado.`;
+        statusProgresso.textContent = 'Execução interrompida por erro.';
       } finally {
         btnRodar.disabled = false;
       }
