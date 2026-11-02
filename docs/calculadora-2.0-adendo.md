@@ -1,8 +1,7 @@
 # Adendo Técnico à Revisão 4 — Calculadora 2.1 (Consolidado)
 
 > [!IMPORTANT]
-> Este documento constitui um **adendo complementar e vinculante** à **Revisão 4** do Plano de Implementação da Calculadora 2.1.
-> Nenhum arquivo de código foi alterado, nenhuma dependência foi adicionada e nenhuma implementação foi iniciada. As decisões conceituais, de escopo e arquiteturais da Revisão 4 permanecem integralmente preservadas.
+> Este documento registra o **adendo técnico complementar à Revisão 4** do plano. As seções 1 a 8 preservam as decisões e especificações concebidas antes da implementação; afirmações de estado nelas contidas devem ser lidas como registros daquele momento. A evolução posterior efetivamente implementada está documentada na seção 9 e o estado consolidado atual em `docs/ESTADO-ATUAL.md`.
 
 ---
 
@@ -197,12 +196,11 @@ A função `raiz_n(radicando, indice)` implementa a seguinte regra formal no dom
 
 ---
 
-## 8. Confirmação de Integridade
+## 8. Registro do estado de planejamento original
 
-- **Escopo Intacto:** Decisões da Revisão 4 preservadas (Dark Premium padrão, toggle Light via `localStorage`, botões de memória desabilitados com "Em breve", separador de argumentos `;`, baseline `v2.0.0` mantida e release `v2.1.0`).
-- **Nenhum arquivo do projeto foi alterado até o presente momento.**
+> **Registro histórico:** os itens desta seção descrevem o estado do projeto quando o adendo foi consolidado, antes da implementação. Não representam o estado atual nem prevalecem sobre as decisões posteriores registradas na seção 9.
 
-O adendo técnico está agora completamente salvo em disco e disponível para consulta. **Aguardando sua autorização expressa para iniciar a implementação da Fase 1.**
+As decisões técnicas aqui especificadas serviram como referência para a implementação. Algumas escolhas foram posteriormente adaptadas, como a memória funcional na interface desktop, conforme decisão do usuário e registro de divergências. A baseline `v2.0.0` foi preservada.
 
 ---
 
@@ -242,8 +240,18 @@ Esta seção registra a evolução realizada após o estado documentado na seç�
 - Testes específicos da interface desktop: 16 testes aprovados.
 - Verificação de integridade do diff com `git diff --check`, sem erros.
 
-### 9.3. Estado da versão
+### 9.3. Estado da versão no registro intermediário
+
+> **Registro histórico:** este era o estado documentado antes da conclusão das fases seguintes. A situação atual está consolidada em `docs/ESTADO-ATUAL.md`.
 
 - A versão `v2.0.0` permanece preservada como baseline histórica.
-- A versão `v2.1.0` está planejada para consolidar as novas funcionalidades.
-- A publicação da nova versão depende da conclusão da revisão final e da aprovação do projeto.
+- A versão `v2.1.0` foi implementada posteriormente, integrada à `main` e validada no GitHub Pages.
+- A tag e a release formal `v2.1.0` permanecem pendentes.
+
+---
+
+## 10. Situação consolidada após a implementação — 01/11/2026
+
+As decisões técnicas deste adendo foram utilizadas como referência para a evolução `v2.1.0`, com adaptações registradas separadamente. As cinco fases foram concluídas no escopo acordado; a aplicação está integrada à `main` e as rotas públicas da baseline e da evolução foram verificadas pelo usuário.
+
+A suíte Python foi aprovada em 92/92 testes. A suíte Web foi retestada após a última melhoria visual e aprovada em 31/31 cenários, com duração aproximada de 1 minuto, conforme confirmação do usuário. A baseline `v2.0.0` permanece preservada. A tag e a release formal `v2.1.0` ainda não foram criadas.
