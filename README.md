@@ -6,7 +6,7 @@ O desenvolvimento contou com o apoio de ferramentas de inteligência artificial 
 
 Este repositório tem finalidade educacional e demonstra conceitos de Engenharia de Software, como modularidade, separação de responsabilidades, validação de entradas e testes automatizados. Não é um produto oficial da Alura ou do Google, nem representa endosso dessas empresas.
 
-> **Versões:** `v2.0.0` permanece preservada na raiz; a evolução `v2.1.0` está integrada à branch `main` e acessível no GitHub Pages em `v2.1.0/`. A suíte Python foi aprovada (92/92), os testes direcionados da interface desktop (21/21) e a suíte Web (31/31) também foram aprovados. Em 01/11/2026, o usuário confirmou a execução dos 31 testes Web após a última melhoria visual, com duração aproximada de 1 minuto, além da validação manual das rotas públicas. A tag e a release `v2.1.0` ainda não foram criadas.
+> **Versões:** `v2.0.0` permanece preservada na raiz; a evolução `v2.1.0` está integrada à `main`, identificada pela tag publicada `v2.1.0` e acessível no GitHub Pages em `v2.1.0/`. A release formal do GitHub não foi criada. Após a publicação da tag, foi adicionada à página de testes Web uma barra de progresso com percentual, quantidade de testes concluídos e contadores de resultados. Essa melhoria posterior está integrada à `main`; sua validação visual e funcional foi confirmada pelo usuário. Não há confirmação de uma nova execução numérica da suíte após essa alteração.
 
 ---
 
@@ -16,6 +16,7 @@ Este repositório tem finalidade educacional e demonstra conceitos de Engenharia
 - **v2.1.0 (`v2.1.0/`):** evolução com expressões matemáticas, potenciação (`^`), raízes, valor absoluto, inverso, troca de sinal, percentual contextual, histórico e `ANS`.
 - **Memória na interface desktop da v2.1.0:** MC, MR, M+, M- e MS.
 - **Interfaces da v2.1.0:** desktop nativa com Tkinter e Web com HTML5, CSS3, JavaScript Vanilla e Pyodide / WebAssembly.
+- **Página de testes Web:** barra de progresso com percentual, contagem de testes concluídos e indicadores de aprovados, falhas e não executados.
 - **Reutilização da lógica Python na v2.1.0:** as interfaces desktop e Web utilizam os módulos Python da própria versão.
 - **Entradas localizadas:** aceita ponto ou vírgula como separador decimal (`12,5` ou `12.5`) na evolução documentada.
 - **Validação de entradas e tratamento de erros:** incluindo valores não finitos e divisão por zero.
@@ -166,7 +167,7 @@ Com o servidor iniciado na raiz:
 - v2.0.0: `http://localhost:3000/testes.html`
 - v2.1.0: `http://localhost:3000/v2.1.0/testes.html`
 
-Resultado confirmado pelo usuário em 01/11/2026, após a última melhoria visual e no GitHub Pages: **31/31 cenários aprovados, 0 falhas e 0 não executados**. Duração aproximada informada: **1 minuto**.
+Resultado confirmado pelo usuário em 01/11/2026, antes da inclusão posterior da barra de progresso: **31/31 cenários aprovados, 0 falhas e 0 não executados**. Duração aproximada informada: **1 minuto**. A barra de progresso adicionada depois foi aprovada visual e funcionalmente pelo usuário; não foi informado um novo resultado numérico após essa alteração.
 
 Os resultados acima registram execuções e validações informadas pelo usuário; esta documentação não representa uma nova execução dos testes.
 
@@ -196,7 +197,8 @@ As referências de recursos das interfaces Web são relativas ao diretório de c
 ## Estado das Versões
 
 - **v2.0.0:** baseline publicada, preservada na raiz do repositório.
-- **v2.1.0:** evolução integrada à `main` e acessível no GitHub Pages em `/v2.1.0/`; tag e release ainda pendentes.
+- **v2.1.0:** evolução integrada à `main`, tag `v2.1.0` publicada e aplicação acessível no GitHub Pages em `/v2.1.0/`. A release formal do GitHub não foi criada.
+- **Melhoria posterior:** barra de progresso da suíte Web integrada à `main` após a publicação da tag; candidata a uma versão corretiva `v2.1.1`, ainda sem tag ou release.
 - A raiz continua servindo a baseline `v2.0.0`; a evolução permanece isolada no subdiretório `v2.1.0/`.
 - Os resultados de validação estão registrados neste README e em `docs/ESTADO-ATUAL.md`.
 
