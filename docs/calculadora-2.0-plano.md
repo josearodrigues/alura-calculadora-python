@@ -1,7 +1,7 @@
 # Calculadora 2.0 — Plano de Implementação (Revisão 4 — Final)
 
 > [!IMPORTANT]
-> Este documento é **estritamente para planejamento e alinhamento técnico**. Nenhum arquivo de código foi modificado, nenhuma dependência foi alterada e nenhum commit ou tag foi gerado. A implementação aguarda autorização expressa.
+> Este documento preserva o **plano técnico aprovado e seus critérios originais**, servindo como referência histórica e de rastreabilidade da evolução `v2.1.0`. A implementação das cinco fases foi concluída no escopo acordado; as adaptações aceitas e os resultados efetivamente validados estão registrados em `docs/REGISTRO-DIVERGENCIAS.md` e `docs/ESTADO-ATUAL.md`. Os critérios abaixo não foram reescritos para ocultar diferenças entre planejamento e implementação.
 
 ---
 
@@ -527,5 +527,5 @@ Botões Memória:       #1E293B  (Texto cinza esmaecido #64748B - Desabilitados 
 | **Memória** | Ausente | Fora de escopo desta versão (botões "Em breve") |
 | **Design** | Formulário claro clássico | Dark Premium homologado com toggle Light na web |
 
-> [!IMPORTANT]
-> **Próxima Ação:** O plano está completamente alinhado, rigoroso e fechado. Aguardo sua avaliação final e **autorização expressa** para iniciar o desenvolvimento da **Fase 1**.
+> [!NOTE]
+> **Situação do plano:** as cinco fases foram executadas no escopo acordado. Este documento permanece como referência dos requisitos originalmente definidos, não como lista de tarefas ainda aguardando início. As adaptações aceitas, os testes e as validações finais estão registrados em `docs/REGISTRO-DIVERGENCIAS.md` e `docs/ESTADO-ATUAL.md`. A versão `v2.1.0` está integrada à `main` e acessível no GitHub Pages; a criação da tag e da release formal é uma etapa de versionamento posterior.
