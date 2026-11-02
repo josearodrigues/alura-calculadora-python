@@ -4,9 +4,9 @@ Todas as alterações relevantes deste projeto serão registradas neste arquivo.
 
 O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/), com versões organizadas cronologicamente.
 
-## [Não publicado] — melhoria posterior à v2.1.0 (candidata a v2.1.1)
+## [2.1.1] - 2026-11-02
 
-> A tag `v2.1.0` foi publicada e permanece imutável. Esta entrada registra exclusivamente a melhoria integrada posteriormente à `main`; `v2.1.1` é apenas uma candidata, ainda sem tag ou release.
+> Tag `v2.1.1` publicada em 02/11/2026, apontando para o commit `1e33727`. A tag `v2.1.0` permanece imutável. A release formal do GitHub não foi criada.
 
 ### Adicionado
 - Barra de progresso em `v2.1.0/testes.html`, com percentual, quantidade de testes concluídos e contadores de aprovados, falhas e não executados.
@@ -14,6 +14,7 @@ O formato segue, de maneira simplificada, as convenções do [Keep a Changelog](
 
 ### Validado
 - A melhoria foi integrada à `main` após a publicação da tag `v2.1.0`, no commit `c681745`.
+- A tag anotada `v2.1.1` foi criada localmente e enviada ao GitHub pelo usuário em 02/11/2026; aponta para o commit `1e33727`.
 - O usuário confirmou testes locais e no GitHub Pages e aprovou o funcionamento e a apresentação da barra.
 - Não foi informado o quantitativo final exibido nessas novas execuções. O resultado numérico de 31/31 abaixo refere-se à execução anterior, em 01/11/2026.
 
