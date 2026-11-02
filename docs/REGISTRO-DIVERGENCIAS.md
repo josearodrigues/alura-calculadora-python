@@ -1,11 +1,17 @@
 # Registro de Divergências e Evolução do Escopo
 
-**Projeto:** Calculadora Python — Desafio 2  
-**Repositório:** `josearodrigues/alura-calculadora-python`  
-**Branch de referência atual:** `main`  
-**Branch histórica de desenvolvimento:** `desafio-2-revisao-final` (integrada e posteriormente excluída)  
-**Criado em:** 31/10/2026  
+**Projeto:** Calculadora Python — Desafio 2
+
+**Repositório:** `josearodrigues/alura-calculadora-python`
+
+**Branch de referência atual:** `main`
+
+**Branch histórica de desenvolvimento:** `desafio-2-revisao-final` (integrada e posteriormente excluída)
+
+**Criado em:** 31/10/2026
+
 **Última atualização:** 01/11/2026
+
 
 > Documento complementar ao plano original. Os critérios publicados permanecem preservados como referência histórica e de rastreabilidade. As adaptações aceitas são registradas separadamente, sem reescrever os requisitos originais.
 
